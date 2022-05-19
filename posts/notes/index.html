@@ -162,6 +162,7 @@ ls &lt;@GMT-XXXX&gt;\ For example you can get the Login Data file which you can&
       <nav id="TableOfContents">
   <ul>
     <li><a href="#tips-1--access-locked-file-through-smb">Tips 1 : Access locked file through SMB</a></li>
+    <li><a href="#tips-2--powershell-with-proxy">Tips 2 : Powershell with proxy</a></li>
   </ul>
 </nav>
     </div>
@@ -200,6 +201,16 @@ ls &lt;@GMT-XXXX&gt;\ For example you can get the Login Data file which you can&
 <pre tabindex="0"><code>ls &lt;@GMT-XXXX&gt;\
 </code></pre><p>For example you can get the Login Data file which you can&rsquo;t normally copy when Chrome is running :</p>
 <pre tabindex="0"><code>copy  @GMT-2021.10.04-13.05.04\Users\Administrator\AppData\Local\Google\Chrome\Default\Login Data .
+</code></pre><h2 id="tips-2--powershell-with-proxy">Tips 2 : Powershell with proxy</h2>
+<p>To use powershell with a corporate proxy :</p>
+<pre tabindex="0"><code>$Wcl = new-object System.Net.WebClient
+$Wcl.Headers.Add(“user-agent”, “PowerShell Script”)
+$Wcl.Proxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
+</code></pre><p>If the default creds are not working :</p>
+<p>Si jamais les defaults credentials ne passe pas :</p>
+<pre tabindex="0"><code>$Wcl=New-Object System.Net.WebClient
+$Creds=Get-Credential
+$Wcl.Proxy.Credentials=$Creds
 </code></pre>
     </div>
   </article>
@@ -228,6 +239,7 @@ ls &lt;@GMT-XXXX&gt;\ For example you can get the Login Data file which you can&
       <nav id="TableOfContents">
   <ul>
     <li><a href="#tips-1--access-locked-file-through-smb">Tips 1 : Access locked file through SMB</a></li>
+    <li><a href="#tips-2--powershell-with-proxy">Tips 2 : Powershell with proxy</a></li>
   </ul>
 </nav>
     </div>
