@@ -6,7 +6,19 @@
     <description>Recent content in Posts on </description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 18 May 2022 18:39:47 +0200</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 May 2022 06:51:09 +0200</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>General Redteam &amp; Pentest Tips</title>
+      <link>/posts/tips/</link>
+      <pubDate>Thu, 19 May 2022 06:51:09 +0200</pubDate>
+      
+      <guid>/posts/tips/</guid>
+      <description>This post will have &amp;ldquo;in vrac&amp;rdquo; all of tips that i found usefull
+Tips 1 : Access locked file through SMB Wanna access some locked files through SMB ? You can try to see if some shadow copy are available on the targeted system !:
+smbclient.py user@target list_snapshot And then simply :
+ls &amp;lt;@GMT-XXXX&amp;gt;\ For example you can get the Login Data file which you can&amp;rsquo;t normally copy when Chrome is running :</description>
+    </item>
+    
     <item>
       <title>How to : take over ComputerObject</title>
       <link>/posts/computerobject/</link>
