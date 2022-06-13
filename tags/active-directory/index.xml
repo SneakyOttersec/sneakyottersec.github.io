@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Active Directory on </title>
+    <link>/tags/active-directory/</link>
+    <description>Recent content in Active Directory on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 18 May 2022 18:39:47 +0200</lastBuildDate><atom:link href="/tags/active-directory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to : take over ComputerObject</title>
+      <link>/posts/computerobject/</link>
+      <pubDate>Wed, 18 May 2022 18:39:47 +0200</pubDate>
+      
+      <guid>/posts/computerobject/</guid>
+      <description>1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essentials for many tasks suchs as :
+ Establish a secure channel for the user authentication Deploy a GPO tied to a computer and not a user Identify the computer as a workstation, server or domain controller Used to access network resources as a low-privileged account Unrestricted access to the resources on the local machine &amp;hellip;  One thing to keep in mind : the password management of the computer account is delegated to the Active Directory which renders password spraying or Kerberoasting useless in most cases.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Azure on </title>
+    <link>/tags/azure/</link>
+    <description>Recent content in Azure on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 09 Jun 2022 11:41:04 +0200</lastBuildDate><atom:link href="/tags/azure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure AD : PRT, PRT Cookie and Application Token</title>
+      <link>/posts/azuretoken/</link>
+      <pubDate>Thu, 09 Jun 2022 11:41:04 +0200</pubDate>
+      
+      <guid>/posts/azuretoken/</guid>
+      <description>1. PRT / Session key &amp;amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena or microsoft
+WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one</description>
+    </item>
+    
+  </channel>
+</rss>

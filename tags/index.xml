@@ -5,6 +5,79 @@
     <link>/tags/</link>
     <description>Recent content in Tags on </description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Thu, 09 Jun 2022 11:41:04 +0200</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure</title>
+      <link>/tags/azure/</link>
+      <pubDate>Thu, 09 Jun 2022 11:41:04 +0200</pubDate>
+      
+      <guid>/tags/azure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PRT</title>
+      <link>/tags/prt/</link>
+      <pubDate>Thu, 09 Jun 2022 11:41:04 +0200</pubDate>
+      
+      <guid>/tags/prt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Active Directory</title>
+      <link>/tags/active-directory/</link>
+      <pubDate>Wed, 18 May 2022 18:39:47 +0200</pubDate>
+      
+      <guid>/tags/active-directory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Computer Account</title>
+      <link>/tags/computer-account/</link>
+      <pubDate>Wed, 18 May 2022 18:39:47 +0200</pubDate>
+      
+      <guid>/tags/computer-account/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Autodiscover</title>
+      <link>/tags/autodiscover/</link>
+      <pubDate>Mon, 25 Apr 2022 23:56:41 +0200</pubDate>
+      
+      <guid>/tags/autodiscover/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Exchange</title>
+      <link>/tags/exchange/</link>
+      <pubDate>Mon, 25 Apr 2022 23:56:41 +0200</pubDate>
+      
+      <guid>/tags/exchange/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Red Team</title>
+      <link>/tags/red-team/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/red-team/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tips</title>
+      <link>/tags/tips/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tips/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

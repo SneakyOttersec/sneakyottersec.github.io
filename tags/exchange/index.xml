@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Exchange on </title>
+    <link>/tags/exchange/</link>
+    <description>Recent content in Exchange on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 25 Apr 2022 23:56:41 +0200</lastBuildDate><atom:link href="/tags/exchange/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Autodiscover 101 : Attacking [MS-OXDISC] &amp; [MS-OXDISCO]</title>
+      <link>/posts/autodiscover101/</link>
+      <pubDate>Mon, 25 Apr 2022 23:56:41 +0200</pubDate>
+      
+      <guid>/posts/autodiscover101/</guid>
+      <description>0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints in order to exploit then.
+In order to do so we will focus on two different aspect :
+ Unauthenticated attack Authenticated attack  No more taklink let&amp;rsquo;s jump into the technical stuff ! Based on the Microsoft documentation the Autodiscover sevice is part of the &amp;ldquo;Directory/Profile Services&amp;rdquo; which can be broke down into 2 important piece of documentation :</description>
+    </item>
+    
+  </channel>
+</rss>
