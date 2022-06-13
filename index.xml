@@ -18,18 +18,6 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
     </item>
     
     <item>
-      <title>General Redteam &amp; Pentest Tips</title>
-      <link>/posts/notes/</link>
-      <pubDate>Thu, 19 May 2022 06:51:09 +0200</pubDate>
-      
-      <guid>/posts/notes/</guid>
-      <description>This post will have &amp;ldquo;in vrac&amp;rdquo; all of tips that i found usefull
-Tips 1 : Access locked file through SMB Wanna access some locked files through SMB ? You can try to see if some shadow copy are available on the targeted system !:
-smbclient.py user@target list_snapshot And then simply :
-ls &amp;lt;@GMT-XXXX&amp;gt;\ For example you can get the Login Data file which you can&amp;rsquo;t normally copy when Chrome is running :</description>
-    </item>
-    
-    <item>
       <title>How to : take over ComputerObject</title>
       <link>/posts/computerobject/</link>
       <pubDate>Wed, 18 May 2022 18:39:47 +0200</pubDate>
@@ -48,6 +36,18 @@ ls &amp;lt;@GMT-XXXX&amp;gt;\ For example you can get the Login Data file which 
       <description>0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints in order to exploit then.
 In order to do so we will focus on two different aspect :
  Unauthenticated attack Authenticated attack  No more taklink let&amp;rsquo;s jump into the technical stuff ! Based on the Microsoft documentation the Autodiscover sevice is part of the &amp;ldquo;Directory/Profile Services&amp;rdquo; which can be broke down into 2 important piece of documentation :</description>
+    </item>
+    
+    <item>
+      <title>General Redteam &amp; Pentest Tips</title>
+      <link>/posts/notes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/notes/</guid>
+      <description>This post will have &amp;ldquo;in vrac&amp;rdquo; all of tips that i found usefull
+Tips 1 : Access locked file through SMB Wanna access some locked files through SMB ? You can try to see if some shadow copy are available on the targeted system !:
+smbclient.py user@target list_snapshot And then simply :
+ls &amp;lt;@GMT-XXXX&amp;gt;\ For example you can get the Login Data file which you can&amp;rsquo;t normally copy when Chrome is running :</description>
     </item>
     
   </channel>

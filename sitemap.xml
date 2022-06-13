@@ -11,9 +11,6 @@
     <loc>/posts/</loc>
     <lastmod>2022-06-09T11:41:04+02:00</lastmod>
   </url><url>
-    <loc>/posts/notes/</loc>
-    <lastmod>2022-05-19T06:51:09+02:00</lastmod>
-  </url><url>
     <loc>/posts/computerobject/</loc>
     <lastmod>2022-05-18T18:39:47+02:00</lastmod>
   </url><url>
@@ -21,6 +18,8 @@
     <lastmod>2022-04-25T23:56:41+02:00</lastmod>
   </url><url>
     <loc>/categories/</loc>
+  </url><url>
+    <loc>/posts/notes/</loc>
   </url><url>
     <loc>/tags/</loc>
   </url>
