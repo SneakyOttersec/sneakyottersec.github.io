@@ -16,7 +16,7 @@
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:title" content="Azure AD : PRT, PRT Cookie and Application Token" />
-<meta property="og:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena or microsoft
+<meta property="og:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena, dirkjanm or microsoft
 WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/azuretoken/" /><meta property="article:section" content="posts" />
@@ -26,7 +26,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Azure AD : PRT, PRT Cookie and Application Token"/>
-<meta name="twitter:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena or microsoft
+<meta name="twitter:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena, dirkjanm or microsoft
 WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one"/>
 
   
@@ -144,7 +144,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20post%20such%20as%20jairocadena%20or%20microsoft%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20post%20such%20as%20jairocadena%2c%20dirkjanm%20or%20microsoft%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -213,14 +213,14 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
     
     <div class="content" itemprop="articleBody">
       <h1 id="1-prt--session-key--prt-cookie--quick-recap">1. PRT / Session key &amp; PRT Cookie : Quick recap</h1>
-<p><em><strong>WARNING</strong> : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as <a href="https://jairocadena.com/2016/11/08/how-sso-works-in-windows-10-devices/">jairocadena</a> or <a href="https://docs.microsoft.com/fr-fr/azure/active-directory/devices/concept-primary-refresh-token">microsoft</a></em></p>
+<p><em><strong>WARNING</strong> : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as <a href="https://jairocadena.com/2016/11/08/how-sso-works-in-windows-10-devices/">jairocadena</a>, <a href="https://dirkjanm.io/abusing-azure-ad-sso-with-the-primary-refresh-token/">dirkjanm</a> or <a href="https://docs.microsoft.com/fr-fr/azure/active-directory/devices/concept-primary-refresh-token">microsoft</a></em></p>
 <p><em><strong>WARNING 2</strong> : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this <a href="https://jairocadena.com/2016/02/01/azure-ad-join-what-happens-behind-the-scenes/">one</a></em></p>
 <p>The Primary Refresh Token is a special credential artifact that is issued to devices that are either <strong>hybrid joined</strong> or <strong>AZure AD joined</strong> <em>AND</em> running at least <strong>Windows 10</strong>.</p>
 <p>This <em>Primary Refrest Token</em> or <em>PRT</em> have the purpose of enforcing the <strong>SingleSignOn</strong> for all of the Azure services. This is the equivalent of the <em>SeamlessSSO</em> on Windows 7 / Windows 8.1.</p>
 <p>It can be easily compared as the <strong>Kerberos TGT</strong> which mostly server the same purpose. The <em>PRT</em> is based on the JWT (JSON Web Token) / Oauth2 technology which contains claims about the user such as :</p>
 <ul>
 <li>Device ID</li>
-<li>MFA</li>
+<li>Some specific MFA claims (ex : Windows Hello)</li>
 </ul>
 <p>Please note that the Primary Refresh Token as a default duration of 90 days and a renewable windows of 14 days.</p>
 <p>If the computer support it, the <em>PRT</em> along with the <em>session key</em> will be stored in the <strong>TPM</strong> (TPM &gt;= 2.0) otherwise it will be stored in the <strong>LSASS</strong>.</p>
@@ -234,8 +234,8 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 <li>Context : 24 random bytes used to derive the session key</li>
 <li>PRT Cookie : The signed PRT also called refresh token (e.g : x-ms-RefreshTokenCredential) somhow equivalent to the <strong>TGT</strong></li>
 <li>Application token : Somehow equivalent to the <strong>Service Ticket</strong></li>
+<li>CA : Conditionnal Access</li>
 </ul>
-<p><em>Side note: As the PRT contains claims such as MFA or Device ID, if an application is enforcing the Device Based conditionnal access you&rsquo;ll get an access denied &hellip;</em></p>
 <h2 id="prt--session-key">PRT &amp; Session key</h2>
 <p>As stated before the <strong>PRT</strong> is obtained during the Windows Logon and is not usable as is. You&rsquo;ll find below the logon flow stolen from the <a href="https://docs.microsoft.com/en-us/azure/active-directory/devices/concept-primary-refresh-token">microsoft documentation</a></p>
 <p><img src="/img/mft_logon_prt.png" alt="SCHEMA_LOGON_FLOW"></p>
@@ -425,7 +425,7 @@ ROADrecon gather executed in 3.95 seconds and issued 1018 HTTP requests.
 <thead>
 <tr>
 <th></th>
-<th>MFA Claim (device)</th>
+<th>MFA Claim (hello/device)</th>
 <th>MFA Claim (others)</th>
 <th>Pass Conditionnal Access</th>
 <th>Extract without TPM</th>
@@ -561,7 +561,7 @@ ROADrecon gather executed in 3.95 seconds and issued 1018 HTTP requests.
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20post%20such%20as%20jairocadena%20or%20microsoft%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20post%20such%20as%20jairocadena%2c%20dirkjanm%20or%20microsoft%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
