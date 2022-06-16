@@ -220,7 +220,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 <p>It can be easily compared as the <strong>Kerberos TGT</strong> which mostly server the same purpose. The <em>PRT</em> is based on the JWT (JSON Web Token) / Oauth2 technology which contains claims about the user such as :</p>
 <ul>
 <li>Device ID</li>
-<li>MFA</li>
+<li>Some MFA claim (see below)</li>
 </ul>
 <p>Please note that the Primary Refresh Token as a default duration of 90 days and a renewable windows of 14 days.</p>
 <p>If the computer support it, the <em>PRT</em> along with the <em>session key</em> will be stored in the <strong>TPM</strong> (TPM &gt;= 2.0) otherwise it will be stored in the <strong>LSASS</strong>.</p>
@@ -234,6 +234,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 <li>Context : 24 random bytes used to derive the session key</li>
 <li>PRT Cookie : The signed PRT also called refresh token (e.g : x-ms-RefreshTokenCredential) somhow equivalent to the <strong>TGT</strong></li>
 <li>Application token : Somehow equivalent to the <strong>Service Ticket</strong></li>
+<li>CA : Conditionnal Access</li>
 </ul>
 <p><em>Side note: As the PRT contains claims such as MFA or Device ID, if an application is enforcing the Device Based conditionnal access you&rsquo;ll get an access denied &hellip;</em></p>
 <h2 id="prt--session-key">PRT &amp; Session key</h2>
