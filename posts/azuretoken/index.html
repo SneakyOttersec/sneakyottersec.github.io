@@ -25,7 +25,7 @@
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
   <meta property="og:title" content="Azure AD : PRT, PRT Cookie and Application Token" />
-<meta property="og:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena, dirkjanm or microsoft
+<meta property="og:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog posts such as jairocadena, dirkjanm or microsoft.
 WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/azuretoken/" /><meta property="article:section" content="posts" />
@@ -35,7 +35,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 
   <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Azure AD : PRT, PRT Cookie and Application Token"/>
-<meta name="twitter:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena, dirkjanm or microsoft
+<meta name="twitter:description" content="1. PRT / Session key &amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog posts such as jairocadena, dirkjanm or microsoft.
 WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one"/>
 
   
@@ -153,7 +153,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20post%20such%20as%20jairocadena%2c%20dirkjanm%20or%20microsoft%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20posts%20such%20as%20jairocadena%2c%20dirkjanm%20or%20microsoft.%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
@@ -222,26 +222,26 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
     
     <div class="content" itemprop="articleBody">
       <h1 id="1-prt--session-key--prt-cookie--quick-recap">1. PRT / Session key &amp; PRT Cookie : Quick recap</h1>
-<p><em><strong>WARNING</strong> : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as <a href="https://jairocadena.com/2016/11/08/how-sso-works-in-windows-10-devices/">jairocadena</a>, <a href="https://dirkjanm.io/abusing-azure-ad-sso-with-the-primary-refresh-token/">dirkjanm</a> or <a href="https://docs.microsoft.com/fr-fr/azure/active-directory/devices/concept-primary-refresh-token">microsoft</a></em></p>
+<p><em><strong>WARNING</strong> : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog posts such as <a href="https://jairocadena.com/2016/11/08/how-sso-works-in-windows-10-devices/">jairocadena</a>, <a href="https://dirkjanm.io/abusing-azure-ad-sso-with-the-primary-refresh-token/">dirkjanm</a> or <a href="https://docs.microsoft.com/fr-fr/azure/active-directory/devices/concept-primary-refresh-token">microsoft</a></em>.</p>
 <p><em><strong>WARNING 2</strong> : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this <a href="https://jairocadena.com/2016/02/01/azure-ad-join-what-happens-behind-the-scenes/">one</a></em></p>
 <p>The Primary Refresh Token is a special credential artifact that is issued to devices that are either <strong>hybrid joined</strong> or <strong>AZure AD joined</strong> <em>AND</em> running at least <strong>Windows 10</strong>.</p>
 <p>This <em>Primary Refrest Token</em> or <em>PRT</em> have the purpose of enforcing the <strong>SingleSignOn</strong> for all of the Azure services. This is the equivalent of the <em>SeamlessSSO</em> on Windows 7 / Windows 8.1.</p>
-<p>It can be easily compared as the <strong>Kerberos TGT</strong> which mostly server the same purpose. The <em>PRT</em> is based on the JWT (JSON Web Token) / Oauth2 technology which contains claims about the user such as :</p>
+<p>It can be easily compared to the <strong>Kerberos TGT</strong> which mostly server the same purpose. The <em>PRT</em> is based on the JWT (JSON Web Token) / Oauth2 technology which contains claims about the user such as :</p>
 <ul>
 <li>Device ID</li>
 <li>Some specific MFA claims (ex : Windows Hello)</li>
 </ul>
-<p>Please note that the Primary Refresh Token as a default duration of 90 days and a renewable windows of 14 days.</p>
-<p>If the computer support it, the <em>PRT</em> along with the <em>session key</em> will be stored in the <strong>TPM</strong> (TPM &gt;= 2.0) otherwise it will be stored in the <strong>LSASS</strong>.</p>
-<p>In order for the computer to use the PRT there is a new provider implemented called the <em>&ldquo;Cloud Authentication Provider&rdquo;</em> shortened <em>CloudAP</em> which will handle the authentication to Azure AD or ADFS and cache the PRT in the LSA.</p>
-<p>Every application that need to use this SSO will use the other plugin called &ldquo;Web Account Manager&rdquo; abreviated <em>WAM</em> which will use the PRT Cookie to request the different Application Token.</p>
-<p>As an example Chrome and Edge relies on <strong>BrowserCore.exe</strong> which is a &ldquo;client&rdquo; that interact with the <strong>WAM</strong></p>
+<p>Please note that the Primary Refresh Token as a default duration of 90 days and a renewable window of 14 days.</p>
+<p>If the computer supports it, the <em>PRT</em> along with the <em>session key</em> will be stored in the <strong>TPM</strong> (TPM &gt;= 2.0) otherwise it will be stored in the <strong>LSASS</strong>.</p>
+<p>In order for the computer to use the PRT there is a new provider implemented called the <em>&ldquo;Cloud Authentication Provider&rdquo;</em> shortened <em>CloudAP</em> which will handle the authentication to Azure AD or ADFS and caches the PRT in the LSA.</p>
+<p>Every application that needs to use this SSO will use the other plugin called &ldquo;Web Account Manager&rdquo; abreviated <em>WAM</em> which uses the PRT Cookie to request the different Application Token.</p>
+<p>As an example Chrome and Edge rely on <strong>BrowserCore.exe</strong> which is a &ldquo;client&rdquo; that interact with the <strong>WAM</strong></p>
 <p>Terminology for the rest of the article :</p>
 <ul>
 <li>PRT Token : Primary refresh token obtained through the windows logon process</li>
 <li>Session Key : (Somehow equivalent to the <strong>session key stored in the Ticket Granting Ticket</strong>)</li>
 <li>Context : 24 random bytes used to derive the session key</li>
-<li>PRT Cookie : The signed PRT also called refresh token (e.g : x-ms-RefreshTokenCredential) somhow equivalent to the <strong>TGT</strong></li>
+<li>PRT Cookie : The signed PRT also called refresh token (e.g : x-ms-RefreshTokenCredential) somehow equivalent to the <strong>TGT</strong></li>
 <li>Application token : Somehow equivalent to the <strong>Service Ticket</strong></li>
 <li>CA : Conditionnal Access</li>
 </ul>
@@ -253,7 +253,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 <li>The user enter his username/password</li>
 <li>CloudAP will request a <em>nonce</em></li>
 <li>Build a request using the username, password, nonce and sign it with the device key. (more info on those device keys <a href="https://jairocadena.com/2018/04/02/windows-hello-for-business-registration-and-authentication-with-azuread/">here</a>)</li>
-<li>Retreive the PRT / Session Key and store it (TPM or LSASS)</li>
+<li>Retrieve the PRT / Session Key and store it (TPM or LSASS)</li>
 </ol>
 <p>The two essentials cryptographic materials that you&rsquo;ll end up at the end of the authentication flow are :</p>
 <ul>
@@ -262,7 +262,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 </ul>
 <p>With those two cryptographic materials you&rsquo;ll be able to generate a <em>PRT Cookie</em>, thus accessing all of the Azure/O365 services through the <em>SSO</em>.</p>
 <h2 id="prt-cookie">PRT Cookie</h2>
-<p>Now that we are in posession of our PRT and the Session key, let&rsquo;s see how the <em>PRT Cookie</em> is generated with and without a TPM :</p>
+<p>Now that we are in possession of our PRT and the Session key, let&rsquo;s see how the <em>PRT Cookie</em> is generated with and without a TPM :</p>
 <ol>
 <li>Request nonce from login page (i.e : <code>https://microsoftonline.microsoft.com</code>)</li>
 <li>The LSASS (or TPM) derive the session key with a random context (24 random bytes used in <code>BCryptKeyDerivation</code>)</li>
@@ -329,7 +329,7 @@ that are defined <a href="https://docs.microsoft.com/fr-fr/azure/active-director
 <p>You can find all the detailed informations about all the properties <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens">here</a>.</p>
 <h1 id="2-red-team--work-with-the-differents-available-tokens">2. Red team : Work with the differents available tokens</h1>
 <h2 id="21-prt">2.1 PRT</h2>
-<p>We will start by the easiest case with is the presence of a PRT <strong>without TPM</strong>.</p>
+<p>We will start by the easiest case which is the presence of a PRT <strong>without TPM</strong>.</p>
 <p>The PRT in LSASS accessible with mimikatz with <code>skurlsa::cloudap</code>. Please note that you will need the <strong>SeDebugPrivilege</strong> since we are touching the LSASS :</p>
 <p><img src="/img/prt.png" alt="PRT"></p>
 <p>As we can see we managed to retrieve the following cryptographic materials :</p>
@@ -337,10 +337,10 @@ that are defined <a href="https://docs.microsoft.com/fr-fr/azure/active-director
 <li>The session key</li>
 <li>The Primate Refresh Token</li>
 </ul>
-<p>The session key is encrypted using the <strong>DPAPI</strong> with the <strong>NT SYSTEM</strong> account. In order to decrypt it we need to be in posession of the DPAPI cryptographic material.</p>
+<p>The session key is encrypted using the <strong>DPAPI</strong> with the <strong>NT SYSTEM</strong> account. In order to decrypt it we need to be in possession of the DPAPI cryptographic material.</p>
 <p>The easiest way is to have mimikatz running as <strong>NT SYSTEM</strong> thanks to <code>token::elevate</code> and then decrypt the the <strong>keyvalue</strong> field with <code>dpapi::cloudapkd /keyvalue:</code>.</p>
 <p><img src="/img/unprotect_session_dpapi.png" alt="DecryptKeyValue"></p>
-<p>We are now in posession of everything that we need in order to craft <strong>our PRT cookie</strong> as long as the PRT is valid (14 days by default).</p>
+<p>We are now in possession of everything we need to craft <strong>our PRT cookie</strong> as long as the PRT is valid (14 days by default).</p>
 <p>Regarding our 2nd case, which is the presence of a PRT with a TPM on the device as of the 2nd of June 2022 <strong>I did not</strong> managed to steal the PRT and the required keys as <a href="https://dirkjanm.io/digging-further-into-the-primary-refresh-token/">it was possible before.</a></p>
 <p>I seems that earlier, one could not retrieve directly the <em>raw session key</em> but the <em>derived one</em> which was indeed enough to sign our PRT.
 The flow was the following :</p>
@@ -385,9 +385,9 @@ $SKey = [convert]::ToBase64String( [byte[]] ($MimikatzKey -replace &#39;..&#39;,
 # Generate a new PRTToken with nonce
 
 $prtToken = New-AADIntUserPRTToken -RefreshToken $PRTBase64 -SessionKey $SKey -GetNonce
-</code></pre><p>We can now test our generated <em>PRT Cookie</em> to request <strong>application tokens</strong> or directly by <strong>injecting it in our broswer</strong> like we did previously.</p>
+</code></pre><p>We can now test our generated <em>PRT Cookie</em> to request <strong>application tokens</strong> or directly by <strong>injecting it in our browser</strong> like we did previously.</p>
 <h2 id="23-application-access-tokens">2.3 Application Access Tokens</h2>
-<p>In the end the only token that matter are the <em>Application Tokens</em> that will let you access the desired application ! There is tons of different applications with tons of different <em>applications tokens</em>.</p>
+<p>In the end the only token that matter is the <em>Application Tokens</em> that will let you access the desired application ! There are tons of different applications with tons of different <em>applications tokens</em>.</p>
 <p>You can have a rough idea by using the AADInternals and filtering out the different applications tokens available :</p>
 <pre tabindex="0"><code>Function        Get-AADIntAccessTokenForAADGraph                   0.6.6      AADInternals
 Function        Get-AADIntAccessTokenForAADIAMAPI                  0.6.6      AADInternals
@@ -409,7 +409,7 @@ Function        Get-AADIntAccessTokenForSARA                       0.6.6      AA
 Function        Get-AADIntAccessTokenForSPO                        0.6.6      AADInternals
 Function        Get-AADIntAccessTokenForTeams                      0.6.6      AADInternals
 Function        Get-AADIntSkypeToken                               0.6.6      AADInternals
-</code></pre><p>To obtain those access token you have to <strong>pass</strong> the conditionnal access but once you have them you can extract them from you target (computer A) to your computer (computer B) without to worry about the MFA or the CA !</p>
+</code></pre><p>To obtain those access token you have to <strong>pass</strong> the conditionnal access but once you have them you can extract them from your target (computer A) to your computer (computer B) without to worry about the MFA or the CA !</p>
 <p>Unfortunately for us those tokens lifetime are quite short by default ranging from 60 minutes to 90 minutes.</p>
 <p>Based on my (short) experience the <strong>most useful tokens</strong> (from which you can get the more data) are the following :</p>
 <ul>
@@ -570,7 +570,7 @@ ROADrecon gather executed in 3.95 seconds and issued 1018 HTTP requests.
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20post%20such%20as%20jairocadena%2c%20dirkjanm%20or%20microsoft%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fazuretoken%2f&name=Azure%20AD%20%3a%20PRT%2c%20PRT%20Cookie%20and%20Application%20Token&description=1.%20PRT%20%2f%20Session%20key%20%26amp%3b%20PRT%20Cookie%20%3a%20Quick%20recap%20WARNING%20%3a%20This%20is%20only%20an%20attempt%20to%20make%20a%20quick%20summary%20of%20the%20PRT%20%2f%20PRT%20Cookie%20mechanism%20%28in%20order%20for%20me%20to%20understand%20it%20properly%29%20based%20on%20some%20amazing%20blog%20posts%20such%20as%20jairocadena%2c%20dirkjanm%20or%20microsoft.%0aWARNING%202%20%3a%20As%20the%20AzureAD%20device%20joining%20process%20is%20not%20the%20purpose%20of%20this%20article%2c%20I%20can%20only%20urge%20you%20to%20read%20some%20amazing%20blog%20post%20about%20it%20such%20as%20this%20one" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>

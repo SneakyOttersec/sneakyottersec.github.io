@@ -13,7 +13,7 @@
       <pubDate>Thu, 09 Jun 2022 11:41:04 +0200</pubDate>
       
       <guid>/posts/azuretoken/</guid>
-      <description>1. PRT / Session key &amp;amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog post such as jairocadena, dirkjanm or microsoft
+      <description>1. PRT / Session key &amp;amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog posts such as jairocadena, dirkjanm or microsoft.
 WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one</description>
     </item>
     
