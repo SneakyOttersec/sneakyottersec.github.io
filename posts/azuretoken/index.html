@@ -234,7 +234,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 <p>Please note that the Primary Refresh Token as a default duration of 90 days and a renewable window of 14 days.</p>
 <p>If the computer supports it, the <em>PRT</em> along with the <em>session key</em> will be stored in the <strong>TPM</strong> (TPM &gt;= 2.0) otherwise it will be stored in the <strong>LSASS</strong>.</p>
 <p>In order for the computer to use the PRT there is a new provider implemented called the <em>&ldquo;Cloud Authentication Provider&rdquo;</em> shortened <em>CloudAP</em> which will handle the authentication to Azure AD or ADFS and caches the PRT in the LSA.</p>
-<p>Every application that needs to use this SSO will use the other plugin called &ldquo;Web Account Manager&rdquo; abreviated <em>WAM</em> which uses the PRT Cookie to request the different Application Token.</p>
+<p>Every application that needs to use this SSO will use the other plugin called &ldquo;Web Account Manager&rdquo; abbreviated <em>WAM</em> which uses the PRT Cookie to request the different Application Token.</p>
 <p>As an example Chrome and Edge rely on <strong>BrowserCore.exe</strong> which is a &ldquo;client&rdquo; that interact with the <strong>WAM</strong></p>
 <p>Terminology for the rest of the article :</p>
 <ul>
@@ -255,7 +255,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 <li>Build a request using the username, password, nonce and sign it with the device key. (more info on those device keys <a href="https://jairocadena.com/2018/04/02/windows-hello-for-business-registration-and-authentication-with-azuread/">here</a>)</li>
 <li>Retrieve the PRT / Session Key and store it (TPM or LSASS)</li>
 </ol>
-<p>The two essentials cryptographic materials that you&rsquo;ll end up at the end of the authentication flow are :</p>
+<p>The two essentials cryptographic materials, that you&rsquo;ll end up at the end of the authentication flow are :</p>
 <ul>
 <li>The session key</li>
 <li>The Primary Refresh Token</li>
@@ -285,7 +285,7 @@ WARNING 2 : As the AzureAD device joining process is not the purpose of this art
 <li>The first part which is the <strong>header</strong> with the type of alg</li>
 <li>The last segment : the <strong>signature</strong> of the JWT</li>
 </ol>
-<p>Between those two part we have the <strong>payload</strong> which contains the <strong>claims</strong> with many differents moving parts
+<p>Between those two parts we have the <strong>payload</strong> which contains the <strong>claims</strong> with many different moving parts
 that are defined <a href="https://docs.microsoft.com/fr-fr/azure/active-directory/develop/id-tokens">here</a></p>
 <p>We can find below the decoded <strong>JWT AADGraph</strong> token :</p>
 <pre tabindex="0"><code>{
@@ -326,8 +326,8 @@ that are defined <a href="https://docs.microsoft.com/fr-fr/azure/active-director
 <li><strong>iss</strong> : The security token service and the azure AD tenant  (Only the GUID should vary)</li>
 <li><strong>exp</strong> : The expiration time after which the token will expire.</li>
 </ul>
-<p>You can find all the detailed informations about all the properties <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens">here</a>.</p>
-<h1 id="2-red-team--work-with-the-differents-available-tokens">2. Red team : Work with the differents available tokens</h1>
+<p>You can find all the detailed information about all the properties <a href="https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens">here</a>.</p>
+<h1 id="2-red-team--work-with-the-different-available-tokens">2. Red team : Work with the different available tokens</h1>
 <h2 id="21-prt">2.1 PRT</h2>
 <p>We will start by the easiest case which is the presence of a PRT <strong>without TPM</strong>.</p>
 <p>The PRT in LSASS accessible with mimikatz with <code>skurlsa::cloudap</code>. Please note that you will need the <strong>SeDebugPrivilege</strong> since we are touching the LSASS :</p>
@@ -342,7 +342,7 @@ that are defined <a href="https://docs.microsoft.com/fr-fr/azure/active-director
 <p><img src="/img/unprotect_session_dpapi.png" alt="DecryptKeyValue"></p>
 <p>We are now in possession of everything we need to craft <strong>our PRT cookie</strong> as long as the PRT is valid (14 days by default).</p>
 <p>Regarding our 2nd case, which is the presence of a PRT with a TPM on the device as of the 2nd of June 2022 <strong>I did not</strong> managed to steal the PRT and the required keys as <a href="https://dirkjanm.io/digging-further-into-the-primary-refresh-token/">it was possible before.</a></p>
-<p>I seems that earlier, one could not retrieve directly the <em>raw session key</em> but the <em>derived one</em> which was indeed enough to sign our PRT.
+<p>It seems that earlier, one could not retrieve directly the <em>raw session key</em> but the <em>derived one</em> which was indeed enough to sign our PRT.
 The flow was the following :</p>
 <ul>
 <li>Extract the derived session key and the context</li>
@@ -351,7 +351,7 @@ The flow was the following :</p>
 <li>Profit</li>
 </ul>
 <h2 id="22-prt-cookie">2.2 PRT Cookie</h2>
-<p>As we just saw earlier the PRT contains some claims about our current situation suchs as the MFA or the device.</p>
+<p>As we just saw earlier the PRT contains some claims about our current situation such as the MFA or the device.</p>
 <p>Unfortunately since the PRT Cookie is &ldquo;just&rdquo; the signed PRT, it <strong>does not</strong> allow us to circumvent the conditionnal access (such as IP location). As such you won&rsquo;t be able to use the PRT cookie if you don&rsquo;t pass the conditionnal access conditions.</p>
 <p>The <strong>PRT Cookie</strong> can be used <strong>as-is</strong> in your browser in the <em>x-ms-RefreshTokenCredential</em> which should grant you access (as long as the enforced CA don&rsquo;t deny you) :</p>
 <pre tabindex="0"><code># Get a PRT cookie with ADDInternals when on a hybrid joined/aad joined device
@@ -409,14 +409,14 @@ Function        Get-AADIntAccessTokenForSARA                       0.6.6      AA
 Function        Get-AADIntAccessTokenForSPO                        0.6.6      AADInternals
 Function        Get-AADIntAccessTokenForTeams                      0.6.6      AADInternals
 Function        Get-AADIntSkypeToken                               0.6.6      AADInternals
-</code></pre><p>To obtain those access token you have to <strong>pass</strong> the conditionnal access but once you have them you can extract them from your target (computer A) to your computer (computer B) without to worry about the MFA or the CA !</p>
+</code></pre><p>To obtain that access token you have to <strong>pass</strong> the conditional access but once you have them you can extract them from your target (computer A) to your computer (computer B) without to worry about the MFA or the CA !</p>
 <p>Unfortunately for us those tokens lifetime are quite short by default ranging from 60 minutes to 90 minutes.</p>
 <p>Based on my (short) experience the <strong>most useful tokens</strong> (from which you can get the more data) are the following :</p>
 <ul>
 <li>AADGraph</li>
 <li>MSGraph</li>
 <li>AzureCoreManagement
-and you may have to step up you arsenal</li>
+and you may have to step up your arsenal</li>
 </ul>
 <p>As an example let&rsquo;s make a collect with <em>roadrecon</em> and and <em>AADGraph</em> token :</p>
 <pre tabindex="0"><code>python3 main.py auth --access-token eyJ0eXAiYfw8i[..]D1neX55X-CK1pIj8A
@@ -427,7 +427,7 @@ Starting data gathering phase 1 of 2 (collecting objects)
 Starting data gathering phase 2 of 2 (collecting properties and relationships)
 
 ROADrecon gather executed in 3.95 seconds and issued 1018 HTTP requests.
-</code></pre><p>While this short time frame may be enough to make a <strong>roadrecon</strong> collect, within large tenant this may be an issue  and you may have to step up you arsenal</p>
+</code></pre><p>While this short time frame may be enough to make a <strong>roadrecon</strong> collect, within large tenant this may be an issue  and you may have to step up your arsenal</p>
 <p><em>Example with IP CA : proxy your traffic through the SOCKS proxy of your beacon to pass the IP conditionnal access in order to use your PRT Cookie.</em></p>
 <h2 id="24-summary">2.4 Summary</h2>
 <table>

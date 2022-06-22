@@ -13,7 +13,7 @@
       <pubDate>Wed, 18 May 2022 18:39:47 +0200</pubDate>
       
       <guid>/posts/computerobject/</guid>
-      <description>1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essentials for many tasks suchs as :
+      <description>1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essential for many tasks such as :
  Establish a secure channel for the user authentication Deploy a GPO tied to a computer and not a user Identify the computer as a workstation, server or domain controller Used to access network resources as a low-privileged account Unrestricted access to the resources on the local machine &amp;hellip;  One thing to keep in mind : the password management of the computer account is delegated to the Active Directory which renders password spraying or Kerberoasting useless in most cases.</description>
     </item>
     
