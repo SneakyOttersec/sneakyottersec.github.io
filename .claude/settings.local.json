@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(hugo version:*)",
+      "Bash(winget install:*)",
+      "Bash(export PATH=\"$PATH:/c/Users/Justin/AppData/Local/Microsoft/WinGet/Links\")",
+      "Bash(HUGO=\"/c/Users/Justin/AppData/Local/Microsoft/WinGet/Packages/Hugo.Hugo.Extended_Microsoft.Winget.Source_8wekyb3d8bbwe/hugo.exe\")",
+      "Bash(\"$HUGO\" version)",
+      "Bash(\"$HUGO\" new site /c/Users/Justin/ottersec-blog-source)",
+      "Bash(\"$HUGO\" --buildDrafts)",
+      "Bash(git submodule add:*)",
+      "WebFetch(domain:sneakyottersec.github.io)",
+      "Bash(curl:*)",
+      "Bash(/c/Users/Justin/AppData/Local/Microsoft/WinGet/Packages/Hugo.Hugo.Extended_Microsoft.Winget.Source_8wekyb3d8bbwe/hugo.exe:*)",
+      "Bash(for cve in CVE-2025-54338 CVE-2025-54339 CVE-2025-54340 CVE-2025-54341 CVE-2025-54342 CVE-2025-54343 CVE-2025-54344 CVE-2025-54345 CVE-2025-54346 CVE-2025-54347 CVE-2025-54348)",
+      "Bash(do echo \"=== $cve ===\")",
+      "Bash(python:*)",
+      "Bash(done)",
+      "Bash(for cve in CVE-2025-54359 CVE-2025-54360 CVE-2025-54361 CVE-2025-54362 CVE-2025-54363 CVE-2025-54559 CVE-2025-36574 CVE-2025-36575)",
+      "Bash(for cve in CVE-2024-33879 CVE-2024-41913 CVE-2024-55398 CVE-2024-55399 CVE-2025-30210 CVE-2025-54967 CVE-2025-54963 CVE-2025-54964)",
+      "Bash(for cve in CVE-2024-33880 CVE-2024-33881 CVE-2024-41912 CVE-2024-41911 CVE-2024-41910 CVE-2024-51720 CVE-2024-55402 CVE-2024-55401)",
+      "Bash(for cve in CVE-2025-0760 CVE-2025-30354 CVE-2025-54968 CVE-2025-54970 CVE-2025-54969 CVE-2025-54966 CVE-2025-59400 CVE-2025-59401)",
+      "Bash(for cve in CVE-2024-55402 CVE-2025-0760 CVE-2025-54966 CVE-2025-54344 CVE-2025-59400 CVE-2025-59401)",
+      "Bash(for cve in CVE-2024-34400 CVE-2025-1091 CVE-2025-1726 CVE-2025-0337 CVE-2025-57873)",
+      "WebFetch(domain:github.com)",
+      "Bash(for cve in CVE-2025-54344 CVE-2025-59400 CVE-2025-59401)",
+      "WebSearch",
+      "Bash(for cve in CVE-2025-0760 CVE-2025-1091)",
+      "Bash(for cve in CVE-2025-54349 CVE-2025-54350 CVE-2025-54351 CVE-2025-54352 CVE-2025-54353 CVE-2025-54354 CVE-2025-54355 CVE-2025-54356 CVE-2025-54357 CVE-2025-54358)",
+      "Bash(git -C C:/Users/Justin/sneakyottersec.github.io status)",
+      "Bash(git -C C:/Users/Justin/sneakyottersec.github.io remote -v)",
+      "Bash(git -C C:/Users/Justin/sneakyottersec.github.io diff --stat)",
+      "Bash(git -C C:/Users/Justin/sneakyottersec.github.io add css/ images/ index.html index.xml page/ posts/ sitemap.xml tags/)",
+      "Bash(git -C C:/Users/Justin/sneakyottersec.github.io commit -m \"Add CVE Disclosures post and rebuild site with cactus classic theme\")",
+      "Bash(git -C C:/Users/Justin/sneakyottersec.github.io log --oneline -3)",
+      "Bash(git -C C:/Users/Justin/sneakyottersec.github.io add -A)",
+      "Bash(git -C C:/Users/Justin/sneakyottersec.github.io commit -m \"Fix duplicate copyright in footer\")"
+    ]
+  }
+}
