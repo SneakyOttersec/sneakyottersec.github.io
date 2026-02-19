@@ -7,15 +7,8 @@
     <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>ottersec</copyright>
-    <lastBuildDate>Thu, 19 Feb 2026 12:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 09 Jun 2022 11:41:04 +0200</lastBuildDate>
     <atom:link href="https://sneakyottersec.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>CVE</title>
-      <link>https://sneakyottersec.github.io/tags/cve/</link>
-      <pubDate>Thu, 19 Feb 2026 12:00:00 +0100</pubDate>
-      <guid>https://sneakyottersec.github.io/tags/cve/</guid>
-      <description></description>
-    </item>
     <item>
       <title>Azure</title>
       <link>https://sneakyottersec.github.io/tags/azure/</link>
@@ -56,6 +49,13 @@
       <link>https://sneakyottersec.github.io/tags/exchange/</link>
       <pubDate>Mon, 25 Apr 2022 23:56:41 +0200</pubDate>
       <guid>https://sneakyottersec.github.io/tags/exchange/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CVE</title>
+      <link>https://sneakyottersec.github.io/tags/cve/</link>
+      <pubDate>Tue, 02 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://sneakyottersec.github.io/tags/cve/</guid>
       <description></description>
     </item>
     <item>
