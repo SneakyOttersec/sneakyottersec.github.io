@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tips on </title>
-    <link>/tags/tips/</link>
-    <description>Recent content in Tips on </description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="/tags/tips/index.xml" rel="self" type="application/rss+xml" />
+    <title>Tips on Ottersec Blog</title>
+    <link>https://sneakyottersec.github.io/tags/tips/</link>
+    <description>Recent content in Tips on Ottersec Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2022</copyright>
+    <atom:link href="https://sneakyottersec.github.io/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>General Redteam &amp; Pentest Tips</title>
-      <link>/posts/notes/</link>
+      <link>https://sneakyottersec.github.io/posts/notes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/posts/notes/</guid>
-      <description>This post will have &amp;ldquo;in vrac&amp;rdquo; all of tips that I found useful.
-Tip 1 : Access locked file through SMB Wanna access some locked files through SMB ? You can try to see if some shadow copy is available on the targeted system !:
-smbclient.py user@target list_snapshot And then simply :
-ls &amp;lt;@GMT-XXXX&amp;gt;\ For example, you can get the Login Data file which you can&amp;rsquo;t normally copy when Chrome is running :</description>
+      <guid>https://sneakyottersec.github.io/posts/notes/</guid>
+      <description>&lt;p&gt;This post will have &amp;ldquo;in vrac&amp;rdquo; all of tips that I found useful.&lt;/p&gt;&#xA;&lt;h2 id=&#34;tip-1--access-locked-file-through-smb&#34;&gt;Tip 1 : Access locked file through SMB&lt;/h2&gt;&#xA;&lt;p&gt;Wanna access some locked files through SMB ? You can try to see if some shadow copy is available on the targeted system !:&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;smbclient.py user@target list_snapshot&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And then simply :&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ls &amp;lt;@GMT-XXXX&amp;gt;\&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example, you can get the Login Data file which you can&amp;rsquo;t normally copy when Chrome is running :&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;copy  @GMT-2021.10.04-13.05.04\Users\Administrator\AppData\Local\Google\Chrome\Default\Login Data .&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;tip-2--powershell-with-proxy&#34;&gt;Tip 2 : Powershell with proxy&lt;/h2&gt;&#xA;&lt;p&gt;To use powershell with a corporate proxy :&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

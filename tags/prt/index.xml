@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>PRT on </title>
-    <link>/tags/prt/</link>
-    <description>Recent content in PRT on </description>
-    <generator>Hugo -- gohugo.io</generator>
+    <title>PRT on Ottersec Blog</title>
+    <link>https://sneakyottersec.github.io/tags/prt/</link>
+    <description>Recent content in PRT on Ottersec Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 09 Jun 2022 11:41:04 +0200</lastBuildDate><atom:link href="/tags/prt/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2022</copyright>
+    <lastBuildDate>Thu, 09 Jun 2022 11:41:04 +0200</lastBuildDate>
+    <atom:link href="https://sneakyottersec.github.io/tags/prt/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Azure AD : PRT, PRT Cookie and Application Token</title>
-      <link>/posts/azuretoken/</link>
+      <link>https://sneakyottersec.github.io/posts/azuretoken/</link>
       <pubDate>Thu, 09 Jun 2022 11:41:04 +0200</pubDate>
-      
-      <guid>/posts/azuretoken/</guid>
-      <description>1. PRT / Session key &amp;amp; PRT Cookie : Quick recap WARNING : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog posts such as jairocadena, dirkjanm or microsoft.
-WARNING 2 : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this one</description>
+      <guid>https://sneakyottersec.github.io/posts/azuretoken/</guid>
+      <description>&lt;h1 id=&#34;1-prt--session-key--prt-cookie--quick-recap&#34;&gt;1. PRT / Session key &amp;amp; PRT Cookie : Quick recap&lt;/h1&gt;&#xA;&lt;p&gt;&lt;em&gt;&lt;strong&gt;WARNING&lt;/strong&gt; : This is only an attempt to make a quick summary of the PRT / PRT Cookie mechanism (in order for me to understand it properly) based on some amazing blog posts such as &lt;a href=&#34;https://jairocadena.com/2016/11/08/how-sso-works-in-windows-10-devices/&#34;&gt;jairocadena&lt;/a&gt;, &lt;a href=&#34;https://dirkjanm.io/abusing-azure-ad-sso-with-the-primary-refresh-token/&#34;&gt;dirkjanm&lt;/a&gt; or &lt;a href=&#34;https://docs.microsoft.com/fr-fr/azure/active-directory/devices/concept-primary-refresh-token&#34;&gt;microsoft&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;&lt;strong&gt;WARNING 2&lt;/strong&gt; : As the AzureAD device joining process is not the purpose of this article, I can only urge you to read some amazing blog post about it such as this &lt;a href=&#34;https://jairocadena.com/2016/02/01/azure-ad-join-what-happens-behind-the-scenes/&#34;&gt;one&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -2,48 +2,52 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/</loc>
+    <loc>https://sneakyottersec.github.io/tags/cve/</loc>
+    <lastmod>2026-02-19T12:00:00+01:00</lastmod>
+  </url><url>
+    <loc>https://sneakyottersec.github.io/posts/cves/</loc>
+    <lastmod>2026-02-19T12:00:00+01:00</lastmod>
+  </url><url>
+    <loc>https://sneakyottersec.github.io/</loc>
+    <lastmod>2026-02-19T12:00:00+01:00</lastmod>
+  </url><url>
+    <loc>https://sneakyottersec.github.io/posts/</loc>
+    <lastmod>2026-02-19T12:00:00+01:00</lastmod>
+  </url><url>
+    <loc>https://sneakyottersec.github.io/tags/</loc>
+    <lastmod>2026-02-19T12:00:00+01:00</lastmod>
+  </url><url>
+    <loc>https://sneakyottersec.github.io/tags/azure/</loc>
     <lastmod>2022-06-09T11:41:04+02:00</lastmod>
   </url><url>
-    <loc>/tags/azure/</loc>
+    <loc>https://sneakyottersec.github.io/posts/azuretoken/</loc>
     <lastmod>2022-06-09T11:41:04+02:00</lastmod>
   </url><url>
-    <loc>/posts/azuretoken/</loc>
+    <loc>https://sneakyottersec.github.io/tags/prt/</loc>
     <lastmod>2022-06-09T11:41:04+02:00</lastmod>
   </url><url>
-    <loc>/posts/</loc>
-    <lastmod>2022-06-09T11:41:04+02:00</lastmod>
-  </url><url>
-    <loc>/tags/prt/</loc>
-    <lastmod>2022-06-09T11:41:04+02:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
-    <lastmod>2022-06-09T11:41:04+02:00</lastmod>
-  </url><url>
-    <loc>/tags/active-directory/</loc>
+    <loc>https://sneakyottersec.github.io/tags/active-directory/</loc>
     <lastmod>2022-05-18T18:39:47+02:00</lastmod>
   </url><url>
-    <loc>/tags/computer-account/</loc>
+    <loc>https://sneakyottersec.github.io/tags/computer-account/</loc>
     <lastmod>2022-05-18T18:39:47+02:00</lastmod>
   </url><url>
-    <loc>/posts/computerobject/</loc>
+    <loc>https://sneakyottersec.github.io/posts/computerobject/</loc>
     <lastmod>2022-05-18T18:39:47+02:00</lastmod>
   </url><url>
-    <loc>/tags/autodiscover/</loc>
+    <loc>https://sneakyottersec.github.io/tags/autodiscover/</loc>
     <lastmod>2022-04-25T23:56:41+02:00</lastmod>
   </url><url>
-    <loc>/posts/autodiscover101/</loc>
+    <loc>https://sneakyottersec.github.io/posts/autodiscover101/</loc>
     <lastmod>2022-04-25T23:56:41+02:00</lastmod>
   </url><url>
-    <loc>/tags/exchange/</loc>
+    <loc>https://sneakyottersec.github.io/tags/exchange/</loc>
     <lastmod>2022-04-25T23:56:41+02:00</lastmod>
   </url><url>
-    <loc>/categories/</loc>
+    <loc>https://sneakyottersec.github.io/posts/notes/</loc>
   </url><url>
-    <loc>/posts/notes/</loc>
+    <loc>https://sneakyottersec.github.io/tags/red-team/</loc>
   </url><url>
-    <loc>/tags/red-team/</loc>
-  </url><url>
-    <loc>/tags/tips/</loc>
+    <loc>https://sneakyottersec.github.io/tags/tips/</loc>
   </url>
 </urlset>

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Autodiscover on </title>
-    <link>/tags/autodiscover/</link>
-    <description>Recent content in Autodiscover on </description>
-    <generator>Hugo -- gohugo.io</generator>
+    <title>Autodiscover on Ottersec Blog</title>
+    <link>https://sneakyottersec.github.io/tags/autodiscover/</link>
+    <description>Recent content in Autodiscover on Ottersec Blog</description>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 Apr 2022 23:56:41 +0200</lastBuildDate><atom:link href="/tags/autodiscover/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>Copyright © 2022</copyright>
+    <lastBuildDate>Mon, 25 Apr 2022 23:56:41 +0200</lastBuildDate>
+    <atom:link href="https://sneakyottersec.github.io/tags/autodiscover/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Autodiscover 101 : Attacking [MS-OXDISC] &amp; [MS-OXDISCO]</title>
-      <link>/posts/autodiscover101/</link>
+      <link>https://sneakyottersec.github.io/posts/autodiscover101/</link>
       <pubDate>Mon, 25 Apr 2022 23:56:41 +0200</pubDate>
-      
-      <guid>/posts/autodiscover101/</guid>
-      <description>0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints in order to exploit then.
-In order to do so we will focus on two different aspect :
- Unauthenticated attack Authenticated attack  No more taklink let&amp;rsquo;s jump into the technical stuff ! Based on the Microsoft documentation the Autodiscover sevice is part of the &amp;ldquo;Directory/Profile Services&amp;rdquo; which can be broke down into 2 important piece of documentation :</description>
+      <guid>https://sneakyottersec.github.io/posts/autodiscover101/</guid>
+      <description>&lt;h1 id=&#34;0-autodiscover-101--a-brief-introduction&#34;&gt;0. Autodiscover 101 : A brief introduction&lt;/h1&gt;&#xA;&lt;p&gt;We will start this series by analysing the &lt;strong&gt;Autodiscover&lt;/strong&gt; protocol which is being actively used by the differents Exchange endpoints in order to exploit then.&lt;/p&gt;&#xA;&lt;p&gt;In order to do so we will focus on two different aspect :&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Unauthenticated attack&lt;/li&gt;&#xA;&lt;li&gt;Authenticated attack&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;No more taklink let&amp;rsquo;s jump into the technical stuff ! Based on the Microsoft documentation the Autodiscover sevice is part of the &amp;ldquo;Directory/Profile Services&amp;rdquo; which can be broke down into 2 important piece of documentation :&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -1,52 +1,49 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-	
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-B7WYBWVRDC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-B7WYBWVRDC');
-</script>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
   <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
   <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> Autodiscover 101 : Attacking [MS-OXDISC] &amp; [MS-OXDISCO] | </title>
-  <link rel = 'canonical' href = '/posts/autodiscover101/'>
+  <title> Autodiscover 101 : Attacking [MS-OXDISC] &amp; [MS-OXDISCO] | Ottersec Blog</title>
+  <link rel = 'canonical' href = 'https://sneakyottersec.github.io/posts/autodiscover101/'>
   <meta name="description" content="Red Teamer / Pentester. Focus on Active Directory / Azure / Windows logical bug">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="Autodiscover 101 : Attacking [MS-OXDISC] &amp; [MS-OXDISCO]" />
-<meta property="og:description" content="0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints in order to exploit then.
+  <meta property="og:url" content="https://sneakyottersec.github.io/posts/autodiscover101/">
+  <meta property="og:site_name" content="Ottersec Blog">
+  <meta property="og:title" content="Autodiscover 101 : Attacking [MS-OXDISC] & [MS-OXDISCO]">
+  <meta property="og:description" content="0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints in order to exploit then.
 In order to do so we will focus on two different aspect :
- Unauthenticated attack Authenticated attack  No more taklink let&rsquo;s jump into the technical stuff ! Based on the Microsoft documentation the Autodiscover sevice is part of the &ldquo;Directory/Profile Services&rdquo; which can be broke down into 2 important piece of documentation :" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/autodiscover101/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-04-25T23:56:41+02:00" />
-<meta property="article:modified_time" content="2022-04-25T23:56:41+02:00" /><meta property="og:site_name" content="Ottersec Blog" />
-
-
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Autodiscover 101 : Attacking [MS-OXDISC] &amp; [MS-OXDISCO]"/>
-<meta name="twitter:description" content="0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints in order to exploit then.
-In order to do so we will focus on two different aspect :
- Unauthenticated attack Authenticated attack  No more taklink let&rsquo;s jump into the technical stuff ! Based on the Microsoft documentation the Autodiscover sevice is part of the &ldquo;Directory/Profile Services&rdquo; which can be broke down into 2 important piece of documentation :"/>
+Unauthenticated attack Authenticated attack No more taklink let’s jump into the technical stuff ! Based on the Microsoft documentation the Autodiscover sevice is part of the “Directory/Profile Services” which can be broke down into 2 important piece of documentation :">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-04-25T23:56:41+02:00">
+    <meta property="article:modified_time" content="2022-04-25T23:56:41+02:00">
+    <meta property="article:tag" content="Exchange">
+    <meta property="article:tag" content="Autodiscover">
 
   
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Autodiscover 101 : Attacking [MS-OXDISC] & [MS-OXDISCO]">
+  <meta name="twitter:description" content="0. Autodiscover 101 : A brief introduction We will start this series by analysing the Autodiscover protocol which is being actively used by the differents Exchange endpoints in order to exploit then.
+In order to do so we will focus on two different aspect :
+Unauthenticated attack Authenticated attack No more taklink let’s jump into the technical stuff ! Based on the Microsoft documentation the Autodiscover sevice is part of the “Directory/Profile Services” which can be broke down into 2 important piece of documentation :">
+
   
   
     
   
   
-  <link rel="stylesheet" href="/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="https://sneakyottersec.github.io/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg==">
 
   
   
@@ -58,11 +55,27 @@ In order to do so we will focus on two different aspect :
   
 
   
-<link rel="icon" type="image/png" href="images/favicon.ico" />
+<link rel="icon" type="image/png" href="https://sneakyottersec.github.io/images/favicon.ico" />
 
   
   
   
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-B7WYBWVRDC"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-B7WYBWVRDC');
+        }
+      </script>
   
 </head>
 
@@ -77,9 +90,9 @@ In order to do so we will focus on two different aspect :
     <span id="nav">
       <ul>
          
-        <li><a href="/posts">All posts</a></li>
-         
         <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
         
       </ul>
     </span>
@@ -88,14 +101,14 @@ In order to do so we will focus on two different aspect :
       <ul>
         
         <li>
-          <a class="icon" href=" /posts/notes/" aria-label="Previous">
+          <a class="icon" href=" https://sneakyottersec.github.io/posts/notes/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="/posts/computerobject/" aria-label="Next">
+          <a class="icon" href="https://sneakyottersec.github.io/posts/computerobject/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -126,47 +139,47 @@ In order to do so we will focus on two different aspect :
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fautodiscover101%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fautodiscover101%2f&text=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&text=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fautodiscover101%2f&is_video=false&description=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&is_video=false&description=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&body=Check out this article: %2fposts%2fautodiscover101%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&body=Check out this article: https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fautodiscover101%2f&name=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&description=0.%20Autodiscover%20101%20%3a%20A%20brief%20introduction%20We%20will%20start%20this%20series%20by%20analysing%20the%20Autodiscover%20protocol%20which%20is%20being%20actively%20used%20by%20the%20differents%20Exchange%20endpoints%20in%20order%20to%20exploit%20then.%0aIn%20order%20to%20do%20so%20we%20will%20focus%20on%20two%20different%20aspect%20%3a%0a%20Unauthenticated%20attack%20Authenticated%20attack%20%20No%20more%20taklink%20let%26rsquo%3bs%20jump%20into%20the%20technical%20stuff%20%21%20Based%20on%20the%20Microsoft%20documentation%20the%20Autodiscover%20sevice%20is%20part%20of%20the%20%26ldquo%3bDirectory%2fProfile%20Services%26rdquo%3b%20which%20can%20be%20broke%20down%20into%202%20important%20piece%20of%20documentation%20%3a" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&name=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&description=%3ch1%20id%3d%220-autodiscover-101--a-brief-introduction%22%3e0.%20Autodiscover%20101%20%3a%20A%20brief%20introduction%3c%2fh1%3e%0a%3cp%3eWe%20will%20start%20this%20series%20by%20analysing%20the%20%3cstrong%3eAutodiscover%3c%2fstrong%3e%20protocol%20which%20is%20being%20actively%20used%20by%20the%20differents%20Exchange%20endpoints%20in%20order%20to%20exploit%20then.%3c%2fp%3e%0a%3cp%3eIn%20order%20to%20do%20so%20we%20will%20focus%20on%20two%20different%20aspect%20%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eUnauthenticated%20attack%3c%2fli%3e%0a%3cli%3eAuthenticated%20attack%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3eNo%20more%20taklink%20let%26rsquo%3bs%20jump%20into%20the%20technical%20stuff%20%21%20Based%20on%20the%20Microsoft%20documentation%20the%20Autodiscover%20sevice%20is%20part%20of%20the%20%26ldquo%3bDirectory%2fProfile%20Services%26rdquo%3b%20which%20can%20be%20broke%20down%20into%202%20important%20piece%20of%20documentation%20%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fautodiscover101%2f&t=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&t=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -229,6 +242,12 @@ In order to do so we will focus on two different aspect :
           
         </div>
         
+        
+        <div class="article-read-time">
+          <i class="far fa-clock"></i>
+          
+          11 minute read
+        </div>
         
         
         
@@ -518,46 +537,46 @@ curl https://outlook.office365.com/autodiscover/autodiscover.json?Email=user%40&
 <h2 id="24-summary">2.4 Summary</h2>
 <p>Let&rsquo;s recap here the differents options that we have in our sleeves :</p>
 <table>
-<thead>
-<tr>
-<th></th>
-<th>Password Spraying</th>
-<th>User enumeration brute-force*</th>
-<th>SID Gathering</th>
-<th>Alternate mailbox info</th>
-<th>Services URL Info</th>
-<th>DC FQDN</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Unauthenticated</td>
-<td>x</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Authenticated</td>
-<td>N/A</td>
-<td>x</td>
-<td></td>
-<td>x</td>
-<td>x</td>
-<td>x</td>
-</tr>
-<tr>
-<td>O365 Unauthenticated</td>
-<td>x</td>
-<td>x</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th></th>
+          <th>Password Spraying</th>
+          <th>User enumeration brute-force*</th>
+          <th>SID Gathering</th>
+          <th>Alternate mailbox info</th>
+          <th>Services URL Info</th>
+          <th>DC FQDN</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Unauthenticated</td>
+          <td>x</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>Authenticated</td>
+          <td>N/A</td>
+          <td>x</td>
+          <td></td>
+          <td>x</td>
+          <td>x</td>
+          <td>x</td>
+      </tr>
+      <tr>
+          <td>O365 Unauthenticated</td>
+          <td>x</td>
+          <td>x</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+  </tbody>
 </table>
 <p><em>User enumeration : With a set of valid credential you should be able to do some user enumeration with a good wordlist. Keep in mind that it is EXTREMELY inefficient since with a set of valid credentials you can dump the OAB through differents methods that we will see in the next article.</em></p>
 <h1 id="3-post-mortem-log-analysis">3. Post mortem log analysis</h1>
@@ -610,26 +629,26 @@ DateTime,RequestId,MajorVersion,MinorVersion,BuildVersion,RevisionVersion,Client
 <h1 id="4-ressources-and-tools">4. Ressources and tools</h1>
 <p>All of the following ressources has been used in order to make this blog post. None of what was described here is new.</p>
 <h1 id="41-ressources">4.1 Ressources</h1>
-<p>Attacking MS Exchange Web Interfaces : <a href="https://swarm.ptsecurity.com/attacking-ms-exchange-web-interfaces/">https://swarm.ptsecurity.com/attacking-ms-exchange-web-interfaces/</a> <br>
-Bouncing Off Clouds Taking What O365 Gives You : <a href="https://www.redsiege.com/wp-content/uploads/2021/06/O365UserEnumeration_PasswordAttacks.pdf">https://www.redsiege.com/wp-content/uploads/2021/06/O365UserEnumeration_PasswordAttacks.pdf</a> <br>
-MS-OXDSCLI : <a href="https://interoperability.blob.core.windows.net/files/MS-OXDSCLI/%5bMS-OXDSCLI%5d.pdf">https://interoperability.blob.core.windows.net/files/MS-OXDSCLI/%5bMS-OXDSCLI%5d.pdf</a> <br>
+<p>Attacking MS Exchange Web Interfaces : <a href="https://swarm.ptsecurity.com/attacking-ms-exchange-web-interfaces/">https://swarm.ptsecurity.com/attacking-ms-exchange-web-interfaces/</a>
+Bouncing Off Clouds Taking What O365 Gives You : <a href="https://www.redsiege.com/wp-content/uploads/2021/06/O365UserEnumeration_PasswordAttacks.pdf">https://www.redsiege.com/wp-content/uploads/2021/06/O365UserEnumeration_PasswordAttacks.pdf</a>
+MS-OXDSCLI : <a href="https://interoperability.blob.core.windows.net/files/MS-OXDSCLI/%5bMS-OXDSCLI%5d.pdf">https://interoperability.blob.core.windows.net/files/MS-OXDSCLI/%5bMS-OXDSCLI%5d.pdf</a>
 MS-OXDISCO : <a href="https://interoperability.blob.core.windows.net/files/MS-OXDISCO/%5bMS-OXDISCO%5d.pdf">https://interoperability.blob.core.windows.net/files/MS-OXDISCO/%5bMS-OXDISCO%5d.pdf</a>
 Event ID : <a href="https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/">https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/</a></p>
 <h1 id="42-tools">4.2 Tools</h1>
-<p>o365spray : <a href="https://github.com/0xZDH/o365spray">https://github.com/0xZDH/o365spray</a> <br>
-SprayingToolkit : <a href="https://github.com/byt3bl33d3r/SprayingToolkit">https://github.com/byt3bl33d3r/SprayingToolkit</a> <br>
-o365creeper : <a href="https://github.com/LMGsec/o365creeper">https://github.com/LMGsec/o365creeper</a> <br>
-Carnivore : <a href="https://github.com/ReverendThing/Carnivore">https://github.com/ReverendThing/Carnivore</a> <br>
-adfspray : <a href="https://github.com/xFreed0m/adfspray">https://github.com/xFreed0m/adfspray</a> <br>
+<p>o365spray : <a href="https://github.com/0xZDH/o365spray">https://github.com/0xZDH/o365spray</a>
+SprayingToolkit : <a href="https://github.com/byt3bl33d3r/SprayingToolkit">https://github.com/byt3bl33d3r/SprayingToolkit</a>
+o365creeper : <a href="https://github.com/LMGsec/o365creeper">https://github.com/LMGsec/o365creeper</a>
+Carnivore : <a href="https://github.com/ReverendThing/Carnivore">https://github.com/ReverendThing/Carnivore</a>
+adfspray : <a href="https://github.com/xFreed0m/adfspray">https://github.com/xFreed0m/adfspray</a>
 ruler : <a href="https://github.com/sensepost/ruler">https://github.com/sensepost/ruler</a></p>
-<section class="footnotes" role="doc-endnotes">
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn:1" role="doc-endnote">
+<li id="fn:1">
 <p>This is highly inefficient and mostly useless 99% of the time.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
-</section>
+</div>
 
     </div>
   </article>
@@ -640,6 +659,23 @@ ruler : <a href="https://github.com/sensepost/ruler">https://github.com/sensepos
 
 
 
+  <div class="blog-post-comments">
+    
+      <div id="cactus-comments-thread">
+  <script>
+  initComments({
+    node: document.getElementById("cactus-comments-thread"),
+    defaultHomeserverUrl: 'https:\/\/matrix.cactus.chat:8448',
+    serverName: 'cactus.chat',
+    siteName: "sneakyottersec",
+    commentSectionId: "\/posts\/autodiscover101\/"
+  })
+</script>
+</div>
+
+    
+  </div>
+
 
 
   <div id="footer-post-container">
@@ -648,9 +684,9 @@ ruler : <a href="https://github.com/sensepost/ruler">https://github.com/sensepos
     <div id="nav-footer" style="display: none">
       <ul>
          
-          <li><a href="/posts">All posts</a></li>
-         
           <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">All posts</a></li>
         
       </ul>
     </div>
@@ -704,47 +740,47 @@ ruler : <a href="https://github.com/sensepost/ruler">https://github.com/sensepos
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fautodiscover101%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fautodiscover101%2f&text=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&text=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fautodiscover101%2f&is_video=false&description=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&is_video=false&description=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&body=Check out this article: %2fposts%2fautodiscover101%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&body=Check out this article: https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&title=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fautodiscover101%2f&name=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&description=0.%20Autodiscover%20101%20%3a%20A%20brief%20introduction%20We%20will%20start%20this%20series%20by%20analysing%20the%20Autodiscover%20protocol%20which%20is%20being%20actively%20used%20by%20the%20differents%20Exchange%20endpoints%20in%20order%20to%20exploit%20then.%0aIn%20order%20to%20do%20so%20we%20will%20focus%20on%20two%20different%20aspect%20%3a%0a%20Unauthenticated%20attack%20Authenticated%20attack%20%20No%20more%20taklink%20let%26rsquo%3bs%20jump%20into%20the%20technical%20stuff%20%21%20Based%20on%20the%20Microsoft%20documentation%20the%20Autodiscover%20sevice%20is%20part%20of%20the%20%26ldquo%3bDirectory%2fProfile%20Services%26rdquo%3b%20which%20can%20be%20broke%20down%20into%202%20important%20piece%20of%20documentation%20%3a" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&name=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d&description=%3ch1%20id%3d%220-autodiscover-101--a-brief-introduction%22%3e0.%20Autodiscover%20101%20%3a%20A%20brief%20introduction%3c%2fh1%3e%0a%3cp%3eWe%20will%20start%20this%20series%20by%20analysing%20the%20%3cstrong%3eAutodiscover%3c%2fstrong%3e%20protocol%20which%20is%20being%20actively%20used%20by%20the%20differents%20Exchange%20endpoints%20in%20order%20to%20exploit%20then.%3c%2fp%3e%0a%3cp%3eIn%20order%20to%20do%20so%20we%20will%20focus%20on%20two%20different%20aspect%20%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eUnauthenticated%20attack%3c%2fli%3e%0a%3cli%3eAuthenticated%20attack%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3eNo%20more%20taklink%20let%26rsquo%3bs%20jump%20into%20the%20technical%20stuff%20%21%20Based%20on%20the%20Microsoft%20documentation%20the%20Autodiscover%20sevice%20is%20part%20of%20the%20%26ldquo%3bDirectory%2fProfile%20Services%26rdquo%3b%20which%20can%20be%20broke%20down%20into%202%20important%20piece%20of%20documentation%20%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fautodiscover101%2f&t=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fautodiscover101%2f&t=Autodiscover%20101%20%3a%20Attacking%20%5bMS-OXDISC%5d%20%26%20%5bMS-OXDISCO%5d" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>
@@ -772,15 +808,15 @@ ruler : <a href="https://github.com/sensepost/ruler">https://github.com/sensepos
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2022   
+    Copyright  &copy; 2026  Copyright © 2022 
   </div>
   <div class="footer-right">
     <nav>
       <ul>
          
-        <li><a href="/posts">All posts</a></li>
-         
         <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
         
       </ul>
     </nav>

