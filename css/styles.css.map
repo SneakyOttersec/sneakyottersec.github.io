@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "styles.css",
-	"sourceRoot": "C:/Users/Justin/ottersec-blog-source",
+	"sourceRoot": "C:/Users/Justin/Projets/ottersec-blog-source",
 	"sources": [
 		"themes/cactus/assets/scss/style.scss",
 		"themes/cactus/assets/scss/_variables.scss",

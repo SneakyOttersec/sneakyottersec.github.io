@@ -7,8 +7,43 @@
     <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>ottersec</copyright>
-    <lastBuildDate>Thu, 09 Jun 2022 11:41:04 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 10 Dec 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://sneakyottersec.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bruno</title>
+      <link>https://sneakyottersec.github.io/tags/bruno/</link>
+      <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://sneakyottersec.github.io/tags/bruno/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CSP</title>
+      <link>https://sneakyottersec.github.io/tags/csp/</link>
+      <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://sneakyottersec.github.io/tags/csp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CVE</title>
+      <link>https://sneakyottersec.github.io/tags/cve/</link>
+      <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://sneakyottersec.github.io/tags/cve/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Electron</title>
+      <link>https://sneakyottersec.github.io/tags/electron/</link>
+      <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://sneakyottersec.github.io/tags/electron/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>XSS</title>
+      <link>https://sneakyottersec.github.io/tags/xss/</link>
+      <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://sneakyottersec.github.io/tags/xss/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Azure</title>
       <link>https://sneakyottersec.github.io/tags/azure/</link>
@@ -49,13 +84,6 @@
       <link>https://sneakyottersec.github.io/tags/exchange/</link>
       <pubDate>Mon, 25 Apr 2022 23:56:41 +0200</pubDate>
       <guid>https://sneakyottersec.github.io/tags/exchange/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>CVE</title>
-      <link>https://sneakyottersec.github.io/tags/cve/</link>
-      <pubDate>Tue, 02 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://sneakyottersec.github.io/tags/cve/</guid>
       <description></description>
     </item>
     <item>

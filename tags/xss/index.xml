@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XSS on Ottersec Blog</title>
+    <link>https://sneakyottersec.github.io/tags/xss/</link>
+    <description>Recent content in XSS on Ottersec Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <copyright>ottersec</copyright>
+    <lastBuildDate>Wed, 10 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://sneakyottersec.github.io/tags/xss/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Attacking Bruno : Peeling the Brunion</title>
+      <link>https://sneakyottersec.github.io/posts/bruno/</link>
+      <pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate>
+      <guid>https://sneakyottersec.github.io/posts/bruno/</guid>
+      <description>&lt;h1 id=&#34;attacking-bruno--a-small-electron-for-a-nuclear-reaction&#34;&gt;Attacking Bruno : a small Electron for a nuclear reaction&lt;/h1&gt;&#xA;&lt;h2 id=&#34;0-introduction&#34;&gt;0. Introduction&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.usebruno.com/&#34;&gt;Bruno&lt;/a&gt; is the open-source alternative to Postman. Both tools are used for API testing and development and both aim at making API workflows less painful, which makes them a staple of any developer&amp;rsquo;s toolbox. Bruno being an Electron application, it inherits the whole web attack surface &lt;em&gt;plus&lt;/em&gt; a desktop one — and that combination is exactly what we are going to abuse here.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
